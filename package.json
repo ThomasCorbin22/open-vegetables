@@ -1,0 +1,40 @@
+{
+  "name": "open-vegetables",
+  "version": "1.0.0",
+  "description": "A web app that allows users to search for healthy restaurants in Hong Kong",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThomasCorbin22/open-vegetables.git"
+  },
+  "keywords": [
+    "Vegetarian",
+    "Healthy",
+    "Vegan",
+    "Restaurant"
+  ],
+  "author": "Thomas Corbin, Edwin Chan, Alex Wong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThomasCorbin22/open-vegetables/issues"
+  },
+  "homepage": "https://github.com/ThomasCorbin22/open-vegetables#readme",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.4",
+    "https": "^1.0.0",
+    "jest": "^26.0.1",
+    "knex": "^0.21.1",
+    "passport": "^0.4.1",
+    "passport-facebook": "^3.0.0",
+    "passport-google": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "pg": "^8.2.1",
+    "sqlite3": "^4.2.0"
+  }
+}

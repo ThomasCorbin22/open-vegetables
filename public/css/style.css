@@ -1,0 +1,24 @@
+.bg-light{
+    background-color: #5fda85!important;
+}
+
+.navbar-nav > li > .dropdown-menu { 
+    background-color: #60dd87; 
+}
+
+.navbar-nav > li > .dropdown-menu >.dropdown-item:hover { 
+    background-color: #7fc294; 
+}
+
+.nav-link{
+    color: rgba(0,0,0,.9);
+}
+
+.navbar-nav > li > .nav-link{
+    margin-right: 1.4em;
+}
+
+.nav-link:hover{
+    color: rgba(0,0,0,.7);
+}
+

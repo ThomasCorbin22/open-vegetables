@@ -13,8 +13,8 @@ const knex = require('knex')({
 
 module.exports = (passport) => {
     passport.use('facebook', new FacebookStrategy({
-        clientID: process.env.APP_ID,
-        clientSecret: process.env.APP_SECRET,
+        clientID: process.env.FACEBOOK_ID,
+        clientSecret: process.env.FACEBOOK_SECRET,
         callbackURL: "https://terrarie.net/app-00/auth/facebook/callback",
         profileFields: ['id', 'email', 'name', 'gender', 'displayName', 'profileUrl']
     }, async (accessToken, refreshToken, profile, done) => {
@@ -26,7 +26,7 @@ module.exports = (passport) => {
                 facebookID: profile.id,
                 email: profile.displayName,
                 displayName: profile.name.givenName,
-                accessToken: accessToken
+                facebookToken: accessToken
             }
             let query = await knex('users').insert(user).returning('id');
             user.id = query[0];

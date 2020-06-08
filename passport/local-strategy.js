@@ -32,7 +32,7 @@ module.exports = (app) => {
                 const newUser = {
                     email: email,
                     password: hash,
-                    displayName: req.body.displayName
+                    display_name: req.body.displayName
                 };
                 let userId = await knex('users').insert(newUser).returning('id');
                 newUser.id = userId[0];

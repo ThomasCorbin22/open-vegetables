@@ -1,10 +1,9 @@
 const express = require('express');
-let router = express.Router()
 
 class UserRouter {
-    constructor(noteService) {
-        this.noteService = noteService
-        this.router = router
+    constructor(userService, path) {
+        this.userService = userService
+        this.router = express.Router()
     }
 
     route() {
@@ -16,23 +15,64 @@ class UserRouter {
     }
 
     get(req, res) {
-        console.log(req)
-        res.send('User Router: GET')
+        return this.userService.getUser(req.auth.user)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     post(req, res) {
         console.log(req)
-        res.send('User Router: POST')
+
+        let user = {
+            "display_name": req.body.display_name,
+            "first_name": req.body.first_name,
+            "last_name": req.body.last_name,
+            "email": req.body.email,
+            "password": req.body.password,
+            "description": req.body.description
+        }
+
+        return this.userService.addUser(user, req.auth.user)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     put(req, res) {
         console.log(req)
-        res.send('User Router: PUT')
+
+        let user = {
+            "first_name": req.body.first_name,
+            "last_name": req.body.last_name,
+            "email": req.body.email,
+            "password": req.body.password,
+            "description": req.body.description
+        }
+
+        return this.userService.alterUser(user, req.auth.user)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     delete(req, res) {
-        console.log(req)
-        res.send('User Router: DELETE')
+        return this.userService.deleteUser(req.auth.user)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 }
 

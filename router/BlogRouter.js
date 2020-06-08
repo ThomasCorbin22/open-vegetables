@@ -1,10 +1,9 @@
 const express = require('express');
-let router = express.Router()
 
 class BlogRouter {
-    constructor(noteService) {
-        this.noteService = noteService
-        this.router = router
+    constructor(blogService, path) {
+        this.blogService = blogService
+        this.router = express.Router()
     }
 
     route() {
@@ -16,23 +15,65 @@ class BlogRouter {
     }
 
     get(req, res) {
-        console.log(req)
-        res.send('Blog Router: GET')
+        return this.blogService.getRestaurant(req.auth.user)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     post(req, res) {
         console.log(req)
-        res.send('Blog Router: POST')
+
+        let blog = {
+            "title": req.body.title,
+            "body": req.body.body,
+            "user_ID": req.body.user_ID
+        }
+
+        return this.blogService.addRestaurant(blog, req.auth.user)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     put(req, res) {
         console.log(req)
-        res.send('Blog Router: PUT')
+
+        let blog = {
+            "title": req.body.title,
+            "body": req.body.body,
+            "user_ID": req.body.user_ID
+        }
+
+        return this.blogService.alterRestaurant(blog, req.body.index, req.auth.user)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     delete(req, res) {
-        console.log(req)
-        res.send('Blog Router: DELETE')
+        return this.blogService.deleteRestaurant(req.body.index, req.auth.user)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+}
+
+function isLoggedIn(req) {
+    if (req.isAuthenticated()) {
+        return true
     }
 }
 

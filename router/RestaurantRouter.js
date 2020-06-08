@@ -1,10 +1,9 @@
 const express = require('express');
-let router = express.Router()
 
 class RestaurantRouter {
-    constructor(noteService) {
-        this.noteService = noteService
-        this.router = router
+    constructor(restaurantService, path) {
+        this.restaurantService = restaurantService
+        this.router = express.Router()
     }
 
     route() {
@@ -16,23 +15,75 @@ class RestaurantRouter {
     }
 
     get(req, res) {
-        console.log(req)
-        res.send('Restaurant Router: GET')
+        return this.restaurantService.getRestaurant(req.auth.user)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     post(req, res) {
         console.log(req)
-        res.send('Restaurant Router: POST')
+
+        let restaurant = {
+            "name": req.body.name,
+            "address": req.body.address,
+            "description": req.body.description,
+            "telephone_number": req.body.telephone_number,
+            "social_media_URL": req.body.social_media_URL,
+            "main_picture_URL": req.body.main_picture_URL,
+            "website_URL": req.body.website_URL,
+            "latitude": req.body.latitude,
+            "longitude": req.body.longitude,
+            "opening_time": req.body.opening_time,
+            "closing_time": req.body.closing_time
+        }
+
+        return this.restaurantService.addRestaurant(restaurant, req.auth.user)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     put(req, res) {
         console.log(req)
-        res.send('Restaurant Router: PUT')
+
+        let restaurant = {
+            "name": req.body.name,
+            "address": req.body.address,
+            "description": req.body.description,
+            "telephone_number": req.body.telephone_number,
+            "social_media_URL": req.body.social_media_URL,
+            "main_picture_URL": req.body.main_picture_URL,
+            "website_URL": req.body.website_URL,
+            "latitude": req.body.latitude,
+            "longitude": req.body.longitude,
+            "opening_time": req.body.opening_time,
+            "closing_time": req.body.closing_time
+        }
+
+        return this.restaurantService.alterRestaurant(restaurant, req.body.index, req.auth.user)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     delete(req, res) {
-        console.log(req)
-        res.send('Restaurant Router: DELETE')
+        return this.restaurantService.deleteRestaurant(req.body.index, req.auth.user)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 }
 

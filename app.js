@@ -13,6 +13,7 @@ const publicDirectory = __dirname + '/public'
 const userRouter = require('./router/UserRouter')(express, publicDirectory);
 const restaurantRouter = require('./router/RestaurantRouter')(express, publicDirectory);
 const blogRouter = require('./router/BlogRouter')(express, publicDirectory);
+const authRouter = require('./router/AuthRouter')(express, publicDirectory);
 
 // Require passport initialisation
 const initPassport = require('./passport/init-passport');
@@ -39,10 +40,16 @@ app.use(session({
 // Initialise passport
 initPassport(app);
 
+// Send index page
+router.get('/', (req, res) => {
+    res.sendFile(publicDirectory + '/index.html');
+});
+
 // Set up routers
 app.use('/user', userRouter);
 app.use('/restaurant', restaurantRouter);
 app.use('/blog', blogRouter);
+app.use('/auth', authRouter);
 
 // Set up server
 server.listen(port);

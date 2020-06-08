@@ -1,15 +1,17 @@
 exports.up = function (knex, Promise) {
     return knex.schema.createTable('users', (table) => {
         table.increments();
-        table.string("first Name");
-        table.string("last Name");
-        table.string("email");
-        table.string("password");
+        table.string("first_name").notNullable();
+        table.string("last_name").notNullable();
+        table.string("email").notNullable();
+        table.unique('email')
+        table.string("password").notNullable();
         table.string("description");
-        table.integer("number_reviews");
-        table.integer("number_blogs");
-        table.integer("number_comments");
+        table.integer("number_reviews").unsigned()
+        table.integer("number_blogs").unsigned()
+        table.integer("number_comments").unsigned()
         table.datetime("date_created", { precision: 6 }).defaultTo(knex.fn.now(6));
+        table.datetime("date_modified", { precision: 6 }).defaultTo(knex.fn.now(6));
     });
 }
 

@@ -1,8 +1,8 @@
 exports.up = function (knex, Promise) {
     return knex.schema.createTable('blogs', (table) => {
         table.increments();
-        table.string("title");
-        table.string("body");
+        table.string("title").notNullable();
+        table.string("body").notNullable();
         table.datetime("date_created", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.datetime("date_modified", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.integer('user_id').unsigned();

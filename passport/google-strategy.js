@@ -23,10 +23,10 @@ module.exports = (passport) => {
         let userResult = await knex('users').where({ facebookID: profile.id });
         if (userResult == 0) {
             let user = {
-                googleId: profile.id,
+                google_Id: profile.id,
                 email: profile.displayName,
-                displayName: profile.name.givenName,
-                googleToken: accessToken
+                display_name: profile.name.givenName,
+                google_token: accessToken
             }
             let query = await knex('users').insert(user).returning('id');
             user.id = query[0];

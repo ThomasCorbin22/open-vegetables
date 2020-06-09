@@ -1,4 +1,4 @@
-const GoogleStrategy = require('passport-google').Strategy;
+const GoogleStrategy = require('passport-google-oauth').Strategy;
 
 require('dotenv').config();
 
@@ -13,17 +13,17 @@ const knex = require('knex')({
 
 module.exports = (passport) => {
     passport.use('google', new GoogleStrategy({
-        consumerKey: process.env.GOOGLE_ID,
-        consumerSecret: process.env.GOOGLE_SECRET,
-        callbackURL: "https://terrarie.net/app-00/auth/google/callback",
+        clientID: process.env.GOOGLE_ID,
+        clientSecret: process.env.GOOGLE_SECRET,
+        callbackURL: "auth/google/callback",
         profileFields: ['id', 'email', 'name', 'gender', 'displayName', 'profileUrl']
     }, async (accessToken, refreshToken, profile, done) => {
         console.log(profile);
 
-        let userResult = await knex('users').where({ facebookID: profile.id });
+        let userResult = await knex('users').where({ google_ID: profile.id });
         if (userResult == 0) {
             let user = {
-                google_Id: profile.id,
+                google_ID: profile.id,
                 email: profile.displayName,
                 display_name: profile.name.givenName,
                 google_token: accessToken

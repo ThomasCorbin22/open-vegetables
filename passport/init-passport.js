@@ -13,6 +13,6 @@ module.exports = (app) => {
     });
 
     require('./facebook-strategy.js')(passport);
-    require('./google-strategy.js')(passport);
+    // require('./google-strategy.js')(passport);
     require('./local-strategy.js')(passport);
 }

@@ -15,12 +15,12 @@ module.exports = (passport) => {
     passport.use('facebook', new FacebookStrategy({
         clientID: process.env.FACEBOOK_ID,
         clientSecret: process.env.FACEBOOK_SECRET,
-        callbackURL: "https://terrarie.net/app-00/auth/facebook/callback",
+        callbackURL: "/auth/facebook/callback",
         profileFields: ['id', 'email', 'name', 'gender', 'displayName', 'profileUrl']
     }, async (accessToken, refreshToken, profile, done) => {
         console.log(profile);
 
-        let userResult = await knex('users').where({ facebookID: profile.id });
+        let userResult = await knex('users').where({ facebook_ID: profile.id });
         if (userResult == 0) {
             let user = {
                 facebook_ID: profile.id,

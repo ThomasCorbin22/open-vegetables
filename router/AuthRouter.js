@@ -1,16 +1,20 @@
 const express = require('express');
+const passport = require('passport');
 
 const router = express.Router()
 
 class AuthRouter {
-    constructor(authService, path) {
-        this.authService = authService
+    constructor() {
         this.router = express.Router()
     }
 
     route() {
         this.router.get("/facebook", passport.authenticate('facebook', { scope: ["email", "user_gender", "user_link"] }));
         this.router.get("/facebook/callback", passport.authenticate('facebook', { successRedirect: '/',
+        failureRedirect: '/' }))
+
+        this.router.get("/google", passport.authenticate('google', { scope: ["email", "user_gender", "user_link"] }));
+        this.router.get("/google/callback", passport.authenticate('google', { successRedirect: '/',
         failureRedirect: '/' }))
 
         this.router.post('/login', passport.authenticate('local-login', { successRedirect: '/',

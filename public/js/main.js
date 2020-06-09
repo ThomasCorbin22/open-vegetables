@@ -10,8 +10,6 @@ $(() => {
         console.log(error);
     })
 
-
-
     axios({
         url: '/comment',
         method: 'get'

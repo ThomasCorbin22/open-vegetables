@@ -6,11 +6,12 @@
     <title>Open Vegetables-{{title}}</title>
     <meta name="description" content="Open Vegetables">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="./css/vendor/reset.css">
+    <link rel="stylesheet" href="https://localhost:8080/css/vendor/reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="google-signin-client_id" content="348043805525-9h9e16iojqr9bu966r4asbie0dr1uiq8.apps.googleusercontent.com">
 
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://localhost:8080/css/style.css">
 
 </head>
 
@@ -20,23 +21,24 @@
             <i class="fas fa-2x fa-carrot"></i>
         </li>
         <div class='mt-auto d-flex'>
-        <li class='nav-item' >
-             <a class="nav-link" href="#">
-            <svg class="bi bi-person-circle " width="1.6em" height="1.6em" viewbox='0 0 17 16 ' fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
-                <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                <path fill-rule="evenodd" d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
-            </svg>
-            </a>
-        </li>
-        <li class='nav-item' >
-            <a class='nav-link' href='#'> Login</a>
-        </li>
-        <li class='nav-item' >
-            <a class='nav-link' href='#'> Sign up</a>
-        </li>
+            <li class='nav-item'>
+                <a class="nav-link" href="/user/Info">
+                    <svg class="bi bi-person-circle " width="1.6em" height="1.6em" viewbox='0 0 17 16 '
+                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                        <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                        <path fill-rule="evenodd"
+                            d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                    </svg>
+                </a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link' href='#'> Login</a>
+            </li>
+            <li class='nav-item'>
+                <a class='nav-link' href='#'> Sign up</a>
+            </li>
         </div>
     </ul>
 
@@ -47,18 +49,19 @@
 
         <div class="collapse navbar-collapse" id="navbarMenu">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
+                <li class="nav-item ">
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Blogs</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" 
+                        data-toggle="dropdown" >
                         Restaurants
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div class="dropdown-menu" aria-labelledby="restaurantLocation">
+                        <a class="dropdown-item" href="/Restaurants/All">All</a>
                         <a class="dropdown-item" href="#">Hong Kong Island</a>
                         <a class="dropdown-item" href="#">Kowloon</a>
                         <a class="dropdown-item" href="#">New Territories</a>
@@ -97,15 +100,13 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src='./js/vendor/all.min.js'></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
-    <script src="./js/comment.js"></script>
-    <script src="./js/review.js"></script>
-    <script src="./js/blog.js"></script>
-    <script src="./js/restaurant.js"></script>
-    <script src="./js/user.js"></script>
-    <script src="./js/main.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src='https://localhost:8080/js/vendor/all.min.js'></script>
+
+    <script src="https://localhost:8080/js/main.js"></script>
 </body>
 
 </html>

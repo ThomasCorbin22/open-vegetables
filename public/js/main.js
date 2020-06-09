@@ -1,78 +1,12 @@
-$(() => {
-    axios({
-        url: '/restaurant',
-        method: 'get'
+$(document).ready(function(){
+    if($('title').text().match('Home')){
+        $('.navbar-nav > li:eq(0)').addClass('active')
+    }
+    if($('title').text().match(/^Restaurants/)){
+        $('.navbar-nav > li:eq(2)').addClass('active')
+    }
+    $('.my-2').click(()=>{
+        $('.my-2').text('★ Favourite restaurants')
     })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-
-    axios({
-        url: '/comment',
-        method: 'get'
-    })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-
-    axios({
-        url: '/user',
-        method: 'get'
-    })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-
-    axios({
-        url: '/blog',
-        method: 'get'
-    })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-
-    axios({
-        url: '/blog/category/1',
-        method: 'get'
-    })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-
-    axios({
-        url: '/blog/picture/1',
-        method: 'get'
-    })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-
-    axios({
-        url: '/review',
-        method: 'get'
-    })
-    .then((res) => {
-        console.log(res.data)
-    })
-    .catch((error) => {
-        console.log(error);
-    })
-})
+    
+  });

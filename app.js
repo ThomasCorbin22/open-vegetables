@@ -50,16 +50,31 @@ app.use(session({
 }));
 
 app.get('/',(req,res)=>{
-    res.render('test',{title:'Home'})
+    res.render('index',{title:'Home'})
+})
+
+app.get('/restaurants/All',(req,res)=>{
+    res.render('restaurant',{title:'Restaurants-All'})
+})
+
+app.get('/users/info',(req,res)=>{
+    res.render('user_information',{title:'userInformation'})
+})
+
+app.get('/users/reviews',(req,res)=>{
+    res.render('user_reviews',{title:'userReviews'})
+})
+
+app.get('/users/blogs',(req,res)=>{
+    res.render('user_blogs',{title:'userBlogs'})
+})
+
+app.get('/users/restaurants',(req,res)=>{
+    res.render('user_restaurants',{title:'userRestaurants'})
 })
 
 // Initialise passport
 initPassport(app);
-
-// Send index page
-app.get('/', (req, res) => {
-    res.sendFile(publicDirectory + '/index.html');
-});
 
 // Set up routers
 app.use('/user', new UserRouter(new UserService()).route());

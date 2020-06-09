@@ -43,6 +43,26 @@ app.get('/',(req,res)=>{
     res.render('index',{title:'Home'})
 })
 
+app.get('/restaurants/All',(req,res)=>{
+    res.render('restaurant',{title:'Restaurants-All'})
+})
+
+app.get('/user/info',(req,res)=>{
+    res.render('user_information',{title:'userInformation'})
+})
+
+app.get('/user/reviews',(req,res)=>{
+    res.render('user_reviews',{title:'userReviews'})
+})
+
+app.get('/user/blogs',(req,res)=>{
+    res.render('user_blogs',{title:'userBlogs'})
+})
+
+app.get('/user/restaurants',(req,res)=>{
+    res.render('user_restaurants',{title:'userRestaurants'})
+})
+
 // Initialise passport
 // initPassport(app);
 

@@ -1,0 +1,90 @@
+<div class='container-fluid'>
+    <div class='row '>
+        <div class='col-sm-9 '>
+            {{> user_nav}}
+            <div class='row justify-content-center'>
+                <img class='img-fluid' src="/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png" alt="">
+            </div>
+
+
+            {{!-- <ul class='list-group mx-2'>
+        <li class='list-group-item'>First Name</li>
+        <li class='list-group-item'>Last Name</li>
+        <li class='list-group-item'>Nick Name</li>
+        <li class='list-group-item'>E-mail</li>
+        <li class='list-group-item'>Passwords</li>
+        <li class='list-group-item'>Description</li>
+    </ul> --}}
+            <form class='m-3' action="/user_information">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">First Name:</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="First Name" id="nameFirst" name="nameFirst">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Last Name:</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Last Name" id="nameLast" name="nameLast">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Display Name:</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Display Name" id="nameDisplay"
+                        name="nameDisplay">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Email:</span>
+                    </div>
+                    <input type="email" class="form-control" placeholder="email" id="email" name="email">
+                </div>
+                <div class="input-group-prepend mb-3">
+                    <span class="input-group-text">Description:</span>
+                </div>
+                <textarea class="form-control" rows="3"></textarea>
+
+                <button type="submit" class="btn btn-danger my-3">Submit</button>
+            </form>
+            <ul class="nav nav-tabs">
+                <li class='active'><a data-toggle='tab' href="#">Favourite Restaurants</a></li>
+                <li><a data-toggle='tab' href="#">Favourite Blogs</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <h3>HOME</h3>
+                    <p>Some content.</p>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Menu 1</h3>
+                    <p>Some content in menu 1.</p>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>Menu 2</h3>
+                    <p>Some content in menu 2.</p>
+                </div>
+            </div>
+            <table class='table '>
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Modified date</th>
+                        <th scope="col">Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td><img class="img-responsive w-100 custom-area-small" src="/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png" />
+                    </td>
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>

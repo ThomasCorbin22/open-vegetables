@@ -27,9 +27,9 @@ const server = https.createServer({
 },app);
 
 // Set up middleware
-app.engine('handlebars',hbs({defaultLayout:'main',layoutsDir:__dirname+'/public/views/layouts'}))
+app.engine('handlebars',hbs({defaultLayout:'main'}))
 app.set('view engine','handlebars')
-app.set('views',__dirname+'/public/views')
+// app.set('views',__dirname+'/public/views')
 app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))

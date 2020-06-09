@@ -2,7 +2,7 @@
   "name": "open-vegetables",
   "version": "1.0.0",
   "description": "A web app that allows users to search for healthy restaurants in Hong Kong",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "jest"
   },
@@ -27,6 +27,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
+    "express-session": "^1.17.1",
     "https": "^1.0.0",
     "jest": "^26.0.1",
     "knex": "^0.21.1",
@@ -36,5 +37,9 @@
     "passport-local": "^1.0.0",
     "pg": "^8.2.1",
     "sqlite3": "^4.2.0"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "devDependencies": {}
 }

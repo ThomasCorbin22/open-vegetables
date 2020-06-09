@@ -1,13 +1,12 @@
 exports.up = function (knex, Promise) {
-    return knex.schema.createTable('restaurant_favourites', (table) => {
+    return knex.schema.createTable('restaurant_pictures', (table) => {
         table.increments();
-        table.integer('user_id').unsigned();
-        table.foreign('user_id').references('users.id');
+        table.string("picture_URL");
         table.integer('restaurant_id').unsigned();
         table.foreign('restaurant_id').references('restaurants.id');
     });
 }
 
 exports.down = function (knex, Promise) {
-    return knex.schema.dropTable('restaurant_favourites');
+    return knex.schema.dropTable('restaurant_pictures');
 }

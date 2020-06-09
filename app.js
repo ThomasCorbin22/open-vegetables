@@ -10,9 +10,19 @@ const hbs = require('express-handlebars')
 const publicDirectory = __dirname + '/public'
 
 // Require router modules
-// const userRouter = require('./router/UserRouter')(express, publicDirectory);
-// const restaurantRouter = require('./router/RestaurantRouter')(express, publicDirectory);
-// const blogRouter = require('./router/BlogRouter')(express, publicDirectory);
+const UserRouter = require('./router/UserRouter');
+const RestaurantRouter = require('./router/RestaurantRouter');
+const BlogRouter = require('./router/BlogRouter');
+const CommentRouter = require('./router/CommentRouter');
+const ReviewRouter = require('./router/ReviewRouter');
+const AuthRouter = require('./router/AuthRouter');
+
+// Require router service
+const UserService = require('./service/UserService');
+const RestaurantService = require('./service/RestaurantService');
+const BlogService = require('./service/BlogService');
+const CommentService = require('./service/CommentService');
+const ReviewService = require('./service/ReviewService');
 
 // Require passport initialisation
 const initPassport = require('./passport/init-passport');
@@ -29,7 +39,6 @@ const server = https.createServer({
 // Set up middleware
 app.engine('handlebars',hbs({defaultLayout:'main'}))
 app.set('view engine','handlebars')
-// app.set('views',__dirname+'/public/views')
 app.use(express.static('public'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -40,7 +49,7 @@ app.use(session({
 }));
 
 app.get('/',(req,res)=>{
-    res.render('index',{title:'Home'})
+    res.render('test',{title:'Home'})
 })
 
 app.get('/restaurants/All',(req,res)=>{
@@ -64,12 +73,20 @@ app.get('/user/restaurants',(req,res)=>{
 })
 
 // Initialise passport
-// initPassport(app);
+initPassport(app);
+
+// Send index page
+app.get('/', (req, res) => {
+    res.sendFile(publicDirectory + '/index.html');
+});
 
 // Set up routers
-// app.use('/user', userRouter);
-// app.use('/restaurant', restaurantRouter);
-// app.use('/blog', blogRouter);
+app.use('/user', new UserRouter(new UserService()).route());
+app.use('/restaurant', new RestaurantRouter(new RestaurantService()).route());
+app.use('/blog', new BlogRouter(new BlogService()).route());
+app.use('/comment', new CommentRouter(new CommentService()).route());
+app.use('/review', new ReviewRouter(new ReviewService()).route());
+app.use('/auth', new AuthRouter().route());
 
 // Set up server
 server.listen(port);

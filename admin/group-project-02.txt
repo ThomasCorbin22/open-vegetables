@@ -1,0 +1,44 @@
+Open Vegetables
+
+How to divide labour:
+
+1 person front-end
+1 person back-end
+1 person linking between front end and back end. Full stack engineer who is happy with both front end and back end
+
+For example:
+
+Restaurant Router
+User Router
+
+Needs to be able to book tables (make an api and send an email to the restaurants)
+Do we let the restaurants update their own page? Or control it inhouse
+blogs / news / events
+
+Postgres Table
+Admin
+Users - favourite restaurants, blog posts
+Restaurants - need photos, menus
+Reviews - 
+
+log-in functionality. What can they do?
+
+put images into firebase
+
+Tracking on a map
+
+What to do now?
+	
+	Search for restaurants
+	Geolocation server
+	Handlebars
+	Today think about the functionalities, and specification. Do database design over the weekend	
+
+Wireframe - Outlook, what it looks like and the information that is on each page. So I can scrape correct data and we can design database properly.
+Specification - Listing out the functionalities and the methods to do them. 
+Database Design - Resolved after both of these things as it needs to store everything from functions / front end.
+
+
+Start a repo and install all of your modules
+Work in a production branch, not pushing to master until all changes confirmed
+Individual branches - work with pull requests everyone morning at 10am and at 5pm

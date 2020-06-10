@@ -13,9 +13,25 @@ const knex = require('knex')({
 class RestaurantService {
     constructor() {
         this.restaurant = []
-        this.listRestaurants = []
         this.pictures = []
         this.categories = []
+    }
+
+    // Searches all the restaurants
+    async searchRestaurants(query) {
+        let results = await knex
+            .select('*')
+            .from("restaurants")
+            .modify(function(queryBuilder) {
+                for (let key in query){
+                    queryBuilder.where(key, query[key])
+                }
+            })
+            .catch((err) => console.log(err))
+
+        this.restaurant = results
+
+        return this.restaurant
     }
 
     // Lists all the restaurants
@@ -25,9 +41,9 @@ class RestaurantService {
             .from("restaurants")
             .catch((err) => console.log(err))
 
-        this.listRestaurants = results
+        this.restaurant = results
 
-        return this.listRestaurants
+        return this.restaurant
     }
 
     // Individual restaurants
@@ -51,13 +67,13 @@ class RestaurantService {
             .insert(restaurant)
             .catch((err) => console.log(err))
 
-        let id = await knex
+        let results = await knex
             .select('id')
             .from("restaurants")
             .where("name", restaurant.name)
             .catch((err) => console.log(err))
 
-        await this.getRestaurant(id)
+        await this.getRestaurant(results[0].id)
 
         return this.restaurant
     }
@@ -76,6 +92,44 @@ class RestaurantService {
 
     // Deletes a restaurant
     async deleteRestaurant(id) {
+        let results = await knex
+            .select('id')
+            .from("reviews")
+            .where('restaurant_id', id)
+            .catch((err) => console.log(err))
+
+        for (let result of results){
+            await knex('review_pictures')
+                .del()
+                .where('review_id', result.id)
+                .catch((err) => console.log(err))
+        }
+
+        await knex('reviews')
+            .del()
+            .where('restaurant_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('user_access')
+            .del()
+            .where('restaurant_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('restaurant_pictures')
+            .del()
+            .where('restaurant_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('restaurant_favourites')
+            .del()
+            .where('restaurant_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('restaurant_categories')
+            .del()
+            .where('restaurant_id', id)
+            .catch((err) => console.log(err))
+
         await knex('restaurants')
             .del()
             .where('id', id)
@@ -86,7 +140,20 @@ class RestaurantService {
 
     // Restaurant pictures
 
-    // Gets a specific restaurant's pictures
+    // Gets the pictures from a restaurant
+    async listPictures(id) {
+        let results = await knex
+            .select('*')
+            .from("restaurant_pictures")
+            .where("restaurant_id", id)
+            .catch((err) => console.log(err))
+
+        this.pictures = results
+
+        return this.pictures
+    }
+
+    // Gets a specific pictures
     async getPicture(id) {
         let results = await knex
             .select('*')
@@ -105,14 +172,14 @@ class RestaurantService {
             .insert(picture)
             .catch((err) => console.log(err))
 
-        let id = await knex
+        let results = await knex
             .select('id')
-            .from("restaurant_categories")
+            .from("restaurant_pictures")
             .where("restaurant_id", picture.restaurant_id)
             .andWhere("picture_URL", picture.picture_URL)
             .catch((err) => console.log(err))
 
-        await this.getPicture(id)
+        await this.getPicture(results[0].id)
 
         return this.pictures
     }
@@ -146,6 +213,19 @@ class RestaurantService {
         let results = await knex
             .select('*')
             .from("restaurant_categories")
+            .where("restaurant_id", id)
+            .catch((err) => console.log(err))
+
+        this.categories = results
+
+        return this.categories
+    }
+
+    // Gets a specific categories
+    async getCategory(id) {
+        let results = await knex
+            .select('*')
+            .from("restaurant_categories")
             .where("id", id)
             .catch((err) => console.log(err))
 
@@ -160,20 +240,20 @@ class RestaurantService {
             .insert(category)
             .catch((err) => console.log(err))
 
-        let id = await knex
+        let results = await knex
             .select('id')
             .from("restaurant_categories")
             .where("restaurant_id", category.restaurant_id)
             .andWhere("category", category.category)
             .catch((err) => console.log(err))
 
-        await this.getCategory(id)
+        await this.getCategory(results[0].id)
 
         return this.categories
     }
 
     // Updates a restaurant
-    async updateCategory(restaurant, id) {
+    async updateCategory(category, id) {
         await knex('restaurant_categories')
             .update(category)
             .where('id', id)

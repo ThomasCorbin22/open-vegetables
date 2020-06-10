@@ -3,7 +3,6 @@ exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('restaurants').insert([
     {
-      "id": 1,
       "name": 'Our awesome restaurant',
       "address": 'Xccelerate',
       "description": 'All the best food',
@@ -17,7 +16,6 @@ exports.seed = function (knex) {
       "closing_time": '21:00'
     },
     {
-      "id": 2,
       "name": 'Our cool restaurant',
       "address": 'GreenLand',
       "description": 'Nicer food',
@@ -31,7 +29,6 @@ exports.seed = function (knex) {
       "closing_time": '21:50'
     },
     {
-      "id": 3,
       "name": 'Our niche restaurant',
       "address": 'Iceland',
       "description": 'Cooler food',
@@ -45,7 +42,6 @@ exports.seed = function (knex) {
       "closing_time": '22:50'
     },
     {
-      "id": 4,
       "name": 'Our luxurious restaurant',
       "address": 'LuxuryLand',
       "description": 'Luxurious food',
@@ -59,7 +55,6 @@ exports.seed = function (knex) {
       "closing_time": '22:15'
     },
     {
-      "id": 5,
       "name": 'Our old restaurant',
       "address": 'Oldland',
       "description": 'Older food',
@@ -77,17 +72,14 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex('restaurant_categories').insert([
         {
-          "id": 1,
           "category": 'Korean',
           "restaurant_id": 1
         },
         {
-          "id": 2,
           "category": 'Japanese',
           "restaurant_id": 2
         },
         {
-          "id": 3,
           "category": 'Indian',
           "restaurant_id": 3
         }
@@ -97,17 +89,14 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex('restaurant_favourites').insert([
         {
-          "id": 1,
           "user_id": 1,
           "restaurant_id": 1
         },
         {
-          "id": 2,
           "user_id": 2,
           "restaurant_id": 2
         },
         {
-          "id": 3,
           "user_id": 3,
           "restaurant_id": 3
         }
@@ -117,17 +106,14 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex('restaurant_pictures').insert([
         {
-          "id": 1,
           "picture_URL": 'https://images.pexels.com/photos/1036857/pexels-photo-1036857.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
           "restaurant_id": 1
         },
         {
-          "id": 2,
           "picture_URL": 'https://images.pexels.com/photos/34650/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500',
           "restaurant_id": 2
         },
         {
-          "id": 3,
           "picture_URL": 'https://images.pexels.com/photos/696218/pexels-photo-696218.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
           "restaurant_id": 3
         }

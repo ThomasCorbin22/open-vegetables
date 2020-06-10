@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const https = require('https');
 const hbs = require('express-handlebars')
-// Specify public directory
-const publicDirectory = __dirname + '/public'
 
 // Require router modules
 const UserRouter = require('./router/UserRouter');

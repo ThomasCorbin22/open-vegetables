@@ -6,29 +6,41 @@ class RestaurantRouter {
         this.router = express.Router()
     }
 
-    route() {
-        // Lists out all the restaurants
-        this.router.get('/', this.listRestaurants.bind(this));
-
+    route() {        
         // Deals with individual restaurants
+        this.router.get('/', this.listRestaurants.bind(this));
+        this.router.get('/search', this.searchRestaurants.bind(this));
         this.router.get('/:id', this.getRestaurant.bind(this));
         this.router.post('/', this.postRestaurant.bind(this));
         this.router.put('/:id', this.putRestaurant.bind(this));
         this.router.delete('/:id', this.deleteRestaurant.bind(this));
 
         // Deals with restaurant pictures
+        this.router.get('/picture/list/:id', this.listPictures.bind(this));
         this.router.get('/picture/:id', this.getPicture.bind(this));
         this.router.post('/picture/', this.postPicture.bind(this));
         this.router.put('/picture/:id', this.putPicture.bind(this));
         this.router.delete('/picture/:id', this.deletePicture.bind(this));
 
         // Deals with restaurant categories
+        this.router.get('/category/list/:id', this.listCategories.bind(this));
         this.router.get('/category/:id', this.getCategory.bind(this));
         this.router.post('/category/', this.postCategory.bind(this));
         this.router.put('/category/:id', this.putCategory.bind(this));
         this.router.delete('/category/:id', this.deleteCategory.bind(this));
 
         return this.router
+    }
+
+    // Lists all restaurants
+    searchRestaurants(req, res) {
+        return this.restaurantService.searchRestaurants(req.query)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     // Lists all restaurants
@@ -126,10 +138,23 @@ class RestaurantRouter {
     // Deals with restaurant pictures
 
     // Gets a restaurants pictures
-    getPicture(req, res) {
+    listPictures(req, res) {
         let restaurant_id = req.params.id
 
-        return this.restaurantService.getPicture(restaurant_id)
+        return this.restaurantService.listPictures(restaurant_id)
+            .then((pictures) => {
+                res.send(pictures)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a picture
+    getPicture(req, res) {
+        let id = req.params.id
+
+        return this.restaurantService.getPicture(id)
             .then((pictures) => {
                 res.send(pictures)
             })
@@ -188,10 +213,23 @@ class RestaurantRouter {
     // Deals with restaurant categories
 
     // Gets a restaurants categories
-    getCategory(req, res) {
+    listCategories(req, res) {
         let restaurant_id = req.params.id
 
-        return this.restaurantService.getCategory(restaurant_id)
+        return this.restaurantService.listCategories(restaurant_id)
+            .then((categories) => {
+                res.send(categories)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a restaurants categories
+    getCategory(req, res) {
+        let id = req.params.id
+
+        return this.restaurantService.getCategory(id)
             .then((categories) => {
                 res.send(categories)
             })

@@ -174,7 +174,7 @@ class RestaurantService {
 
         let results = await knex
             .select('id')
-            .from("restaurant_categories")
+            .from("restaurant_pictures")
             .where("restaurant_id", picture.restaurant_id)
             .andWhere("picture_URL", picture.picture_URL)
             .catch((err) => console.log(err))

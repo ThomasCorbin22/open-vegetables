@@ -26,7 +26,7 @@ describe('UserRouter testing with userservice', () => {
         "email": 'hollie@hollie.com',
         "password": 'password',
         "description": 'It’s not the mountain we conquer, but ourselves',
-        'profile_restaurant_URL': 'https://scontent-hkg4-1.xx.fbcdn.net/v/t1.0-9/95344172_10156915557110064_2596378485723234304_n.jpg?_nc_cat=102&_nc_sid=09cbfe&_nc_ohc=zHORTMnUlQoAX87U_z5&_nc_ht=scontent-hkg4-1.xx&oh=61a760d68323bb7eeb87778b8eef8b11&oe=5F05DF32'
+        'profile_picture_URL': 'https://scontent-hkg4-1.xx.fbcdn.net/v/t1.0-9/95344172_10156915557110064_2596378485723234304_n.jpg?_nc_cat=102&_nc_sid=09cbfe&_nc_ohc=zHORTMnUlQoAX87U_z5&_nc_ht=scontent-hkg4-1.xx&oh=61a760d68323bb7eeb87778b8eef8b11&oe=5F05DF32'
     }
     
     let altered_user = {
@@ -35,7 +35,7 @@ describe('UserRouter testing with userservice', () => {
         "email": 'alex@alex.com',
         "password": 'password',
         "description": 'Something has changed about Alex',
-        'profile_restaurant_URL': 'https://avatars0.githubusercontent.com/u/40209618?s=460&u=2a86e8fa0d42014551e1f81ff24a1720185d66da&v=4'
+        'profile_picture_URL': 'https://avatars0.githubusercontent.com/u/40209618?s=460&u=2a86e8fa0d42014551e1f81ff24a1720185d66da&v=4'
     }
     
     let new_access = {

@@ -57,8 +57,13 @@ app.get('/blogs',(req,res)=>{
     res.render('blog',{title:'Blog'})
 })
 
+app.get('/blogs',(req,res)=>{
+    res.render('full-blog',{title:'Article'})
+})
+
 app.get('/restaurants',(req,res)=>{
     res.render('restaurant',{title:'Restaurant'})
+})
 
 app.get('/restaurants/All',(req,res)=>{
     res.render('restaurant',{title:'Restaurants-All'})

@@ -13,7 +13,6 @@ const knex = require('knex')({
 class CommentService {
     constructor() {
         this.comment = []
-        this.commentsList = []
     }
 
     // Gets all the comments from a blog post
@@ -24,9 +23,9 @@ class CommentService {
             .where("blog_id", id)
             .catch((err) => console.log(err))
 
-        this.commentsList = results
+        this.comment = results
 
-        return this.commentsList
+        return this.comment
     }
 
     // Get a specific comment
@@ -48,13 +47,14 @@ class CommentService {
             .insert(comment)
             .catch((err) => console.log(err))
 
-        let id = await knex
+        let results = await knex
             .select('id')
             .from("comments")
             .where("title", comment.title)
+            .andWhere("body", comment.body)
             .catch((err) => console.log(err))
             
-        await this.getComment(id)
+        await this.getComment(results[0].id)
 
         return this.comment
     }

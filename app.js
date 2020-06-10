@@ -6,8 +6,6 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const https = require('https');
 const hbs = require('express-handlebars')
-// Specify public directory
-const publicDirectory = __dirname + '/public'
 
 // Require router modules
 const UserRouter = require('./router/UserRouter');
@@ -23,6 +21,13 @@ const RestaurantService = require('./service/RestaurantService');
 const BlogService = require('./service/BlogService');
 const CommentService = require('./service/CommentService');
 const ReviewService = require('./service/ReviewService');
+
+// Require router service
+const userService = new UserService()
+const restaurantService = new RestaurantService()
+const blogService = new BlogService()
+const commentService = new CommentService()
+const reviewService = new ReviewService()
 
 // Require passport initialisation
 const initPassport = require('./passport/init-passport');
@@ -53,20 +58,23 @@ app.get('/',(req,res)=>{
     res.render('index',{title:'Home'})
 })
 
-app.get('/blogs',(req,res)=>{
-    res.render('blog',{title:'Blog'})
+app.get('/restaurants/all', async (req,res)=>{
+    let results = await restaurantService.listRestaurants()
+        
+    res.render('restaurant',{
+        title:'restaurants-all',
+        restaurants: results
+    })
 })
 
-app.get('/blogs',(req,res)=>{
-    res.render('full-blog',{title:'Article'})
+app.get('/restaurant/details/summary',(req,res)=>{
+    res.render('restaurant_details_summary',{title:'restaurant-details/summary'})
 })
-
-app.get('/restaurants',(req,res)=>{
-    res.render('restaurant',{title:'Restaurant'})
+app.get('/restaurant/details/dishes',(req,res)=>{
+    res.render('restaurant_details_dishes',{title:'restaurant-details/dishes'})
 })
-
-app.get('/restaurants/All',(req,res)=>{
-    res.render('restaurant',{title:'Restaurants-All'})
+app.get('/restaurant/details/reviews',(req,res)=>{
+    res.render('restaurant_details_reviews',{title:'restaurant-details/reviews'})
 })
 
 app.get('/users/info',(req,res)=>{
@@ -89,11 +97,11 @@ app.get('/users/restaurants',(req,res)=>{
 initPassport(app);
 
 // Set up routers
-app.use('/user', new UserRouter(new UserService()).route());
-app.use('/restaurant', new RestaurantRouter(new RestaurantService()).route());
-app.use('/blog', new BlogRouter(new BlogService()).route());
-app.use('/comment', new CommentRouter(new CommentService()).route());
-app.use('/review', new ReviewRouter(new ReviewService()).route());
+app.use('/user', new UserRouter(userService).route());
+app.use('/restaurant', new RestaurantRouter(restaurantService).route());
+app.use('/blog', new BlogRouter(blogService).route());
+app.use('/comment', new CommentRouter(commentService).route());
+app.use('/review', new ReviewRouter(reviewService).route());
 app.use('/auth', new AuthRouter().route());
 
 // Set up server

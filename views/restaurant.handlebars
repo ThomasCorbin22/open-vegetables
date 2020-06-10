@@ -5,15 +5,16 @@
 
             <div class='container-fluid'>
                 <div class='card custom-height overflow-auto'>
+                    {{#each restaurant}}
                     <div class='row'>
                         <div class='col-sm-4'>
-                            <h4 class='card-header'><a href=''>res name</a></h4>
+                            <h4 class='card-header'><a href='/restaurant/details/summary'>{{name}}</a></h4>
                             <div class='card-body'>
-                                <img class='w-100 mb-2' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
+                                <img class='w-100 mb-2' src={{main_picture_URL}}>
                                 <img class='w-100 ' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
                                 <hr>
                                 <p class='card-title'></p><i class="fa fa-thumbs-up"></i>
-                                    Rating</p>
+                                Rating</p>
                                 <p class='card-title'>☆ Add to favourite</p>
 
                             </div>
@@ -21,12 +22,14 @@
                         <div class='col-sm-4'>
                             <h4 class='card-header'>res details</h4>
                             <ul class='list-group list-group-flush mt-3'>
+                                <li class='list-group-item'>{{description}}</li>
                                 <li class='list-group-item'>Price ranges</li>
                                 <li class='list-group-item'>Categories</li>
-                                <li class='list-group-item'>Opening Time</li>
-                                <li class='list-group-item'>Phone Number</li>
-                                <li class='list-group-item'>Address</li>
-                                <li class='list-group-item'><a href=''>Social media</a></li>
+                                <li class='list-group-item'>{{telephone_number}}</li>
+                                <li class='list-group-item'>{{address}}</li>
+                                <li class='list-group-item'>{{website_URL}}</li>
+                                <li class='list-group-item'>{{opening_time}}{{closing_time}}</li>
+                                <li class='list-group-item'><a href=''>{{social_media_URL}}</a></li>
                             </ul>
                         </div>
                         <div class='col-sm-4'>

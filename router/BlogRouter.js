@@ -7,28 +7,41 @@ class BlogRouter {
     }
 
     route() {
-        // List all blogs
+        
+        // Manipulate  blogs
         this.router.get('/', this.listBlogs.bind(this));
-
-        // Manipulate individual blogs
+        this.router.get('/search', this.searchBlogs.bind(this));
         this.router.get('/:id', this.getBlog.bind(this));
         this.router.post('/', this.postBlog.bind(this));
         this.router.put('/:id', this.putBlog.bind(this));
         this.router.delete('/:id', this.deleteBlog.bind(this));
 
         // Manipulate blog pictures
+        this.router.get('/picture/list/:id', this.listPictures.bind(this));
         this.router.get('/picture/:id', this.getPicture.bind(this));
         this.router.post('/picture/', this.postPicture.bind(this));
         this.router.put('/picture/:id', this.putPicture.bind(this));
         this.router.delete('/picture/:id', this.deletePicture.bind(this));
 
         // Manipulate blog categories
+        this.router.get('/category/list/:id', this.listCategories.bind(this));
         this.router.get('/category/:id', this.getCategory.bind(this));
         this.router.post('/category/', this.postCategory.bind(this));
         this.router.put('/category/:id', this.putCategory.bind(this));
         this.router.delete('/category/:id', this.deleteCategory.bind(this));
 
         return this.router
+    }
+
+    // Search all blogs
+    searchBlogs(req, res) {
+        return this.blogService.searchBlogs(req.query)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     // List all blogs
@@ -62,7 +75,7 @@ class BlogRouter {
         let post = {
             title: req.body.title,
             body: req.body.body,
-            user_ID: req.body.user_ID
+            user_id: req.body.user_id
         }
 
         return this.blogService.addBlog(post)
@@ -81,7 +94,7 @@ class BlogRouter {
         let post = {
             title: req.body.title,
             body: req.body.body,
-            user_ID: req.body.user_ID,
+            user_id: req.body.user_id,
             date_modified: new Date()
         }
 
@@ -110,10 +123,23 @@ class BlogRouter {
     // Blog Pictures
 
     // Get blog pictures
-    getPicture(req, res) {
+    listPictures(req, res) {
         let blog_id = req.params.id
 
-        return this.blogService.getPicture(blog_id)
+        return this.blogService.listPictures(blog_id)
+            .then((pictures) => {
+                res.send(pictures)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Get picture
+    getPicture(req, res) {
+        let id = req.params.id
+
+        return this.blogService.getPicture(id)
             .then((pictures) => {
                 res.send(pictures)
             })
@@ -126,7 +152,7 @@ class BlogRouter {
     postPicture(req, res) {
         let picture = {
             picture_URL: req.body.picture_URL,
-            blog_ID: req.body.blog_ID
+            blog_id: req.body.blog_id
         }
 
         return this.blogService.addPicture(picture)
@@ -144,7 +170,7 @@ class BlogRouter {
 
         let picture = {
             picture_URL: req.body.picture_URL,
-            blog_ID: req.body.blog_ID
+            blog_id: req.body.blog_id
         }
 
         return this.blogService.updatePicture(picture, id)
@@ -172,10 +198,23 @@ class BlogRouter {
     // Blog Categories
 
     // Get blog categories
-    getCategory(req, res) {
+    listCategories(req, res) {
         let blog_id = req.params.id
 
-        return this.blogService.getCategory(blog_id)
+        return this.blogService.listCategories(blog_id)
+            .then((categories) => {
+                res.send(categories)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Get category
+    getCategory(req, res) {
+        let id = req.params.id
+
+        return this.blogService.getCategory(id)
             .then((categories) => {
                 res.send(categories)
             })
@@ -188,7 +227,7 @@ class BlogRouter {
     postCategory(req, res) {
         let category = {
             category: req.body.category,
-            blog_ID: req.body.blog_ID
+            blog_id: req.body.blog_id
         }
 
         return this.blogService.addCategory(category)
@@ -206,7 +245,7 @@ class BlogRouter {
 
         let category = {
             category: req.body.category,
-            blog_ID: req.body.blog_ID
+            blog_id: req.body.blog_id
         }
 
         return this.blogService.updateCategory(category, id)

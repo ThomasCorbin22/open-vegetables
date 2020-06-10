@@ -85,12 +85,40 @@ app.get('/users/reviews',(req,res)=>{
     res.render('user_reviews',{title:'userReviews'})
 })
 
-app.get('/users/blogs',(req,res)=>{
+app.get('/users/blogs',async(req,res)=>{
+    let blogs = await blogService.listBlogs()
+    console.log(blogs)
+    let item =[]
+    for (let blog of blogs){
+        let categories = await blogService.listCategories(blog.id)
+        let pictures = await blogService.listPictures(blog.id)
+        let user = await blogService.list
+        console.log(categories)
+        let blog_categories = []
+
+        for (let category of categories){
+            blog_categories.push(category.category)
+        }
+
+        let item_pictures = []
+
+        for (let anotherthing of pictures){
+            item_pictures.push(anotherthing.picture_URL)
+        }
+
+        item['categories'] = blog_categories;
+        item['picture_URLs'] = item_pictures;
+        console.log(item)
+    }
+
     res.render('user_blogs',{title:'userBlogs'})
 })
 
 app.get('/users/restaurants',(req,res)=>{
     res.render('user_restaurants',{title:'userRestaurants'})
+})
+app.get('/blogs',(req,res)=>{
+    res.render('blog',{title:'blog'})
 })
 
 // Initialise passport

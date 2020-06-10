@@ -1,11 +1,11 @@
 <div class='container-fluid'>
     <div class='row '>
-        <div class='col-sm-9 '>
+        <div class='col-sm-10 '>
             {{> restaurants_nav}}
 
             <div class='container-fluid'>
-                <div class='card custom-height overflow-auto'>
-                    {{#each restaurant}}
+                {{#each restaurants}}
+                <div class='card custom-height overflow-auto mb-3'>
                     <div class='row'>
                         <div class='col-sm-4'>
                             <h4 class='card-header'><a href='/restaurant/details/summary'>{{name}}</a></h4>
@@ -37,7 +37,11 @@
                         </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
+        </div>
+        <div class='col-sm-2'>
+            
         </div>
     </div>
 </div>

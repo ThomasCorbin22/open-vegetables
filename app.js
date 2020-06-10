@@ -67,6 +67,14 @@ app.get('/restaurants/all', async (req,res)=>{
     })
 })
 
+app.get('/blogs',(req,res)=>{
+    res.render('blog',{title:'Blogs'})
+})
+
+app.get('/blogs/full-blog',(req,res)=>{
+    res.render('full_blog',{title:'blogs/full-blog'})
+})
+
 app.get('/restaurant/details/summary',(req,res)=>{
     res.render('restaurant_details_summary',{title:'restaurant-details/summary'})
 })

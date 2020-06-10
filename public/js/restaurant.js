@@ -1,7 +1,7 @@
 $(() => {
     // List all restaurants
     axios({
-        url: '/restaurants/all',
+        url: '/restaurant',
         method: 'get'
     })
     .then((res) => {

@@ -51,8 +51,10 @@ app.get('/',(req,res)=>{
     res.render('index',{title:'Home'})
 })
 
-app.get('/restaurants/all',(req,res)=>{
-    res.render('restaurant',{title:'restaurants-all'})
+app.get('/restaurants/all',async (req,res)=>{
+    let results = await new RestaurantRouter()
+    console.log(results)
+    res.render('restaurant',{title:'restaurants-all',})
 })
 
 app.get('/restaurant/details/summary',(req,res)=>{

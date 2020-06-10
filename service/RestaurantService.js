@@ -209,7 +209,7 @@ class RestaurantService {
     // Restaurant categories
 
     // Gets a specific restaurant's categories
-    async getCategory(id) {
+    async listCategories(id) {
         let results = await knex
             .select('*')
             .from("restaurant_categories")

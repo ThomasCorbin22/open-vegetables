@@ -6,35 +6,48 @@ class UserRouter {
         this.router = express.Router()
     }
 
-    route() {
-        // Gets all users
-        this.router.get('/', this.listUsers.bind(this));
-
+    route() {        
         // Deals with individual users
+        this.router.get('/', this.listUsers.bind(this));
+        this.router.get('/search', this.searchUsers.bind(this));
         this.router.get('/:id', this.getUser.bind(this));
         this.router.post('/', this.postUser.bind(this));
         this.router.put('/:id', this.putUser.bind(this));
         this.router.delete('/:id', this.deleteUser.bind(this));
 
         // Deals with user access
-        this.router.get('/:id', this.getAccess.bind(this));
-        this.router.post('/', this.postAccess.bind(this));
-        this.router.put('/:id', this.putAccess.bind(this));
-        this.router.delete('/:id', this.deleteAccess.bind(this));
+        this.router.get('/access/list/:id', this.listAccess.bind(this));
+        this.router.get('/access/:id', this.getAccess.bind(this));
+        this.router.post('/access/', this.postAccess.bind(this));
+        this.router.put('/access/:id', this.putAccess.bind(this));
+        this.router.delete('/access/:id', this.deleteAccess.bind(this));
 
         // Deals with user favourite restaurants
-        this.router.get('/:id', this.getFavRest.bind(this));
-        this.router.post('/', this.postFavRest.bind(this));
-        this.router.put('/:id', this.putFavRest.bind(this));
-        this.router.delete('/:id', this.deleteFavRest.bind(this));
+        this.router.get('/restaurant/list/:id', this.listRestaurant.bind(this));
+        this.router.get('/restaurant/:id', this.getRestaurant.bind(this));
+        this.router.post('/restaurant/', this.postRestaurant.bind(this));
+        this.router.put('/restaurant/:id', this.putRestaurant.bind(this));
+        this.router.delete('/restaurant/:id', this.deleteRestaurant.bind(this));
 
         // Deals with user favourite blog posts
-        this.router.get('/:id', this.getFavBlog.bind(this));
-        this.router.post('/', this.postFavBlog.bind(this));
-        this.router.put('/:id', this.putFavBlog.bind(this));
-        this.router.delete('/:id', this.deleteFavBlog.bind(this));
+        this.router.get('/blog/list/:id', this.listBlog.bind(this));
+        this.router.get('/blog/:id', this.getBlog.bind(this));
+        this.router.post('/blog/', this.postBlog.bind(this));
+        this.router.put('/blog/:id', this.putBlog.bind(this));
+        this.router.delete('/blog/:id', this.deleteBlog.bind(this));
 
         return this.router
+    }
+
+    // Searches all the users
+    searchUsers(req, res) {
+        return this.userService.searchUsers(req.query)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     // Gets all the users
@@ -121,10 +134,23 @@ class UserRouter {
     // Deals with user access
 
     // Gets a user's access
-    getAccess(req, res) {
+    listAccess(req, res) {
         let user_id = req.params.id
 
-        return this.userService.getAccess(user_id)
+        return this.userService.listAccess(user_id)
+            .then((access) => {
+                res.send(access)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets an access
+    getAccess(req, res) {
+        let id = req.params.id
+
+        return this.userService.getAccess(id)
             .then((access) => {
                 res.send(access)
             })
@@ -183,10 +209,23 @@ class UserRouter {
     // Deals with user favourite restaurants
 
     // Gets a user's favourite restaurants
-    getFavRest(req, res) {
+    listRestaurant(req, res) {
         let user_id = req.params.id
 
-        return this.userService.getFavRest(user_id)
+        return this.userService.listRestaurant(user_id)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a favourite restaurant
+    getRestaurant(req, res) {
+        let id = req.params.id
+
+        return this.userService.getRestaurant(id)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -196,13 +235,13 @@ class UserRouter {
     }
 
     // Adds a new favourite restaurant
-    postFavRest(req, res) {
+    postRestaurant(req, res) {
         let restaurant = {
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id
         }
 
-        return this.userService.addFavRest(restaurant)
+        return this.userService.addRestaurant(restaurant)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -212,7 +251,7 @@ class UserRouter {
     }
 
     // Updates a favourite restaurant
-    putFavRest(req, res) {
+    putRestaurant(req, res) {
         let id = req.params.id
 
         let restaurant = {
@@ -220,7 +259,7 @@ class UserRouter {
             restaurant_id: req.body.restaurant_id
         }
 
-        return this.userService.updateFavRest(restaurant, id)
+        return this.userService.updateRestaurant(restaurant, id)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -230,10 +269,10 @@ class UserRouter {
     }
 
     // Deletes a favourite restaurant
-    deleteFavRest(req, res) {
+    deleteRestaurant(req, res) {
         let id = req.params.id
 
-        return this.userService.deleteFavRest(id)
+        return this.userService.deleteRestaurant(id)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -245,10 +284,23 @@ class UserRouter {
     // Deals with user favourite blog posts
 
     // Gets a user's favourite blog posts
-    getFavBlog(req, res) {
+    listBlog(req, res) {
         let user_id = req.params.id
 
-        return this.userService.getFavBlog(user_id)
+        return this.userService.listBlog(user_id)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a favourite blog posts
+    getBlog(req, res) {
+        let id = req.params.id
+
+        return this.userService.getBlog(id)
             .then((blog) => {
                 res.send(blog)
             })
@@ -258,13 +310,13 @@ class UserRouter {
     }
 
     // Adds a new favourite blog post
-    postFavBlog(req, res) {
+    postBlog(req, res) {
         let blog = {
             user_id: req.body.user_id,
             blog_id: req.body.blog_id
         }
 
-        return this.userService.addFavBlog(blog)
+        return this.userService.addBlog(blog)
             .then((blog) => {
                 res.send(blog)
             })
@@ -274,7 +326,7 @@ class UserRouter {
     }
 
     // Updates a favourite blog post
-    putFavBlog(req, res) {
+    putBlog(req, res) {
         let id = req.params.id
 
         let blog = {
@@ -282,7 +334,7 @@ class UserRouter {
             blog_id: req.body.blog_id
         }
 
-        return this.userService.updateFavBlog(blog, id)
+        return this.userService.updateBlog(blog, id)
             .then((blog) => {
                 res.send(blog)
             })
@@ -292,10 +344,10 @@ class UserRouter {
     }
 
     // Deletes a favourite blog post
-    deleteFavBlog(req, res) {
+    deleteBlog(req, res) {
         let id = req.params.id
 
-        return this.userService.deleteFavBlog(id)
+        return this.userService.deleteBlog(id)
             .then((blog) => {
                 res.send(blog)
             })

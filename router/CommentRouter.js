@@ -6,11 +6,9 @@ class CommentRouter {
         this.router = express.Router()
     }
 
-    route() {
-        // Gets comment list
-        this.router.get('/list/:id', this.listComments.bind(this));
-
+    route() {        
         // Deals with individual comments
+        this.router.get('/list/:id', this.listComments.bind(this));
         this.router.get('/:id', this.getComment.bind(this));
         this.router.post('/', this.postComment.bind(this));
         this.router.put('/:id', this.putComment.bind(this));
@@ -46,14 +44,11 @@ class CommentRouter {
 
     // Post a comment
     postComment(req, res) {
-        console.log(req)
-
         let comment = {
             title: req.body.title,
             body: req.body.body,
             user_id: req.body.user_id,
             blog_id: req.body.blog_id,
-            date_modified: new Date()
         }
 
         return this.commentService.addComment(comment)

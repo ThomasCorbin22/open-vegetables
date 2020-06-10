@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="https://localhost:8080/css/vendor/reset.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <meta name="google-signin-client_id" content="348043805525-9h9e16iojqr9bu966r4asbie0dr1uiq8.apps.googleusercontent.com">
+    <meta name="google-signin-client_id"
+        content="348043805525-9h9e16iojqr9bu966r4asbie0dr1uiq8.apps.googleusercontent.com">
 
     <link rel="stylesheet" href="https://localhost:8080/css/style.css">
 
@@ -22,7 +23,7 @@
         </li>
         <div class='mt-auto d-flex'>
             <li class='nav-item'>
-                <a class="nav-link" href="/user/Info">
+                <a class="nav-link" href="/users/Info">
                     <svg class="bi bi-person-circle " width="1.6em" height="1.6em" viewbox='0 0 17 16 '
                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -34,8 +35,11 @@
                 </a>
             </li>
             <li class='nav-item'>
-                <a class='nav-link' href='#'> Login</a>
+                <a class='nav-link' href='#' data-toggle='modal' data-target='#myModal'> Login</a>
             </li>
+            
+            {{>login_page}}
+
             <li class='nav-item'>
                 <a class='nav-link' href='#'> Sign up</a>
             </li>
@@ -56,12 +60,11 @@
                     <a class="nav-link" href="#">Blogs</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" 
-                        data-toggle="dropdown" >
+                    <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" data-toggle="dropdown">
                         Restaurants
                     </a>
                     <div class="dropdown-menu" aria-labelledby="restaurantLocation">
-                        <a class="dropdown-item" href="/Restaurants/All">All</a>
+                        <a class="dropdown-item" href="/restaurants/all">All</a>
                         <a class="dropdown-item" href="#">Hong Kong Island</a>
                         <a class="dropdown-item" href="#">Kowloon</a>
                         <a class="dropdown-item" href="#">New Territories</a>
@@ -88,7 +91,7 @@
     </nav>
 
     {{{body}}}
-    
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -107,6 +110,7 @@
     <script src='https://localhost:8080/js/vendor/all.min.js'></script>
 
     <script src="https://localhost:8080/js/main.js"></script>
+    <script src="https://localhost:8080/js/restaurant.js"></script>
 </body>
 
 </html>

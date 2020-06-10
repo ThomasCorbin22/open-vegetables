@@ -53,8 +53,18 @@ app.get('/',(req,res)=>{
     res.render('index',{title:'Home'})
 })
 
-app.get('/restaurants/All',(req,res)=>{
-    res.render('restaurant',{title:'Restaurants-All'})
+app.get('/restaurants/all',(req,res)=>{
+    res.render('restaurant',{title:'restaurants-all'})
+})
+
+app.get('/restaurant/details/summary',(req,res)=>{
+    res.render('restaurant_details_summary',{title:'restaurant-details/summary'})
+})
+app.get('/restaurant/details/dishes',(req,res)=>{
+    res.render('restaurant_details_dishes',{title:'restaurant-details/dishes'})
+})
+app.get('/restaurant/details/reviews',(req,res)=>{
+    res.render('restaurant_details_reviews',{title:'restaurant-details/reviews'})
 })
 
 app.get('/users/info',(req,res)=>{

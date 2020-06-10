@@ -1,6 +1,6 @@
 $(() => {
     axios({
-        url: '/restaurant',
+        url: '/restaurants/all',
         method: 'get'
     })
     .then((res) => {

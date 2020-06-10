@@ -30,6 +30,9 @@ hr{
     padding: .25rem 1.25rem;
 }
 
+.custom-width{
+    width: 45%;
+}
 .custom-height{
     max-height: 350px;
 }

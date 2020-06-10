@@ -22,6 +22,13 @@ const BlogService = require('./service/BlogService');
 const CommentService = require('./service/CommentService');
 const ReviewService = require('./service/ReviewService');
 
+// Require router service
+const userService = new UserService()
+const restaurantService = new RestaurantService()
+const blogService = new BlogService()
+const commentService = new CommentService()
+const reviewService = new ReviewService()
+
 // Require passport initialisation
 const initPassport = require('./passport/init-passport');
 
@@ -51,10 +58,13 @@ app.get('/',(req,res)=>{
     res.render('index',{title:'Home'})
 })
 
-app.get('/restaurants/all',async (req,res)=>{
-    let results = await new RestaurantRouter()
-    console.log(results)
-    res.render('restaurant',{title:'restaurants-all',})
+app.get('/restaurants/all', async (req,res)=>{
+    let results = await restaurantService.listRestaurants()
+        
+    res.render('restaurant',{
+        title:'restaurants-all',
+        restaurants: results
+    })
 })
 
 app.get('/restaurant/details/summary',(req,res)=>{
@@ -87,11 +97,11 @@ app.get('/users/restaurants',(req,res)=>{
 initPassport(app);
 
 // Set up routers
-app.use('/user', new UserRouter(new UserService()).route());
-app.use('/restaurant', new RestaurantRouter(new RestaurantService()).route());
-app.use('/blog', new BlogRouter(new BlogService()).route());
-app.use('/comment', new CommentRouter(new CommentService()).route());
-app.use('/review', new ReviewRouter(new ReviewService()).route());
+app.use('/user', new UserRouter(userService).route());
+app.use('/restaurant', new RestaurantRouter(restaurantService).route());
+app.use('/blog', new BlogRouter(blogService).route());
+app.use('/comment', new CommentRouter(commentService).route());
+app.use('/review', new ReviewRouter(reviewService).route());
 app.use('/auth', new AuthRouter().route());
 
 // Set up server

@@ -84,7 +84,8 @@ class UserRouter {
             last_name: req.body.last_name,
             email: req.body.email,
             password: req.body.password,
-            description: req.body.description
+            description: req.body.description,
+            profile_picture_URL: req.body.profile_picture_URL
         }
 
         return this.userService.addUser(user)

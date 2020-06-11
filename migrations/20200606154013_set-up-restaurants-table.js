@@ -4,7 +4,9 @@ exports.up = function (knex, Promise) {
         table.string("name").notNullable();
         table.unique('name');
         table.string("address");
-        table.string("rating");
+        table.string("logo");
+        table.integer("price_range");
+        table.float("rating");
         table.string("description");
         table.string("telephone_number");
         table.string("price");

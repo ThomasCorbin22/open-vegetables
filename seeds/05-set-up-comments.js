@@ -3,7 +3,7 @@ exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('comments').insert([
     {
-      "title": 'This wrote this trash!',
+      "title": 'Who wrote this trash!',
       "body": 'Better go back to studying english!',
       "user_id": 1,
       "blog_id": 1

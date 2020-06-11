@@ -153,8 +153,15 @@ class BlogService {
         await knex('blog_pictures')
             .insert(image)
             .catch((err) => console.log(err))
+
+        let results = await knex
+            .select('id')
+            .from("blog_pictures")
+            .where("picture_URL", image.picture_URL)
+            .andWhere("blog_id", image.blog_id)
+            .catch((err) => console.log(err))
             
-        await this.getPicture(image.blog_id)
+        await this.getPicture(results[0].id)
 
         return this.pictures
     }
@@ -166,7 +173,7 @@ class BlogService {
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.getPicture(image.blog_id)
+        await this.getPicture(id)
 
         return this.pictures
     }
@@ -215,7 +222,14 @@ class BlogService {
             .insert(category)
             .catch((err) => console.log(err))
             
-        await this.getCategory(category.blog_id)
+        let results = await knex
+            .select('id')
+            .from("blog_categories")
+            .where("category", category.category)
+            .andWhere("blog_id", category.blog_id)
+            .catch((err) => console.log(err))
+            
+        await this.getCategory(results[0].id)
 
         return this.categories
     }
@@ -227,7 +241,7 @@ class BlogService {
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.getCategory(category.blog_id)
+        await this.getCategory(id)
 
         return this.categories
     }

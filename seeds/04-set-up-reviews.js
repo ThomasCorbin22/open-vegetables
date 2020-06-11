@@ -5,18 +5,21 @@ exports.seed = function (knex) {
     {
       "title": 'This sucked!',
       "body": 'Worse place Ive been in my life!',
+      "rating": 1.0,
       "user_id": 1,
       "restaurant_id": 1
     },
     {
       "title": 'This was worse!',
       "body": 'Never coming back!',
+      "rating": 2.0,
       "user_id": 2,
       "restaurant_id": 2
     },
     {
       "title": 'This wasnt bad!',
       "body": 'But I wouldnt come again',
+      "rating": 3.0,
       "user_id": 3,
       "restaurant_id": 3
     }

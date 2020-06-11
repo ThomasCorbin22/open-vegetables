@@ -91,13 +91,13 @@ describe('UserRouter testing with userservice', () => {
             updateAccess : jest.fn().mockResolvedValue(true),
             deleteAccess : jest.fn().mockResolvedValue(true),
 
-            listRestaurant : jest.fn().mockResolvedValue(true),
+            listRestaurants : jest.fn().mockResolvedValue(true),
             getRestaurant : jest.fn().mockResolvedValue(true),
             addRestaurant : jest.fn().mockResolvedValue(true),
             updateRestaurant : jest.fn().mockResolvedValue(true),
             deleteRestaurant : jest.fn().mockResolvedValue(true),
 
-            listBlog : jest.fn().mockResolvedValue(true),
+            listBlogs : jest.fn().mockResolvedValue(true),
             getBlog : jest.fn().mockResolvedValue(true),
             addBlog : jest.fn().mockResolvedValue(true),
             updateBlog : jest.fn().mockResolvedValue(true),
@@ -198,6 +198,85 @@ describe('UserRouter testing with userservice', () => {
         return userRouter.deleteUser(request, response)
             .then(() => {
                 expect(userService.deleteUser).toHaveBeenCalledWith(1);
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('userRouter should call listAccess in response to a GET request', () => {
+        expect.assertions(2);
+        
+        request = {
+            params: {
+                id: 1
+            }
+        }
+
+        return userRouter.listAccess(request, response)
+            .then(() => {
+                expect(userService.listAccess).toHaveBeenCalledWith(1)
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('userRouter should call getAccess in response to a GET request', () => {
+        expect.assertions(2);
+
+        request = {
+            params: {
+                id: 1
+            }
+        }
+        
+        return userRouter.getAccess(request, response)
+            .then(() => {
+                expect(userService.getAccess).toHaveBeenCalledWith(request.params.id)
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('userRouter should call postAccess in response to a POST request', () => {
+        expect.assertions(2);
+
+        request = {
+            body: new_access
+        }
+        
+        return userRouter.postAccess(request, response)
+            .then(() => {
+                expect(userService.addAccess).toHaveBeenCalledWith(new_access)
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('userRouter should call putAccess in response to a PUT request', () => {
+        expect.assertions(2);
+
+        request = {
+            params: {
+                id: 1
+            },
+            body: altered_access
+        }
+        
+        return userRouter.putAccess(request, response)
+            .then(() => {
+                expect(userService.updateAccess).toHaveBeenCalled();
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+    
+    test('userRouter should call deleteAccess in response to a DELETE request', () => {
+        expect.assertions(2);
+
+        request = {
+            params: {
+                id: 1
+            },
+        }
+        
+        return userRouter.deleteAccess(request, response)
+            .then(() => {
+                expect(userService.deleteAccess).toHaveBeenCalledWith(1);
                 expect(response.send).toHaveBeenCalled()
             })
     })

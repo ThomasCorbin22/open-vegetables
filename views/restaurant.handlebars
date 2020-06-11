@@ -5,7 +5,7 @@
 
             <div class='container-fluid'>
                 <div class='card custom-height overflow-auto'>
-                    {{#each restaurant}}
+                    {{#each restaurants}}
                     <div class='row'>
                         <div class='col-sm-4'>
                             <h4 class='card-header'><a href='/restaurant/details/summary'>{{name}}</a></h4>
@@ -36,9 +36,9 @@
                             <div id="map" style="width:100%;height:400px;"></div>
                         </div>
                     </div>
+                    {{/each}}
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>

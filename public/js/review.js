@@ -30,6 +30,7 @@ $(() => {
         data: {
             "title": 'I wouldnt come back here if my life depended on it',
             "body": 'The food looks like what comes out of my backside',
+            "rating": 2.0,
             "user_id": 1,
             "restaurant_id": 2
         }
@@ -48,6 +49,7 @@ $(() => {
         data: {
             "title": 'Best food in Hong Kong',
             "body": 'A must visit for anyone coming to HK',
+            "rating": 5.0,
             "user_id": 2,
             "restaurant_id": 1
         }

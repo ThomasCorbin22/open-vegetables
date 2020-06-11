@@ -60,7 +60,9 @@ app.get('/',(req,res)=>{
 
 app.get('/restaurants/all', async (req,res)=>{
     let results = await restaurantService.listRestaurants()
-        
+
+    console.log(results)
+    
     res.render('restaurant',{
         title:'restaurants-all',
         restaurants: results

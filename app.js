@@ -69,11 +69,15 @@ app.get('/restaurants/all', async (req,res)=>{
 
 app.get('/blogs',(req,res)=>{
     res.render('blog',{title:'Blogs'})
-    // test
 })
 
 app.get('/blogs/full-blog',(req,res)=>{
     res.render('full_blog',{title:'blogs/full-blog'})
+})
+
+
+app.get('/map',(req,res)=>{
+    res.render('map',{title:'maps'})
 })
 
 app.get('/restaurant/details/summary',(req,res)=>{

@@ -13,6 +13,14 @@ class CommentRouter {
         this.router.post('/', this.postComment.bind(this));
         this.router.put('/:id', this.putComment.bind(this));
         this.router.delete('/:id', this.deleteComment.bind(this));
+
+        // Deals with user liked comments
+        this.router.get('/like/list/:id', this.listLikes.bind(this));
+        this.router.get('/like/:id', this.getLike.bind(this));
+        this.router.post('/like/', this.postLike.bind(this));
+        this.router.put('/like/:id', this.putLike.bind(this));
+        this.router.delete('/like/:id', this.deleteLike.bind(this));
+
         return this.router
     }
 
@@ -88,6 +96,84 @@ class CommentRouter {
         return this.commentService.deleteComment(id)
             .then((comment) => {
                 res.send(comment)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    
+    // Deals with liked comments
+
+    // Gets a comments's number of likes
+    listLikes(req, res) {
+        let comment_id = req.params.id
+
+        return this.commentService.listLikes(comment_id)
+            .then((like) => {
+                res.send(like)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a like for a comment
+    getLike(req, res) {
+        let id = req.params.id
+
+        return this.commentService.getLike(id)
+            .then((like) => {
+                res.send(like)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Adds a new like for a comment
+    postLike(req, res) {
+        let like = {
+            like: req.body.like,
+            user_id: req.body.user_id,
+            comment_id: req.body.comment_id,
+        }
+
+        return this.commentService.addLike(like)
+            .then((like) => {
+                res.send(like)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Updates a like for a comment
+    putLike(req, res) {
+        let id = req.params.id
+
+        let like = {
+            like: req.body.like,
+            user_id: req.body.user_id,
+            comment_id: req.body.comment_id,
+        }
+
+        return this.commentService.updateLike(like, id)
+            .then((like) => {
+                res.send(like)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Deletes a like for a comment
+    deleteLike(req, res) {
+        let id = req.params.id
+
+        return this.commentService.deleteLike(id)
+            .then((like) => {
+                res.send(like)
             })
             .catch((err) => {
                 console.log(err)

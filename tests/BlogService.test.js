@@ -1,3 +1,5 @@
+// jest test --runInBand --detectOpenHandles
+
 const BlogService = require('../service/BlogService')
 
 // Update with your config settings.
@@ -61,7 +63,7 @@ describe('BlogService testing with blogservice', () => {
         await knex.migrate.latest([{directory: '../migrations'}])
         await knex.seed.run([{directory: '../seeds'}])
     })
-
+    
     test('blogService should call searchBlogs in response to a GET request', () => {
         expect.assertions(4);
 
@@ -79,19 +81,24 @@ describe('BlogService testing with blogservice', () => {
     })
 
     test('blogService should call listBlogs in response to a GET request', () => {
-        expect.assertions(4);
+        expect.assertions(6);
         
         return blogService.listBlogs()
             .then((results) => {
+                console.log(results)
                 expect(results.length).toBe(3)
                 expect(results[0].title).toBe('Some cool post')
+                expect(results[0].pictures).toEqual([
+                    'https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
+                expect(results[0].categories).toEqual([ 'Sustainability' ])
                 expect(results[1].title).toBe('Another post')
                 expect(results[2].title).toBe('Yet one more')
             })
     })
 
     test('blogService should call getBlog in response to a GET request', () => {
-        expect.assertions(4);
+        expect.assertions(6);
 
         let id = 2
         
@@ -101,6 +108,10 @@ describe('BlogService testing with blogservice', () => {
                 expect(results[0].title).toBe('Another post')
                 expect(results[0].body).toBe('We could win a pulitzer for this')
                 expect(results[0].user_id).toBe(2)
+                expect(results[0].pictures).toEqual([
+                    'https://images.pexels.com/photos/784633/pexels-photo-784633.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
+                expect(results[0].categories).toEqual([ 'News' ])
             })
     })
 

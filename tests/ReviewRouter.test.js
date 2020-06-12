@@ -47,10 +47,6 @@ describe('ReviewRouter testing with reviewservice', () => {
     }
 
     beforeAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
-
         response = {
             send : jest.fn().mockResolvedValue(true),
         }
@@ -70,12 +66,6 @@ describe('ReviewRouter testing with reviewservice', () => {
         }
 
         reviewRouter = new ReviewRouter(reviewService)
-    })
-
-    afterAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
     })
 
     test('reviewRouter should call listReviews in response to a GET request', () => {

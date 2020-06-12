@@ -1,3 +1,5 @@
+// jest test --runInBand --detectOpenHandles
+
 const ReviewService = require('../service/ReviewService')
 
 // Update with your config settings.
@@ -49,7 +51,7 @@ describe('ReviewService testing with reviewservice', () => {
 
         reviewService = new ReviewService()
     })
-
+    
     afterAll(async () => {
         await knex.migrate.rollback([{directory: '../migrations'}])
         await knex.migrate.latest([{directory: '../migrations'}])
@@ -57,7 +59,7 @@ describe('ReviewService testing with reviewservice', () => {
     })
 
     test('reviewService should call listReviews in response to a GET request', () => {
-        expect.assertions(6);
+        expect.assertions(7);
 
         let id = 1
         
@@ -69,11 +71,14 @@ describe('ReviewService testing with reviewservice', () => {
                 expect(results[0].rating).toBe(1.0)
                 expect(results[0].user_id).toBe(1)
                 expect(results[0].restaurant_id).toBe(1)
+                expect(results[0].pictures).toEqual([
+                    'https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
             })
     })
 
     test('reviewService should call getReview in response to a GET request', () => {
-        expect.assertions(6);
+        expect.assertions(7);
 
         let id = 2
         
@@ -85,6 +90,9 @@ describe('ReviewService testing with reviewservice', () => {
                 expect(results[0].rating).toBe(2.0)
                 expect(results[0].user_id).toBe(2)
                 expect(results[0].restaurant_id).toBe(2)
+                expect(results[0].pictures).toEqual([
+                    'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
             })
     })
 

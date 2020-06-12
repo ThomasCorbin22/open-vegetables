@@ -70,4 +70,76 @@ $(() => {
     .catch((error) => {
         console.log(error);
     })
+
+    // Deals with comment likes
+
+    // List specific comments likes
+    axios({
+        url: '/comment/like/list/1',
+        method: 'get'
+    })
+    .then((res) => {
+        console.log(res.data)
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+
+    // Get first like
+    axios({
+        url: '/comment/like/1',
+        method: 'get'
+    })
+    .then((res) => {
+        console.log(res.data)
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+
+    // Add new like
+    axios({
+        url: '/comment/like',
+        method: 'post',
+        data: {
+            "user_id": 2,
+            "comment_id": 3,
+            "like": true,
+          }
+    })
+    .then((res) => {
+        console.log(res.data)
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+
+    // Update like
+    axios({
+        url: '/comment/like/2',
+        method: 'put',
+        data: {
+            "user_id": 2,
+            "comment_id": 1,
+            "like": false,
+          }
+    })
+    .then((res) => {
+        console.log(res.data)
+    })
+    .catch((error) => {
+        console.log(error);
+    })
+
+    // Delete like
+    axios({
+        url: '/comment/like/4',
+        method: 'delete'
+    })
+    .then((res) => {
+        console.log(res.data)
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 })

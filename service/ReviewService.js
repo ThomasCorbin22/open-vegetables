@@ -16,6 +16,25 @@ class ReviewService {
         this.pictures = []
     }
 
+    // Add pictures to a review
+    async compilePictures(results){
+        this.review = []
+            
+        for (let item of results){
+            let pictures = await this.listPictures(item.id)
+
+            let review_pictures = []
+
+            for (let picture of pictures){
+                review_pictures.push(picture.picture_URL)
+            }
+
+            item["pictures"] = review_pictures
+
+            this.review.push(item)
+        }
+    }
+
     // Lists all the reviews for a restaurant
     async listReviews(id) {
         let results = await knex
@@ -24,7 +43,7 @@ class ReviewService {
             .where("restaurant_id", id)
             .catch((err) => console.log(err))
 
-        this.review = results
+        await this.compilePictures(results)
 
         return this.review
     }
@@ -39,7 +58,7 @@ class ReviewService {
             .where("id", id)
             .catch((err) => console.log(err))
 
-        this.review = results
+        await this.compilePictures(results)
 
         return this.review
     }

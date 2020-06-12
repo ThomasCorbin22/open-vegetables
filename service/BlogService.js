@@ -34,6 +34,32 @@ class BlogService {
         return this.blog
     }
 
+    // Add pictures and categories to a blog
+    async compilePicturesCategories(results){
+        this.blog = []
+            
+        for (let item of results){
+            let pictures = await this.listPictures(item.id)
+            let categories = await this.listCategories(item.id)
+
+            let blog_pictures = []
+            let category_pictures = []
+
+            for (let picture of pictures){
+                blog_pictures.push(picture.picture_URL)
+            }
+
+            for (let category of categories){
+                category_pictures.push(category.category)
+            }
+
+            item["pictures"] = blog_pictures
+            item["categories"] = category_pictures
+
+            this.blog.push(item)
+        }
+    }
+
     // Lists all of the current blogs
     async listBlogs() {
         let results = await knex
@@ -41,7 +67,7 @@ class BlogService {
             .from("blogs")
             .catch((err) => console.log(err))
 
-        this.blog = results
+        await this.compilePicturesCategories(results)
 
         return this.blog
     }
@@ -56,7 +82,7 @@ class BlogService {
             .where("id", id)
             .catch((err) => console.log(err))
 
-        this.blog = results
+        await this.compilePicturesCategories(results)
 
         return this.blog
     }

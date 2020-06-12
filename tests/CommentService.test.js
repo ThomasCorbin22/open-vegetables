@@ -1,3 +1,5 @@
+// jest test --runInBand --detectOpenHandles
+
 const CommentService = require('../service/CommentService')
 
 // Update with your config settings.
@@ -29,6 +31,18 @@ describe('CommentService testing with commentservice', () => {
         "user_id": 1,
         "blog_id": 2
       }
+      
+    let new_like = {
+        "user_id": 2,
+        "comment_id": 3,
+        "like": true,
+    }
+
+    let altered_like = {
+        "user_id": 2,
+        "comment_id": 1,
+        "like": false,
+    }
 
     beforeEach(async () => {
         await knex.migrate.rollback([{directory: '../migrations'}])
@@ -108,6 +122,71 @@ describe('CommentService testing with commentservice', () => {
         let id = 2
         
         return commentService.deleteComment(id)
+            .then((result) => {
+                expect(result).toBe(true)
+            })
+    })
+
+    test('commentService should call listLikes in response to a GET request', () => {
+        expect.assertions(3);
+        
+        let id = 1
+        
+        return commentService.listLikes(id)
+            .then((results) => {
+                expect(results.length).toBe(2)
+                expect(results[0]).toBe(0)
+                expect(results[1]).toBe(1)
+            })
+    })
+
+    test('commentService should call getLike in response to a GET request', () => {
+        expect.assertions(4);
+
+        let id = 2
+        
+        return commentService.getLike(id)
+            .then((results) => {
+                expect(results.length).toBe(1)
+                expect(results[0].like).toBe(true)
+                expect(results[0].user_id).toBe(2)
+                expect(results[0].comment_id).toBe(3)
+            })
+    })
+
+    test('commentService should call addLike in response to a POST request', () => {
+        expect.assertions(4);
+        
+        return commentService.addLike(new_like)
+            .then((results) => {
+                expect(results.length).toBe(1)
+                expect(results[0].like).toBe(new_like.like)
+                expect(results[0].comment_id).toBe(new_like.comment_id)
+                expect(results[0].user_id).toBe(new_like.user_id)
+            })
+    })
+
+    test('commentService should call updateLike in response to a PUT request', () => {
+        expect.assertions(5);
+
+        let id = 2
+        
+        return commentService.updateLike(altered_like, id)
+            .then((results) => {
+                expect(results.length).toBe(1)
+                expect(results[0].title).toBe(altered_like.title)
+                expect(results[0].body).toBe(altered_like.body)
+                expect(results[0].user_id).toBe(altered_like.user_id)
+                expect(results[0].blog_id).toBe(altered_like.blog_id)
+            })
+    })
+
+    test('commentService should call deleteLike in response to a DELETE request', () => {
+        expect.assertions(1);
+
+        let id = 2
+        
+        return commentService.deleteLike(id)
             .then((result) => {
                 expect(result).toBe(true)
             })

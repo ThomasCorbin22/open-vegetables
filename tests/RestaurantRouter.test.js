@@ -22,7 +22,8 @@ describe('RestaurantRouter testing with restaurantservice', () => {
     
     let new_restaurant = {
         "name": 'Restaurant 101',
-        "address": 'My place',
+        "street_address": 'My place',
+        "district_id": 5,
         "description": 'Home cooked food',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bYCGq485SZLPBgm-0oj_qAAAAA%26pid%3DApi&f=1',
         "price_range": 3,
@@ -38,7 +39,8 @@ describe('RestaurantRouter testing with restaurantservice', () => {
     
     let altered_restaurant = {
         "name": 'Our cool restaurant: V2',
-        "address": 'GreenLand',
+        "street_address": 'GreenLand',
+        "district_id": 4,
         "description": 'Nicer food',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
         "price_range": 2,
@@ -73,10 +75,6 @@ describe('RestaurantRouter testing with restaurantservice', () => {
       }
 
     beforeAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
-
         response = {
             send : jest.fn().mockResolvedValue(true),
         }
@@ -103,12 +101,6 @@ describe('RestaurantRouter testing with restaurantservice', () => {
         }
 
         restaurantRouter = new RestaurantRouter(restaurantService)
-    })
-
-    afterAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
     })
 
     test('restaurantRouter should call searchRestaurants in response to a GET request', () => {

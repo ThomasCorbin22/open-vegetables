@@ -1,3 +1,5 @@
+// jest test --runInBand --detectOpenHandles
+
 const UserService = require('../service/UserService')
 
 // Update with your config settings.
@@ -96,19 +98,22 @@ describe('UserService testing with userservice', () => {
     })
 
     test('userService should call listUsers in response to a GET request', () => {
-        expect.assertions(4);
+        expect.assertions(7);
         
         return userService.listUsers()
             .then((results) => {
                 expect(results.length).toBe(3)
                 expect(results[0].first_name).toBe('Thomas')
+                expect(results[0].access[0].name).toEqual('Our awesome restaurant')
+                expect(results[0].restaurants[0].name).toEqual('Our awesome restaurant')
+                expect(results[0].blogs[0].title).toEqual('Some cool post')
                 expect(results[1].first_name).toBe('Alex')
                 expect(results[2].first_name).toBe('Edwin')
             })
     })
 
     test('userService should call getUser in response to a GET request', () => {
-        expect.assertions(4);
+        expect.assertions(7);
 
         let id = 2
         
@@ -118,6 +123,9 @@ describe('UserService testing with userservice', () => {
                 expect(results[0].first_name).toBe('Alex')
                 expect(results[0].last_name).toBe('Wong')
                 expect(results[0].email).toBe('alex@alex.com')
+                expect(results[0].access[0].name).toEqual('Our cool restaurant')
+                expect(results[0].restaurants[0].name).toEqual('Our cool restaurant')
+                expect(results[0].blogs[0].title).toEqual('Another post')
             })
     })
 

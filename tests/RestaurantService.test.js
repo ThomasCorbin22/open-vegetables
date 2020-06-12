@@ -1,3 +1,5 @@
+// jest test --runInBand --detectOpenHandles
+
 const RestaurantService = require('../service/RestaurantService')
 
 // Update with your config settings.
@@ -18,10 +20,11 @@ describe('RestaurantService testing with restaurantservice', () => {
     
     let new_restaurant = {
         "name": 'Restaurant 101',
-        "address": 'My place',
+        "street_address": 'My place',
+        "district_id": 5,
         "description": 'Home cooked food',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bYCGq485SZLPBgm-0oj_qAAAAA%26pid%3DApi&f=1',
-        "price_range": 3,
+        "price": 3,
         "telephone_number": '444',
         "social_media_URL": 'www.terrarie.com',
         "main_picture_URL": 'https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
@@ -34,10 +37,11 @@ describe('RestaurantService testing with restaurantservice', () => {
     
     let altered_restaurant = {
         "name": 'Our cool restaurant: V2',
-        "address": 'GreenLand',
+        "street_address": 'GreenLand',
+        "district_id": 4,
         "description": 'Nicer food',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
-        "price_range": 2,
+        "price": 2,
         "telephone_number": '999',
         "social_media_URL": 'www.google.com',
         "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
@@ -93,19 +97,29 @@ describe('RestaurantService testing with restaurantservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].name).toBe('Our awesome restaurant')
-                expect(results[0].address).toBe('Xccelerate')
+                expect(results[0].street_address).toBe('Xccelerate')
                 expect(results[0].description).toBe('All the best food')
             })
     })
 
     test('restaurantService should call listRestaurants in response to a GET request', () => {
-        expect.assertions(6);
+        expect.assertions(12);
         
         return restaurantService.listRestaurants()
             .then((results) => {
                 expect(results.length).toBe(5)
                 expect(results[0].name).toBe('Our awesome restaurant')
+                expect(results[0].pictures).toEqual([
+                    'https://images.pexels.com/photos/1036857/pexels-photo-1036857.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
+                expect(results[0].categories).toEqual([ 'Korean' ])
+                expect(results[0].rating).toEqual(1.5)
                 expect(results[1].name).toBe('Our cool restaurant')
+                expect(results[1].pictures).toEqual([
+                    'https://images.pexels.com/photos/34650/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
+                expect(results[1].categories).toEqual([ 'Japanese' ])
+                expect(results[1].rating).toEqual(2.5)
                 expect(results[2].name).toBe('Our niche restaurant')
                 expect(results[3].name).toBe('Our luxurious restaurant')
                 expect(results[4].name).toBe('Our old restaurant')
@@ -113,7 +127,7 @@ describe('RestaurantService testing with restaurantservice', () => {
     })
 
     test('restaurantService should call getRestaurant in response to a GET request', () => {
-        expect.assertions(4);
+        expect.assertions(7);
 
         let id = 2
         
@@ -121,8 +135,13 @@ describe('RestaurantService testing with restaurantservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].name).toBe('Our cool restaurant')
-                expect(results[0].address).toBe('GreenLand')
+                expect(results[0].street_address).toBe('GreenLand')
                 expect(results[0].description).toBe('Nicer food')
+                expect(results[0].pictures).toEqual([
+                    'https://images.pexels.com/photos/34650/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500'
+                  ])
+                expect(results[0].rating).toEqual(2.5)
+                expect(results[0].categories).toEqual([ 'Japanese' ])
             })
     })
 
@@ -133,7 +152,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].name).toBe(new_restaurant.name)
-                expect(results[0].address).toBe(new_restaurant.address)
+                expect(results[0].street_address).toBe(new_restaurant.street_address)
                 expect(results[0].description).toBe(new_restaurant.description)
             })
     })
@@ -147,7 +166,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].name).toBe(altered_restaurant.name)
-                expect(results[0].address).toBe(altered_restaurant.address)
+                expect(results[0].street_address).toBe(altered_restaurant.street_address)
                 expect(results[0].description).toBe(altered_restaurant.description)
             })
     })

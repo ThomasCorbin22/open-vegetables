@@ -69,10 +69,6 @@ describe('UserRouter testing with userservice', () => {
       }
 
     beforeAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
-
         response = {
             send : jest.fn().mockResolvedValue(true),
         }
@@ -105,12 +101,6 @@ describe('UserRouter testing with userservice', () => {
         }
 
         userRouter = new UserRouter(userService)
-    })
-
-    afterAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
     })
 
     test('userRouter should call searchUsers in response to a GET request', () => {

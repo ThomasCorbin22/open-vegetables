@@ -34,6 +34,32 @@ class BlogService {
         return this.blog
     }
 
+    // Add pictures and categories to a blog
+    async compilePicturesCategories(results){
+        this.blog = []
+            
+        for (let item of results){
+            let pictures = await this.listPictures(item.id)
+            let categories = await this.listCategories(item.id)
+
+            let blog_pictures = []
+            let category_pictures = []
+
+            for (let picture of pictures){
+                blog_pictures.push(picture.picture_URL)
+            }
+
+            for (let category of categories){
+                category_pictures.push(category.category)
+            }
+
+            item["pictures"] = blog_pictures
+            item["categories"] = category_pictures
+
+            this.blog.push(item)
+        }
+    }
+
     // Lists all of the current blogs
     async listBlogs() {
         let results = await knex
@@ -41,7 +67,7 @@ class BlogService {
             .from("blogs")
             .catch((err) => console.log(err))
 
-        this.blog = results
+        await this.compilePicturesCategories(results)
 
         return this.blog
     }
@@ -56,7 +82,7 @@ class BlogService {
             .where("id", id)
             .catch((err) => console.log(err))
 
-        this.blog = results
+        await this.compilePicturesCategories(results)
 
         return this.blog
     }
@@ -153,8 +179,15 @@ class BlogService {
         await knex('blog_pictures')
             .insert(image)
             .catch((err) => console.log(err))
+
+        let results = await knex
+            .select('id')
+            .from("blog_pictures")
+            .where("picture_URL", image.picture_URL)
+            .andWhere("blog_id", image.blog_id)
+            .catch((err) => console.log(err))
             
-        await this.getPicture(image.blog_id)
+        await this.getPicture(results[0].id)
 
         return this.pictures
     }
@@ -166,7 +199,7 @@ class BlogService {
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.getPicture(image.blog_id)
+        await this.getPicture(id)
 
         return this.pictures
     }
@@ -215,7 +248,14 @@ class BlogService {
             .insert(category)
             .catch((err) => console.log(err))
             
-        await this.getCategory(category.blog_id)
+        let results = await knex
+            .select('id')
+            .from("blog_categories")
+            .where("category", category.category)
+            .andWhere("blog_id", category.blog_id)
+            .catch((err) => console.log(err))
+            
+        await this.getCategory(results[0].id)
 
         return this.categories
     }
@@ -227,7 +267,7 @@ class BlogService {
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.getCategory(category.blog_id)
+        await this.getCategory(id)
 
         return this.categories
     }

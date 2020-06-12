@@ -34,6 +34,33 @@ class RestaurantService {
         return this.restaurant
     }
 
+    // Add pictures and categories to a restaurant
+    async compilePicturesCategoriesRating(results){
+        this.restaurant = []
+            
+        for (let item of results){
+            let pictures = await this.listPictures(item.id)
+            let categories = await this.listCategories(item.id)
+
+            let restaurant_pictures = []
+            let category_pictures = []
+
+            for (let picture of pictures){
+                restaurant_pictures.push(picture.picture_URL)
+            }
+
+            for (let category of categories){
+                category_pictures.push(category.category)
+            }
+
+            item["pictures"] = restaurant_pictures
+            item["categories"] = category_pictures
+            item["rating"] = await this.getRating(item.id)
+
+            this.restaurant.push(item)
+        }
+    }
+
     // Lists all the restaurants
     async listRestaurants() {
         let results = await knex
@@ -41,7 +68,7 @@ class RestaurantService {
             .from("restaurants")
             .catch((err) => console.log(err))
 
-        this.restaurant = results
+        await this.compilePicturesCategoriesRating(results)
 
         return this.restaurant
     }
@@ -56,7 +83,7 @@ class RestaurantService {
             .where("id", id)
             .catch((err) => console.log(err))
 
-        this.restaurant = results
+        await this.compilePicturesCategoriesRating(results)
 
         return this.restaurant
     }
@@ -272,6 +299,34 @@ class RestaurantService {
             .catch((err) => console.log(err))
 
         return true
+    }    
+    
+    // Restaurant rating
+
+    // Gets a specific restaurant's rating
+    async getRating(id) {
+        let results = await knex
+            .select('rating')
+            .from("reviews")
+            .where("restaurant_id", id)
+            .catch((err) => console.log(err))
+
+        let total_rating = 0
+        let count = 0
+
+        if (results.length > 0) {
+            for (let item of results){
+                total_rating += item.rating
+                count++
+            }
+            
+            this.rating = total_rating / count
+        }
+        else {
+            this.rating = 'Not yet rated'
+        }
+
+        return this.rating
     }
 }
 

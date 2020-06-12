@@ -57,6 +57,7 @@ class ReviewRouter {
         let review = {
             title: req.body.title,
             body: req.body.body,
+            rating: req.body.rating,
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id,
         }
@@ -77,6 +78,7 @@ class ReviewRouter {
         let review = {
             title: req.body.title,
             body: req.body.body,
+            rating: req.body.rating,
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id,
             date_modified: new Date()

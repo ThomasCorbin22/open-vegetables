@@ -117,8 +117,10 @@ app.get('/users/blogs',async(req,res)=>{
 app.get('/users/restaurants',(req,res)=>{
     res.render('user_restaurants',{title:'userRestaurants'})
 })
-app.get('/blogs',(req,res)=>{
-    res.render('blog',{title:'blog'})
+app.get('/blogs',async(req,res)=>{
+    let results = await blogService.listBlogs()
+
+    res.render('blog',{title:'blog',blogs:results})
 })
 
 // Initialise passport

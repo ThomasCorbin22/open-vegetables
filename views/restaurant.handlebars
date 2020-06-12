@@ -8,7 +8,7 @@
                 <div class='card custom-height overflow-auto mb-3'>
                     <div class='row'>
                         <div class='col-sm-4'>
-                            <h4 class='card-header'><a href='/restaurant/details/summary'>{{name}}</a></h4>
+                            <h5 class='card-header'><a href='/restaurant/details/summary'>{{name}}</a></h5>
                             <div class='card-body'>
                                 <img class='w-100 mb-2' src={{main_picture_URL}}>
                                 <img class='w-100 ' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
@@ -19,30 +19,54 @@
 
                             </div>
                         </div>
-                        <div class='col-sm-4'>
-                            <h4 class='card-header'>res details</h4>
-                            <ul class='list-group list-group-flush mt-3'>
-                                <li class='list-group-item'>{{description}}</li>
-                                <li class='list-group-item'>Price ranges</li>
-                                <li class='list-group-item'>Categories</li>
-                                <li class='list-group-item'>{{telephone_number}}</li>
-                                <li class='list-group-item'>{{address}}</li>
-                                <li class='list-group-item'>{{website_URL}}</li>
-                                <li class='list-group-item'>{{opening_time}}{{closing_time}}</li>
-                                <li class='list-group-item'><a href=''>{{social_media_URL}}</a></li>
-                            </ul>
-                        </div>
-                        <div class='col-sm-4'>
-                            <div id="map" style="width:100%;height:400px;"></div>
+                        <div class='col-sm-8'>
+                            <h5 class='card-header'>Restaurant details</h5>
+
+
+                            <table class='table'>
+                                <tbody>
+                                    <tr>
+                                        <th scope='row'> Description: </th>
+                                        <td>{{description}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Price Ranges: </th>
+                                        <th> Price ranges</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Categories: </th>
+                                        <th> Categories</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact Number: </th>
+                                        <th> {{telephone_number}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Address: </th>
+                                        <th> {{address}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Web Address: </th>
+                                        <th> {{website_URL}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Opening Hours :</th>
+                                        <th> {{opening_time}} - {{closing_time}}</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Social Media: </th>
+                                        <th><a href='{{social_media_URL}}'> {{social_media_URL}}</a></th>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
                 {{/each}}
             </div>
-        </div>
-        <div class='col-sm-2'>
-            
+            <div class='col-sm-2'>
+
+            </div>
         </div>
     </div>
-</div>
 </div>

@@ -35,6 +35,57 @@ class UserService{
         return this.user
     }
 
+    // Add access, restaurants and blogs to a restaurant
+    async compileAccessRestBlogs(results){
+        this.user = []
+            
+        for (let item of results){
+            let accesses = await this.listAccess(item.id)
+            let restaurants = await this.listRestaurants(item.id)
+            let blogs = await this.listBlogs(item.id)
+
+            let user_access = []
+            let user_restaurants = []
+            let user_blogs = []
+
+            for (let access of accesses){
+                let results = await knex
+                    .select('*')
+                    .from("restaurants")
+                    .where('id', access.restaurant_id)
+                    .catch((err) => console.log(err))
+
+                user_access.push(results[0])
+            }
+
+            for (let restaurant of restaurants){
+                let results = await knex
+                    .select('*')
+                    .from("restaurants")
+                    .where('id', restaurant.restaurant_id)
+                    .catch((err) => console.log(err))
+
+                user_restaurants.push(results[0])
+            }
+
+            for (let blog of blogs){
+                let results = await knex
+                    .select('*')
+                    .from("blogs")
+                    .where('id', blog.blog_id)
+                    .catch((err) => console.log(err))
+
+                user_blogs.push(results[0])
+            }
+
+            item["access"] = user_access
+            item["restaurants"] = user_restaurants
+            item["blogs"] = user_blogs
+
+            this.user.push(item)
+        }
+    }
+
     // Gets all the users
     async listUsers(){
         let results = await knex
@@ -42,7 +93,7 @@ class UserService{
             .from("users")
             .catch((err) => console.log(err))
         
-        this.user = results
+        await this.compileAccessRestBlogs(results)
 
         return this.user
     }
@@ -57,7 +108,7 @@ class UserService{
             .where("id", id)
             .catch((err) => console.log(err))
         
-        this.user = results
+        await this.compileAccessRestBlogs(results)
 
         return this.user
     }
@@ -93,22 +144,65 @@ class UserService{
     
     // Deletes a user
     async deleteUser(id){
-        await knex('blogs')
+        await knex('likes_dislikes')
             .del()
             .where('user_id', id)
             .catch((err) => console.log(err))
 
-        await knex('reviews')
-            .del()
-            .where('user_id', id)
+        let blogs = await knex
+            .select('id')
+            .from("blogs")
+            .where("user_id", id)
             .catch((err) => console.log(err))
 
+        // Delete everything to do with any blogs the user has written
+        for (let item of blogs){
+            await knex('blog_pictures')
+            .del()
+            .where('blog_id', item.id)
+            .catch((err) => console.log(err))
+
+            await knex('blog_categories')
+            .del()
+            .where('blog_id', item.id)
+            .catch((err) => console.log(err))
+
+            await knex('comments')
+            .del()
+            .where('blog_id', item.id)
+            .catch((err) => console.log(err))
+        }
+
+        let reviews = await knex
+            .select('id')
+            .from("reviews")
+            .where("user_id", id)
+            .catch((err) => console.log(err))
+
+        // Delete everything to do with any reviews the user has written
+        for (let item of reviews){
+            await knex('review_pictures')
+            .del()
+            .where('review_id', item.id)
+            .catch((err) => console.log(err))
+        }
+        
         await knex('comments')
             .del()
             .where('user_id', id)
             .catch((err) => console.log(err))
 
         await knex('blog_favourites')
+            .del()
+            .where('user_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('blogs')
+            .del()
+            .where('user_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('reviews')
             .del()
             .where('user_id', id)
             .catch((err) => console.log(err))
@@ -165,7 +259,14 @@ class UserService{
             .insert(access)
             .catch((err) => console.log(err))
 
-        await this.listAccess(access.user_id)
+        let results = await knex
+            .select('id')
+            .from("user_access")
+            .where("user_id", access.user_id)
+            .andWhere("restaurant_id", access.restaurant_id)
+            .catch((err) => console.log(err))
+
+        await this.getAccess(results[0].id)
 
         return this.access
     }
@@ -177,7 +278,7 @@ class UserService{
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.listAccess(access.user_id)
+        await this.getAccess(access.user_id)
 
         return this.access
     }
@@ -195,7 +296,7 @@ class UserService{
     // Deals with user's favourite restaurants
 
     // Gets a specific user's favourite restaurants
-    async listRestaurant(id){
+    async listRestaurants(id){
         let results = await knex
             .select('*')
             .from("restaurant_favourites")
@@ -226,7 +327,14 @@ class UserService{
             .insert(restaurant)
             .catch((err) => console.log(err))
 
-        await this.listRestaurant(restaurant.user_id)
+        let results = await knex
+            .select('id')
+            .from("restaurant_favourites")
+            .where("user_id", restaurant.user_id)
+            .andWhere("restaurant_id", restaurant.restaurant_id)
+            .catch((err) => console.log(err))
+
+        await this.getRestaurant(results[0].id)
 
         return this.restaurants
     }
@@ -238,7 +346,7 @@ class UserService{
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.listRestaurant(restaurant.user_id)
+        await this.getRestaurant(id)
 
         return this.restaurants
     }
@@ -256,7 +364,7 @@ class UserService{
     // Deals with user's favourite blog posts
 
     // Gets a specific user's favourite blog posts
-    async listBlog(id){
+    async listBlogs(id){
         let results = await knex
             .select('*')
             .from("blog_favourites")
@@ -287,7 +395,14 @@ class UserService{
             .insert(blog)
             .catch((err) => console.log(err))
 
-        await this.listBlog(blog.user_id)
+        let results = await knex
+            .select('id')
+            .from("blog_favourites")
+            .where("user_id", blog.user_id)
+            .andWhere("blog_id", blog.blog_id)
+            .catch((err) => console.log(err))
+
+        await this.getBlog(results[0].id)
 
         return this.blogs
     }
@@ -299,14 +414,14 @@ class UserService{
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.listBlog(blog.user_id)
+        await this.getBlog(id)
 
         return this.blogs
     }
     
     // Deletes a user's favourite blog posts
     async deleteBlog(id){
-        await knex('restaurant_favourites')
+        await knex('blog_favourites')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))

@@ -1,0 +1,39 @@
+<div class="modal" id="registerModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Register Page</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form action='/users/login' method='POST'>
+                <div class='form-group'>
+                    <label for='email'>Email address / Nick Name</label>
+                    <input type='email' class='form-control' id='emailR'> 
+                </div>
+                <div class='form-group'>
+                    <label for='nameF'>First Name</label>
+                    <input type='text' class='form-control' id='nameF'> 
+                </div>
+                <div class='form-group'>
+                    <label for='nameL'>Last Name</label>
+                    <input type='text' class='form-control' id='nameL'> 
+                </div>
+                <div class='form-group'>
+                    <label for='pwd'>Password:</label>
+                    <input type='password' class='form-control' id='pwd'>
+                </div>
+                <div class='form-group'>
+                    <label for='pwdR'>Re-type your password:</label>
+                    <input type='password' class='form-control' id='pwdR'>
+                </div>
+                <button type='submit' class='btn btn-danger'>Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

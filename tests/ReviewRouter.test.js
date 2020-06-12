@@ -23,6 +23,7 @@ describe('ReviewRouter testing with reviewservice', () => {
     let new_review = {
         "title": 'I wouldnt come back here if my life depended on it',
         "body": 'The food looks like what comes out of my backside',
+        "rating": 2,
         "user_id": 1,
         "restaurant_id": 2
     }
@@ -30,6 +31,7 @@ describe('ReviewRouter testing with reviewservice', () => {
     let altered_review = {
         "title": 'Best food in Hong Kong',
         "body": 'A must visit for anyone coming to HK',
+        "rating": 5,
         "user_id": 2,
         "restaurant_id": 1
     }
@@ -45,10 +47,6 @@ describe('ReviewRouter testing with reviewservice', () => {
     }
 
     beforeAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
-
         response = {
             send : jest.fn().mockResolvedValue(true),
         }
@@ -68,12 +66,6 @@ describe('ReviewRouter testing with reviewservice', () => {
         }
 
         reviewRouter = new ReviewRouter(reviewService)
-    })
-
-    afterAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
     })
 
     test('reviewRouter should call listReviews in response to a GET request', () => {

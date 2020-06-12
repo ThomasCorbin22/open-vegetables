@@ -73,8 +73,11 @@ class RestaurantRouter {
     postRestaurant(req, res) {
         let restaurant = {
             name: req.body.name,
-            address: req.body.address,
+            street_address: req.body.street_address,
+            district_id: req.body.district_id,
             description: req.body.description,
+            logo: req.body.logo,
+            price_range: req.body.price_range,
             telephone_number: req.body.telephone_number,
             social_media_URL: req.body.social_media_URL,
             main_picture_URL: req.body.main_picture_URL,
@@ -100,8 +103,11 @@ class RestaurantRouter {
 
         let restaurant = {
             name: req.body.name,
-            address: req.body.address,
+            street_address: req.body.street_address,
+            district_id: req.body.district_id,
+            logo: req.body.logo,
             description: req.body.description,
+            price_range: req.body.price_range,
             telephone_number: req.body.telephone_number,
             social_media_URL: req.body.social_media_URL,
             main_picture_URL: req.body.main_picture_URL,

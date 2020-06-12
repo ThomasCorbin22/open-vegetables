@@ -53,10 +53,6 @@ describe('BlogRouter testing with blogservice', () => {
       }
 
     beforeAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
-
         response = {
             send : jest.fn().mockResolvedValue(true),
         }
@@ -83,12 +79,6 @@ describe('BlogRouter testing with blogservice', () => {
         }
 
         blogRouter = new BlogRouter(blogService)
-    })
-
-    afterAll(async () => {
-        await knex.migrate.rollback([{directory: '../migrations'}])
-        await knex.migrate.latest([{directory: '../migrations'}])
-        await knex.seed.run([{directory: '../seeds'}])
     })
 
     test('blogRouter should call searchBlogs in response to a GET request', () => {

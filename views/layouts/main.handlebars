@@ -35,14 +35,16 @@
                 </a>
             </li>
             <li class='nav-item'>
-                <a class='nav-link' href='#' data-toggle='modal' data-target='#myModal'> Login</a>
+                <a class='nav-link' href='#' data-toggle='modal' data-target='#loginModal'> Login</a>
             </li>
             
             {{>login_page}}
 
-            <li class='nav-item'>
-                <a class='nav-link' href='#'> Sign up</a>
+           <li class='nav-item'>
+                <a class='nav-link' href='#' data-toggle='modal' data-target='#registerModal'> Register</a>
             </li>
+
+            {{>register_page}}
         </div>
     </ul>
 
@@ -57,7 +59,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Blogs</a>
+                    <a class="nav-link" href="/blogs">Blogs</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" data-toggle="dropdown">
@@ -103,13 +105,13 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-xdnamR5p45m8XTfs9ZTqdx2JGdsEhE&callback=initMap"></script>    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src='https://localhost:8080/js/vendor/all.min.js'></script>
 
-    {{!-- <script src="https://localhost:8080/js/restaurant.js"></script> --}}
+    <script src="https://localhost:8080/js/restaurant.js"></script>
     {{!-- <script src="https://localhost:8080/js/blog.js"></script> --}}
     {{!-- <script src="https://localhost:8080/js/comment.js"></script> --}}
     {{!-- <script src="https://localhost:8080/js/review.js"></script> --}}

@@ -13,7 +13,7 @@ $(() => {
 
     // List all restaurants
     axios({
-        url: '/restaurant/search?name=Our awesome restaurant',
+        url: '/restaurant/search?longitude=118.3&latitude=20.2&range=1',
         method: 'get'
     })
     .then((res) => {

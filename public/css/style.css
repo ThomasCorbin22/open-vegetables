@@ -50,3 +50,7 @@ hr{
     opacity: 1;
     color:black;
 }
+
+.authentication {
+    display:none
+}

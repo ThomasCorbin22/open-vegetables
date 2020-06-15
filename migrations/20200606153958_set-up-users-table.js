@@ -5,7 +5,7 @@ exports.up = function (knex, Promise) {
         table.string("last_name").notNullable();
         table.string("email").notNullable();
         table.unique('email');
-        table.string("password").notNullable();
+        table.string("password");
         table.string("description");
         table.string("profile_picture_URL");
         table.integer("number_reviews").unsigned()

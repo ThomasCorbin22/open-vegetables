@@ -22,22 +22,55 @@ $(document).ready(function () {
   //   });
   // }
 
+  axios({
+    url: '/auth/login',
+    method: 'get'
+  })
+    .then((res) => {
+      if (res.data === 'Not Logged In') {
+        $('#login').show()
+        $('#signup').show()
+      }
+      else {
+        user = res.data
+        $('#logout').show()
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 
-$('#userImageUpload').on('change',(e)=>{
-  let file = e.target.files[0]
-  console.log(file)
+  $('#logout').click(e => {
+    e.preventDefault();
 
-  let reader = new FileReader()
+    axios({
+      url: '/auth/logout',
+      method: 'get'
+    })
+      .then(() => {
+        location.reload()
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
 
-  reader.readAsDataURL(file)
 
-  reader.onload = function (){
-    console.log(reader.result)
-    $('#userImage').attr('src',reader.result) 
+  $('#userImageUpload').on('change', (e) => {
+    let file = e.target.files[0]
+    console.log(file)
 
-  }
-})
-   
+    let reader = new FileReader()
+
+    reader.readAsDataURL(file)
+
+    reader.onload = function () {
+      console.log(reader.result)
+      $('#userImage').attr('src', reader.result)
+
+    }
+  })
+
 
   $('#updateuserbtn').click((e) => {
     e.preventDefault()

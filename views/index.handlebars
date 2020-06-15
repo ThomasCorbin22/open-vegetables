@@ -1,27 +1,30 @@
 <div class='container-fluid'>
     <div class='row'>
-        <div id="demo" class="carousel slide col-sm-6" data-ride="carousel">
+        <div class='col-sm-6'>
+            <h2 class='card-header mb-2'>Daily Restaurants</h2>
 
-            <!-- Indicators -->
-            <ul class="carousel-indicators ">
-                <li data-target="#demo" data-slide-to="0" class="active"></li>
-                <li data-target="#demo" data-slide-to="1"></li>
-                <li data-target="#demo" data-slide-to="2"></li>
-            </ul>
+            <div id="demo" class="carousel slide " data-ride="carousel">
+                <!-- Indicators -->
+                <ul class="carousel-indicators ">
+                    <li data-target="#demo" data-slide-to="0" class="active"></li>
+                    <li data-target="#demo" data-slide-to="1"></li>
+                    <li data-target="#demo" data-slide-to="2"></li>
+                </ul>
 
-            <!-- The slideshow -->
-            <div class="carousel-inner ">
-                <div class="carousel-item active">
-                    <a href=''><img class='w-100 img-fluid' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                            alt="Los Angeles"></a>
-                </div>
-                <div class="carousel-item">
-                    <a href=''><img class='w-100' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                            alt="Chicago"></a>
-                </div>
-                <div class="carousel-item">
-                    <a href=''><img class='w-100' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                            alt="New York"></a>
+                <!-- The slideshow -->
+                <div class="carousel-inner ">
+                    <div class="carousel-item active">
+                        <a href=''><img class='w-100 img-fluid'
+                                src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png" alt="Los Angeles"></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href=''><img class='w-100' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
+                                alt="Chicago"></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href=''><img class='w-100' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
+                                alt="New York"></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,51 +45,24 @@
 <div class='container-fluid '>
     <div class='row '>
         <div class='col-sm-10 '>
-            <h2>Food Trends</h2>
+            <h2 class='card-header mb-2'>Food Trends</h2>
             <div class='container'>
                 <div class="row">
+                    {{#each blogs}}
                     <div class='col-sm-6'>
                         <div class='card custom-height overflow-auto'>
                             <div class='card-body'>
                                 <a href=''>
-                                    <h2 class='card-title'> Title</h2>
+                                    <h2 class='card-title'> {{title}}</h2>
                                 </a>
                                 <h7 class='card-subtitle text-muted'>Restaurant Name </h7>
-                                <h7 class='card-subtitle text-muted'>Creation Date </h7>
-                                <h7 class='card-subtitle text-muted'>Modified Date</h7>
-                                <img class='card-img w-50' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
+                                <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
+                                <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
+                                <img class='card-img custom-area-small' src={{pictures}}>
                             </div>
                         </div>
                     </div>
-                    <div class='col-sm-6'>
-                        <div class='card custom-height overflow-auto'>
-                            <div class='card-body'>
-                                <a href=''>
-                                    <h2 class='card-title'> Title</h2>
-                                </a>
-                                <h7 class='card-subtitle text-muted'>Restaurant Name </h7>
-                                <h7 class='card-subtitle text-muted'>Creation Date </h7>
-                                <h7 class='card-subtitle text-muted'>Modified Date</h7>
-                                <img class='card-img w-50' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='col-sm-6'>
-                        <div class='card custom-height overflow-auto'>
-                            <div class='card-body'>
-                                <a href=''>
-                                    <h2 class='card-title'> Title</h2>
-                                </a>
-                                <h7 class='card-subtitle text-muted'>Restaurant Name </h7>
-                                <h7 class='card-subtitle text-muted'>Creation Date </h7>
-                                <h7 class='card-subtitle text-muted'>Modified Date</h7>
-                                <img class='card-img w-50' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6"><img src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                            class="rounded img-fluid" alt="..."></div>
-
+                    {{/each}}
                 </div>
             </div>
             <div class='col-sm-2'></div>

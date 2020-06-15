@@ -54,73 +54,97 @@ app.use(session({
     saveUninitialized: true,
 }));
 
-app.get('/',(req,res)=>{
-    res.render('index',{title:'Home'})
+app.get('/',async(req,res)=>{
+    let blogs = await blogService.listBlogs()
+    res.render('index',{title:'Home',blogs:blogs})
 })
 
 app.get('/restaurants/all', async (req,res)=>{
     let results = await restaurantService.listRestaurants()
-    
+    console.log(results)
     res.render('restaurant',{
         title:'restaurants-all',
-        restaurants: {results, categories, pictures}
+        restaurants: results
     })
 })
 
-app.get('/restaurant/details/summary',(req,res)=>{
-    res.render('restaurant_details_summary',{title:'restaurant-details/summary'})
-})
-app.get('/restaurant/details/dishes',(req,res)=>{
-    res.render('restaurant_details_dishes',{title:'restaurant-details/dishes'})
-})
-app.get('/restaurant/details/reviews',(req,res)=>{
-    res.render('restaurant_details_reviews',{title:'restaurant-details/reviews'})
+app.get('/blog/blogNumber:id',async(req,res)=>{
+    let blogs = await blogService.listBlogs();
+    for(let blog of blogs){
+        if(blog.id == req.params.id){
+            let publisher = await userService.getUser(blog.user_id)
+            let commentsBlog = await commentService.getComment(blog.id)
+            let commentBlog = []
+            for (let comment of commentsBlog){
+                let commentUser = await userService.getUser(comment.user_id)
+                console.log(commentUser)
+                comment.userName = commentUser[0].first_name
+                comment.userImage = commentUser[0].profile_picture_URL
+                commentBlog.push(comment)
+            }
+            blog.comments = commentBlog
+            blog.userName = publisher[0].first_name
+            blog.userImage = publisher[0].profile_picture_URL
+            console.log(blog)
+            res.render('blog_details',{title:`blog-details/${blog.title}`,blog:blog,comments:blog.comments})
+        }
+    }
 })
 
-app.get('/users/info',(req,res)=>{
-    res.render('user_information',{title:'userInformation'})
-})
-
-app.get('/users/reviews',(req,res)=>{
-    res.render('user_reviews',{title:'userReviews'})
-})
-
-app.get('/users/blogs',async(req,res)=>{
+app.get('/blogs',async(req,res)=>{
     let blogs = await blogService.listBlogs()
     console.log(blogs)
-    let item =[]
-    for (let blog of blogs){
-        let categories = await blogService.listCategories(blog.id)
-        let pictures = await blogService.listPictures(blog.id)
-        let user = await blogService.list
-        console.log(categories)
-        let blog_categories = []
+    res.render('blog',{title:'blogs',blogs:blogs})
+})
 
-        for (let category of categories){
-            blog_categories.push(category.category)
+app.get('/restaurant/details/:subpage/:id',async(req,res)=>{
+    let restaurants = await restaurantService.listRestaurants()
+    
+    for(let resta of restaurants){
+        if(resta.id == req.params.id){
+            let reviews = await reviewService.listReviews(resta.id)
+            let user
+            for(let review of reviews){
+                 user = await userService.getUser(review.user_id)
+                 console.log(user[0])
+                review.userName = user[0].first_name
+                review.userImage = user[0].profile_picture_URL
+                }
+
+            console.log(reviews)
+            console.log(resta)
+            res.render(`restaurant_details_reviews`,{title:`restaurant-details/${resta.name}`,resta:resta,reviews:reviews})
         }
-
-        let item_pictures = []
-
-        for (let anotherthing of pictures){
-            item_pictures.push(anotherthing.picture_URL)
-        }
-
-        item['categories'] = blog_categories;
-        item['picture_URLs'] = item_pictures;
-        console.log(item)
     }
-
-    res.render('user_blogs',{title:'userBlogs'})
 })
 
-app.get('/users/restaurants',(req,res)=>{
+
+app.get('/user/info/userNumber:id',async (req,res)=>{
+    let user = await userService.getUser(req.params.id)
+    console.log(user[0])
+    res.render('user_information',{title:'userInformation',user:user[0]})
+})
+
+app.get('/user/reviews/userNumber:id',async (req,res)=>{
+    let reviews = await reviewService.getReview(req.params.id)
+    for(let review of reviews){
+        let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
+        console.log(restaurant)
+        review.restaurant =  restaurant[0]
+        
+    }
+    console.log(reviews)
+    res.render('user_reviews',{title:'userReviews',reviews:reviews})
+})
+
+app.get('/user/blogs/userNumber:id',async(req,res)=>{
+    let user = await userService.getUser(req.params.id)
+
+    res.render('user_blogs',{title:'userBlogs',blogs:user[0].blogs})
+})
+
+app.get('/users/restaurants/userNumber:id',(req,res)=>{
     res.render('user_restaurants',{title:'userRestaurants'})
-})
-app.get('/blogs',async(req,res)=>{
-    let results = await blogService.listBlogs()
-
-    res.render('blog',{title:'blog',blogs:results})
 })
 
 // Initialise passport

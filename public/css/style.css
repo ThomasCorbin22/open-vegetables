@@ -40,3 +40,13 @@ hr{
     max-height: 200px;
     max-width: 200px;
 }
+
+.custom-area-xs{
+    max-height: 100px;
+    max-width: 100px;
+}
+
+::placeholder { 
+    opacity: 1;
+    color:black;
+}

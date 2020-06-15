@@ -8,13 +8,13 @@
                 <div class='card custom-height overflow-auto mb-3'>
                     <div class='row'>
                         <div class='col-sm-4'>
-                            <h5 class='card-header'><a href='/restaurant/details/summary'>{{name}}</a></h5>
+                            <h5 class='card-header'><a href='/restaurant/details/reviews/{{id}}'>{{name}}</a></h5>
                             <div class='card-body'>
-                                <img class='w-100 mb-2' src={{main_picture_URL}}>
-                                <img class='w-100 ' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
+                                <img class='w-100 mb-2 custom-area-small' src={{main_picture_URL}}>
+                                <img class='w-100 custom-area-xs' src={{logo}}>
                                 <hr>
                                 <p class='card-title'></p><i class="fa fa-thumbs-up"></i>
-                                Rating</p>
+                                {{rating}}</p>
                                 <p class='card-title'>☆ Add to favourite</p>
 
                             </div>
@@ -31,11 +31,11 @@
                                     </tr>
                                     <tr>
                                         <th>Price Ranges: </th>
-                                        <th> Price ranges</th>
+                                        <th> {{price}}</th>
                                     </tr>
                                     <tr>
                                         <th>Categories: </th>
-                                        <th> Categories</th>
+                                        <th> {{categories}}</th>
                                     </tr>
                                     <tr>
                                         <th>Contact Number: </th>
@@ -43,7 +43,7 @@
                                     </tr>
                                     <tr>
                                         <th>Address: </th>
-                                        <th> {{address}}</th>
+                                        <th> {{street_address}}</th>
                                     </tr>
                                     <tr>
                                         <th>Web Address: </th>
@@ -61,7 +61,6 @@
                             </table>
                         </div>
                     </div>
-                    {{/each}}
                 </div>
                 {{/each}}
             </div>

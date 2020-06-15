@@ -1,5 +1,6 @@
 // Update with your config settings.
 require('dotenv').config();
+const getDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -55,6 +56,8 @@ class BlogService {
 
             item["pictures"] = blog_pictures
             item["categories"] = category_pictures
+            item["date_created"] = getDate(item["date_created"])
+            item["date_modified"] = getDate(item["date_modified"])
 
             this.blog.push(item)
         }

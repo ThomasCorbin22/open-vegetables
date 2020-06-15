@@ -104,7 +104,7 @@ describe('UserService testing with userservice', () => {
             .then((results) => {
                 expect(results.length).toBe(3)
                 expect(results[0].first_name).toBe('Thomas')
-                expect(results[0].access[0].name).toEqual('Our awesome restaurant')
+                expect(results[0].restaurant_access[0].name).toEqual('Our awesome restaurant')
                 expect(results[0].restaurants[0].name).toEqual('Our awesome restaurant')
                 expect(results[0].blogs[0].title).toEqual('Some cool post')
                 expect(results[1].first_name).toBe('Alex')
@@ -113,7 +113,7 @@ describe('UserService testing with userservice', () => {
     })
 
     test('userService should call getUser in response to a GET request', () => {
-        expect.assertions(7);
+        expect.assertions(8);
 
         let id = 2
         
@@ -123,9 +123,10 @@ describe('UserService testing with userservice', () => {
                 expect(results[0].first_name).toBe('Alex')
                 expect(results[0].last_name).toBe('Wong')
                 expect(results[0].email).toBe('alex@alex.com')
-                expect(results[0].access[0].name).toEqual('Our cool restaurant')
+                expect(results[0].restaurant_access[0].name).toEqual('Our cool restaurant')
                 expect(results[0].restaurants[0].name).toEqual('Our cool restaurant')
                 expect(results[0].blogs[0].title).toEqual('Another post')
+                expect(results[0].blog_access[0].title).toEqual('Another post')
             })
     })
 
@@ -303,12 +304,12 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call listAccess in response to a GET request', () => {
+    test('userService should call listRestaurantAccess in response to a GET request', () => {
         expect.assertions(3);
 
         let id = 1
         
-        return userService.listAccess(id)
+        return userService.listRestaurantAccess(id)
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].user_id).toBe(1)

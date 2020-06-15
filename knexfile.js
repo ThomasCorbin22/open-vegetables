@@ -2,13 +2,14 @@
 require('dotenv').config();
 
 module.exports = {
-
+  // deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main
   development: {
     client: 'postgresql',
     connection: {
-      database: process.env.DATABASE_NAME,
-      user: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD
+      host: '/var/run/postgresql',
+      database: 'open_vegetables',
+      user: 'postgres',
+      password: 'postgres'
     },
     pool: {
       min: 2,

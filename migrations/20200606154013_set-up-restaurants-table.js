@@ -6,7 +6,6 @@ exports.up = function (knex, Promise) {
         table.string("street_address");
         table.integer("district_id").unsigned();
         table.string("logo");
-        table.integer("price_range");
         table.string("description");
         table.string("telephone_number");
         table.string("price");

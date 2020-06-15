@@ -34,7 +34,17 @@ class RestaurantRouter {
 
     // Lists all restaurants
     searchRestaurants(req, res) {
-        return this.restaurantService.searchRestaurants(req.query)
+        console.log(req.query)
+
+        let query = req.query
+        let range
+
+        if (req.query.range) {
+            range = query['range']
+            delete query['range'];
+        }
+
+        return this.restaurantService.searchRestaurants(query, range)
             .then((restaurant) => {
                 res.send(restaurant)
             })

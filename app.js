@@ -147,7 +147,7 @@ app.get('/user/reviews/userNumber:id', async (req, res) => {
 
 app.get('/user/blogs/userNumber:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
-
+    console.log(user)
     res.render('user_blogs', { title: 'userBlogs', blogs: user[0].blogs })
 })
 

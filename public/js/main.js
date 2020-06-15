@@ -10,18 +10,31 @@ $(document).ready(function () {
   $('.my-2').click(() => {
     $('.my-2').text('★ Favourite restaurants')
   })
-  // function initMap() {
-  //   var uluru = { lat: -25.363, lng: 131.044 };
-  //   var map = new google.maps.Map(document.getElementById('map'), {
-  //     zoom: 4,
-  //     center: uluru
-  //   });
-  //   var marker = new google.maps.Marker({
-  //     position: uluru,
-  //     map: map
-  //   });
-  // }
 
+
+  $('.add-favourite').on('click', (e) => {
+    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
+    if(e.currentTarget.innerHTML.match('☆')){
+      e.currentTarget.innerHTML='★ Favourite Restaurant'
+    } else if (e.currentTarget.innerHTML.match('★')){
+      e.currentTarget.innerHTML='☆ Add to favourite'
+    }
+    // axios({
+    //   url: '/user/restaurant',
+    //   method: 'post',
+    //   data: {
+    //     "user_id": 1,
+    //     "restaurant_id": 2
+    //   }
+    // })
+    //   .then((res) => {
+    //     console.log(res.data)
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+
+  })
 
   $('#userImageUpload').on('change', (e) => {
     let file = e.target.files[0]

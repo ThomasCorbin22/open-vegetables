@@ -50,3 +50,11 @@ hr{
     opacity: 1;
     color:black;
 }
+
+.form-control::-webkit-input-placeholder {
+    color: black;
+  }
+
+  .table-success, .table-success>td, .table-success>th {
+    background-color: #60dd87
+}

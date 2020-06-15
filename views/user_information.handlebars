@@ -3,7 +3,7 @@
         <div class='col-sm-10 '>
             {{> user_nav}}
             <div class='d-flex justify-content-center mb-3'>
-                <img class='img-fluid w-50' id='userImage' src={{user.profile_picture_URL}}
+                <img class='img-fluid w-25' id='userImage' src={{user.profile_picture_URL}}
                     alt="">
             </div>
             <div class='d-flex justify-content-center'>
@@ -65,7 +65,7 @@
             </form>
 
 
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle='tab' href="#menu1">Favourite Restaurants</a>
                 </li>
@@ -76,22 +76,28 @@
             <div class="tab-content">
                 <div id="menu1" class="tab-pane fade show active">
 
-                    <table class='table '>
+                    <table class='table'>
                         <thead>
-                            <tr>
+                            <tr class='table-success'>
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
+                                <th scope="col">Contact</th>
                                 <th scope="col">Modified date</th>
                                 <th scope="col">Preview</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td><img class="img-responsive w-100 custom-area-small"
-                                    src="/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png" />
+                            {{#each favorResta}}
+                            <th scope="row">{{inc @index}}</th>
+                            <td><a href='/restaurant/details/restaNumber{{id}}'>{{name}}</a></td>
+                            <td>{{website_URL}}
+                                {{telephone_number}}
                             </td>
+                            <td>{{date_modified}}</td>
+                            <td><img class="img-responsive w-100 custom-area-small"
+                                    src={{main_picture_URL}} />
+                            </td>
+                            {{/each}}
                         </tbody>
                     </table>
                 </div>

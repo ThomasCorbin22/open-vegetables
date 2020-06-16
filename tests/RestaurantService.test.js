@@ -100,7 +100,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call listRestaurants in response to a GET request', () => {
+    test('restaurantService should call listRestaurants', () => {
         expect.assertions(12);
         
         return restaurantService.listRestaurants()
@@ -124,7 +124,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call getRestaurant in response to a GET request', () => {
+    test('restaurantService should call getRestaurant', () => {
         expect.assertions(7);
 
         let id = 2
@@ -143,7 +143,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call addRestaurant in response to a POST request', () => {
+    test('restaurantService should call addRestaurant', () => {
         expect.assertions(4);
         
         return restaurantService.addRestaurant(new_restaurant)
@@ -155,7 +155,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call updateRestaurant in response to a PUT request', () => {
+    test('restaurantService should call updateRestaurant', () => {
         expect.assertions(4);
 
         let id = 2
@@ -169,7 +169,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call deleteRestaurant in response to a DELETE request', () => {
+    test('restaurantService should call deleteRestaurant', () => {
         expect.assertions(2);
 
         let id = 2
@@ -185,7 +185,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call listPictures in response to a GET request', () => {
+    test('restaurantService should call listPictures', () => {
         expect.assertions(3);
         
         return restaurantService.listPictures(1)
@@ -196,7 +196,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call getPicture in response to a GET request', () => {
+    test('restaurantService should call getPicture', () => {
         expect.assertions(3);
 
         let id = 2
@@ -209,7 +209,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call postPicture in response to a POST request', () => {
+    test('restaurantService should call postPicture', () => {
         expect.assertions(3);
         
         return restaurantService.addPicture(new_picture)
@@ -220,7 +220,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call putPicture in response to a PUT request', () => {
+    test('restaurantService should call putPicture', () => {
         expect.assertions(3);
 
         let id = 2
@@ -233,7 +233,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
     
-    test('restaurantService should call deletePicture in response to a DELETE request', () => {
+    test('restaurantService should call deletePicture', () => {
         expect.assertions(2);
 
         let id = 2
@@ -249,7 +249,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call listCategories in response to a GET request', () => {
+    test('restaurantService should call listCategories', () => {
         expect.assertions(3);
         
         return restaurantService.listCategories(1)
@@ -260,7 +260,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call getCategory in response to a GET request', () => {
+    test('restaurantService should call getCategory', () => {
         expect.assertions(3);
 
         let id = 2
@@ -273,7 +273,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call postCategory in response to a POST request', () => {
+    test('restaurantService should call postCategory', () => {
         expect.assertions(3);
         
         return restaurantService.addCategory(new_category)
@@ -284,7 +284,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
 
-    test('restaurantService should call putCategory in response to a PUT request', () => {
+    test('restaurantService should call putCategory', () => {
         expect.assertions(3);
 
         let id = 2
@@ -297,7 +297,7 @@ describe('RestaurantService testing with restaurantservice', () => {
             })
     })
     
-    test('restaurantService should call deleteCategory in response to a DELETE request', () => {
+    test('restaurantService should call deleteCategory', () => {
         expect.assertions(2);
 
         let id = 2

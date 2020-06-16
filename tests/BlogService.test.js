@@ -64,7 +64,7 @@ describe('BlogService testing with blogservice', () => {
         await knex.seed.run([{directory: '../seeds'}])
     })
     
-    test('blogService should call searchBlogs in response to a GET request', () => {
+    test('blogService should call searchBlogs', () => {
         expect.assertions(4);
 
         let query = {
@@ -80,7 +80,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call listBlogs in response to a GET request', () => {
+    test('blogService should call listBlogs', () => {
         expect.assertions(6);
         
         return blogService.listBlogs()
@@ -97,7 +97,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call getBlog in response to a GET request', () => {
+    test('blogService should call getBlog', () => {
         expect.assertions(6);
 
         let id = 2
@@ -115,7 +115,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call addBlog in response to a POST request', () => {
+    test('blogService should call addBlog', () => {
         expect.assertions(4);
         
         return blogService.addBlog(new_post)
@@ -127,7 +127,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call updateBlog in response to a PUT request', () => {
+    test('blogService should call updateBlog', () => {
         expect.assertions(4);
 
         let id = 2
@@ -141,7 +141,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call deleteBlog in response to a DELETE request', () => {
+    test('blogService should call deleteBlog', () => {
         expect.assertions(2);
 
         let id = 2
@@ -157,7 +157,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call listPictures in response to a GET request', () => {
+    test('blogService should call listPictures', () => {
         expect.assertions(3);
 
         let id = 1
@@ -170,7 +170,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call getPicture in response to a GET request', () => {
+    test('blogService should call getPicture', () => {
         expect.assertions(3);
 
         let id = 2
@@ -183,7 +183,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call postPicture in response to a POST request', () => {
+    test('blogService should call postPicture', () => {
         expect.assertions(3);
         
         return blogService.addPicture(new_picture)
@@ -194,7 +194,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call putPicture in response to a PUT request', () => {
+    test('blogService should call putPicture', () => {
         expect.assertions(3);
 
         let id = 2
@@ -207,7 +207,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
     
-    test('blogService should call deletePicture in response to a DELETE request', () => {
+    test('blogService should call deletePicture', () => {
         expect.assertions(2);
 
         let id = 2
@@ -223,7 +223,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call listCategories in response to a GET request', () => {
+    test('blogService should call listCategories', () => {
         expect.assertions(3);
         
         let id = 1
@@ -236,7 +236,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call getCategory in response to a GET request', () => {
+    test('blogService should call getCategory', () => {
         expect.assertions(3);
 
         let id = 2
@@ -249,7 +249,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call postCategory in response to a POST request', () => {
+    test('blogService should call postCategory', () => {
         expect.assertions(3);
         
         return blogService.addCategory(new_category)
@@ -260,7 +260,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
 
-    test('blogService should call putCategory in response to a PUT request', () => {
+    test('blogService should call putCategory', () => {
         expect.assertions(3);
 
         let id = 2
@@ -273,7 +273,7 @@ describe('BlogService testing with blogservice', () => {
             })
     })
     
-    test('blogService should call deleteCategory in response to a DELETE request', () => {
+    test('blogService should call deleteCategory', () => {
         expect.assertions(2);
 
         let id = 2

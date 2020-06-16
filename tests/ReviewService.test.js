@@ -58,7 +58,7 @@ describe('ReviewService testing with reviewservice', () => {
         await knex.seed.run([{directory: '../seeds'}])
     })
 
-    test('reviewService should call listReviews in response to a GET request', () => {
+    test('reviewService should call listReviews', () => {
         expect.assertions(7);
 
         let id = 1
@@ -77,7 +77,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call getReview in response to a GET request', () => {
+    test('reviewService should call getReview', () => {
         expect.assertions(7);
 
         let id = 2
@@ -96,7 +96,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call addReview in response to a POST request', () => {
+    test('reviewService should call addReview', () => {
         expect.assertions(6);
         
         return reviewService.addReview(new_review)
@@ -110,7 +110,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call updateReview in response to a PUT request', () => {
+    test('reviewService should call updateReview', () => {
         expect.assertions(6);
 
         let id = 2
@@ -126,7 +126,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call deleteReview in response to a DELETE request', () => {
+    test('reviewService should call deleteReview', () => {
         expect.assertions(2);
 
         let id = 2
@@ -142,7 +142,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call listPictures in response to a GET request', () => {
+    test('reviewService should call listPictures', () => {
         expect.assertions(3);
         
         return reviewService.listPictures(1)
@@ -153,7 +153,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call getPicture in response to a GET request', () => {
+    test('reviewService should call getPicture', () => {
         expect.assertions(3);
 
         let id = 2
@@ -166,7 +166,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call postPicture in response to a POST request', () => {
+    test('reviewService should call postPicture', () => {
         expect.assertions(3);
         
         return reviewService.addPicture(new_picture)
@@ -177,7 +177,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
 
-    test('reviewService should call putPicture in response to a PUT request', () => {
+    test('reviewService should call putPicture', () => {
         expect.assertions(3);
 
         let id = 2
@@ -190,7 +190,7 @@ describe('ReviewService testing with reviewservice', () => {
             })
     })
     
-    test('reviewService should call deletePicture in response to a DELETE request', () => {
+    test('reviewService should call deletePicture', () => {
         expect.assertions(2);
 
         let id = 2

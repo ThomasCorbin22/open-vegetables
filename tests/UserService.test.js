@@ -80,7 +80,7 @@ describe('UserService testing with userservice', () => {
         await knex.seed.run([{directory: '../seeds'}])
     })
 
-    test('userService should call searchUsers in response to a GET request', () => {
+    test('userService should call searchUsers', () => {
         expect.assertions(4);
 
         let query = {
@@ -97,7 +97,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call listUsers in response to a GET request', () => {
+    test('userService should call listUsers', () => {
         expect.assertions(7);
         
         return userService.listUsers()
@@ -112,7 +112,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call getUser in response to a GET request', () => {
+    test('userService should call getUser', () => {
         expect.assertions(8);
 
         let id = 2
@@ -130,7 +130,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call addUser in response to a POST request', () => {
+    test('userService should call addUser', () => {
         expect.assertions(4);
         
         return userService.addUser(new_user)
@@ -142,7 +142,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call updateUser in response to a PUT request', () => {
+    test('userService should call updateUser', () => {
         expect.assertions(4);
 
         let id = 2
@@ -156,7 +156,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call deleteUser in response to a DELETE request', () => {
+    test('userService should call deleteUser', () => {
         expect.assertions(2);
 
         let id = 2
@@ -172,7 +172,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call listRestaurants in response to a GET request', () => {
+    test('userService should call listRestaurants', () => {
         expect.assertions(3);
 
         let id = 1
@@ -185,7 +185,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call getRestaurant in response to a GET request', () => {
+    test('userService should call getRestaurant', () => {
         expect.assertions(3);
 
         let id = 2
@@ -198,7 +198,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call postRestaurant in response to a POST request', () => {
+    test('userService should call postRestaurant', () => {
         expect.assertions(3);
         
         return userService.addRestaurant(new_restaurant)
@@ -209,7 +209,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call putRestaurant in response to a PUT request', () => {
+    test('userService should call putRestaurant', () => {
         expect.assertions(3);
 
         let id = 2
@@ -222,7 +222,7 @@ describe('UserService testing with userservice', () => {
             })
     })
     
-    test('userService should call deleteRestaurant in response to a DELETE request', () => {
+    test('userService should call deleteRestaurant', () => {
         expect.assertions(2);
 
         let id = 2
@@ -238,7 +238,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call listBlogs in response to a GET request', () => {
+    test('userService should call listBlogs', () => {
         expect.assertions(3);
 
         let id = 1
@@ -251,7 +251,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call getBlog in response to a GET request', () => {
+    test('userService should call getBlog', () => {
         expect.assertions(3);
 
         let id = 2
@@ -264,7 +264,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call postBlog in response to a POST request', () => {
+    test('userService should call postBlog', () => {
         expect.assertions(3);
         
         return userService.addBlog(new_blog)
@@ -275,7 +275,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call putBlog in response to a PUT request', () => {
+    test('userService should call putBlog', () => {
         expect.assertions(3);
 
         let id = 2
@@ -288,7 +288,7 @@ describe('UserService testing with userservice', () => {
             })
     })
     
-    test('userService should call deleteBlog in response to a DELETE request', () => {
+    test('userService should call deleteBlog', () => {
         expect.assertions(2);
 
         let id = 2
@@ -304,7 +304,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call listRestaurantAccess in response to a GET request', () => {
+    test('userService should call listRestaurantAccess', () => {
         expect.assertions(3);
 
         let id = 1
@@ -317,7 +317,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call getAccess in response to a GET request', () => {
+    test('userService should call getAccess', () => {
         expect.assertions(3);
 
         let id = 2
@@ -330,7 +330,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call postAccess in response to a POST request', () => {
+    test('userService should call postAccess', () => {
         expect.assertions(3);
         
         return userService.addAccess(new_access)
@@ -341,7 +341,7 @@ describe('UserService testing with userservice', () => {
             })
     })
 
-    test('userService should call putAccess in response to a PUT request', () => {
+    test('userService should call putAccess', () => {
         expect.assertions(3);
 
         let id = 2
@@ -354,7 +354,7 @@ describe('UserService testing with userservice', () => {
             })
     })
     
-    test('userService should call deleteAccess in response to a DELETE request', () => {
+    test('userService should call deleteAccess', () => {
         expect.assertions(2);
 
         let id = 2

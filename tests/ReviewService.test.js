@@ -68,7 +68,7 @@ describe('ReviewService testing with reviewservice', () => {
                 expect(results.length).toBe(1)
                 expect(results[0].title).toBe('This sucked!')
                 expect(results[0].body).toBe('Worse place Ive been in my life!')
-                expect(results[0].rating).toBe(1.0)
+                expect(results[0].rating).toBe(1.5)
                 expect(results[0].user_id).toBe(1)
                 expect(results[0].restaurant_id).toBe(1)
                 expect(results[0].pictures).toEqual([
@@ -87,7 +87,7 @@ describe('ReviewService testing with reviewservice', () => {
                 expect(results.length).toBe(1)
                 expect(results[0].title).toBe('This was worse!')
                 expect(results[0].body).toBe('Never coming back!')
-                expect(results[0].rating).toBe(2.0)
+                expect(results[0].rating).toBe(2.5)
                 expect(results[0].user_id).toBe(2)
                 expect(results[0].restaurant_id).toBe(2)
                 expect(results[0].pictures).toEqual([

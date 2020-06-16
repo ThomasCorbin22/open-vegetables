@@ -21,7 +21,7 @@ describe('RestaurantService testing with restaurantservice', () => {
     let new_restaurant = {
         "name": 'Restaurant 101',
         "street_address": 'My place',
-        "district_id": 5,
+        "district_id": 2,
         "description": 'Home cooked food',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bYCGq485SZLPBgm-0oj_qAAAAA%26pid%3DApi&f=1',
         "price": 3,
@@ -31,14 +31,13 @@ describe('RestaurantService testing with restaurantservice', () => {
         "website_URL": 'www.place.com',
         "latitude": 19.3,
         "longitude": 105.2,
-        "opening_time": '09:30',
-        "closing_time": '22:00'
+        "monday": '09:30-22:00'
     }
     
     let altered_restaurant = {
         "name": 'Our cool restaurant: V2',
         "street_address": 'GreenLand',
-        "district_id": 4,
+        "district_id": 3,
         "description": 'Nicer food',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
         "price": 2,
@@ -48,8 +47,7 @@ describe('RestaurantService testing with restaurantservice', () => {
         "website_URL": 'www.cool.com',
         "latitude": 23.0,
         "longitude": 113.6,
-        "opening_time": '09:30',
-        "closing_time": '21:50'
+        "monday": '09:30-21:50',
     }
     
     let new_picture = {
@@ -86,7 +84,7 @@ describe('RestaurantService testing with restaurantservice', () => {
         await knex.seed.run([{directory: '../seeds'}])
     })
 
-    test('restaurantService should call searchRestaurants in response to a GET request', () => {
+    test('restaurantService should call searchRestaurants properly', () => {
         expect.assertions(4);
 
         let query = {

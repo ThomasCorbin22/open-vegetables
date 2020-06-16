@@ -30,7 +30,7 @@ class RestaurantService {
                         queryBuilder.andWhere(key, '>', parseFloat(query[key]) - range / (111.320 * Math.cos(20.3 / Math.PI / 180)))
                     }
                     else {
-                        queryBuilder.where(key, query[key])
+                        queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
                     }
                 }
             })

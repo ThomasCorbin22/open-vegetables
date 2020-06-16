@@ -41,6 +41,7 @@ class UserRouter {
 
     // Searches all the users
     searchUsers(req, res) {
+        console.log(req.query)
         return this.userService.searchUsers(req.query)
             .then((user) => {
                 res.send(user)

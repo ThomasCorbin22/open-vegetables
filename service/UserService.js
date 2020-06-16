@@ -26,7 +26,7 @@ class UserService{
             .from("users")
             .modify(function(queryBuilder) {
                 for (let key in query){
-                    queryBuilder.where(key, query[key])
+                    queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
                 }
             })
             .catch((err) => console.log(err))

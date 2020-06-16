@@ -62,3 +62,6 @@ hr{
 .btn-light{
     border-color: darkgrey;
 }
+.authentication {
+    display:none
+}

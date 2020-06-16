@@ -4,9 +4,9 @@ exports.up = function(knex, Promise) {
         table.increments();
         table.boolean("like");
         table.integer('user_id').unsigned();
-        table.foreign('user_id').references('restaurants.id');
+        table.foreign('user_id').references('users.id');
         table.integer('comment_id').unsigned();
-        table.foreign('comment_id').references('restaurants.id');
+        table.foreign('comment_id').references('comments.id');
     })
 };
 

@@ -11,6 +11,38 @@ $(document).ready(function () {
     $('.my-2').text('★ Favourite restaurants')
   })
 
+  axios({
+    url: '/auth/login',
+    method: 'get'
+  })
+    .then((res) => {
+      if (res.data === 'Not Logged In') {
+        $('#login').show()
+        $('#signup').show()
+      }
+      else {
+        user = res.data
+        $('#logout').show()
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+
+  $('#logout').click(e => {
+    e.preventDefault();
+
+    axios({
+      url: '/auth/logout',
+      method: 'get'
+    })
+      .then(() => {
+        location.reload()
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
 
 
   $('#createNewbtn').click(function (e) {

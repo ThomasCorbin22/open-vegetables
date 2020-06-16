@@ -14,6 +14,7 @@ const BlogRouter = require('./router/BlogRouter');
 const CommentRouter = require('./router/CommentRouter');
 const ReviewRouter = require('./router/ReviewRouter');
 const AuthRouter = require('./router/AuthRouter');
+const LocationRouter = require('./router/LocationRouter');
 
 // Require router service
 const UserService = require('./service/UserService');
@@ -21,6 +22,7 @@ const RestaurantService = require('./service/RestaurantService');
 const BlogService = require('./service/BlogService');
 const CommentService = require('./service/CommentService');
 const ReviewService = require('./service/ReviewService');
+const LocationService = require('./service/LocationService');
 
 // Require router service
 const userService = new UserService()
@@ -175,6 +177,7 @@ app.use('/blog', new BlogRouter(blogService).route());
 app.use('/comment', new CommentRouter(commentService).route());
 app.use('/review', new ReviewRouter(reviewService).route());
 app.use('/auth', new AuthRouter().route());
+app.use('/location', new AuthRouter().route());
 
 // Set up server
 server.listen(port);

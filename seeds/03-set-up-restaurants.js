@@ -15,8 +15,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.awesome.com',
       "latitude": 22.3,
       "longitude": 114.2,
-      "opening_time": '09:00',
-      "closing_time": '21:00'
+      "monday": '09:00-21:00',
     },
     {
       "name": 'Our cool restaurant',
@@ -31,8 +30,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.cool.com',
       "latitude": 23.0,
       "longitude": 113.6,
-      "opening_time": '09:30',
-      "closing_time": '21:50'
+      "monday": '09:30-21:50',
     },
     {
       "name": 'Our niche restaurant',
@@ -47,8 +45,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.wicked.com',
       "latitude": 23.2,
       "longitude": 113.3,
-      "opening_time": '08:30',
-      "closing_time": '22:50'
+      "monday": '08:30-22:50'
     },
     {
       "name": 'Our luxurious restaurant',
@@ -63,8 +60,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.dude.com',
       "latitude": 21.2,
       "longitude": 115.3,
-      "opening_time": '09:15',
-      "closing_time": '22:15'
+      "monday": '09:15-22:15'
     },
     {
       "name": 'Our old restaurant',
@@ -79,8 +75,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.sweet.com',
       "latitude": 20.2,
       "longitude": 118.3,
-      "opening_time": '08:00',
-      "closing_time": '22:30'
+      "monday": '08:00-22:30'
     }
   ])
     .then(function () {

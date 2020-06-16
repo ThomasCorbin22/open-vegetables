@@ -58,7 +58,7 @@ describe('CommentService testing with commentservice', () => {
         await knex.seed.run([{directory: '../seeds'}])
     })
 
-    test('commentService should call listComments in response to a GET request', () => {
+    test('commentService should call listComments', () => {
         expect.assertions(5);
         
         let id = 1
@@ -73,7 +73,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call getComment in response to a GET request', () => {
+    test('commentService should call getComment', () => {
         expect.assertions(5);
 
         let id = 2
@@ -88,7 +88,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call addComment in response to a POST request', () => {
+    test('commentService should call addComment', () => {
         expect.assertions(5);
         
         return commentService.addComment(new_comment)
@@ -101,7 +101,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call updateComment in response to a PUT request', () => {
+    test('commentService should call updateComment', () => {
         expect.assertions(5);
 
         let id = 2
@@ -116,7 +116,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call deleteComment in response to a DELETE request', () => {
+    test('commentService should call deleteComment', () => {
         expect.assertions(1);
 
         let id = 2
@@ -127,7 +127,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call listLikes in response to a GET request', () => {
+    test('commentService should call listLikes', () => {
         expect.assertions(3);
         
         let id = 1
@@ -140,7 +140,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call getLike in response to a GET request', () => {
+    test('commentService should call getLike', () => {
         expect.assertions(4);
 
         let id = 2
@@ -154,7 +154,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call addLike in response to a POST request', () => {
+    test('commentService should call addLike', () => {
         expect.assertions(4);
         
         return commentService.addLike(new_like)
@@ -166,7 +166,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call updateLike in response to a PUT request', () => {
+    test('commentService should call updateLike', () => {
         expect.assertions(5);
 
         let id = 2
@@ -181,7 +181,7 @@ describe('CommentService testing with commentservice', () => {
             })
     })
 
-    test('commentService should call deleteLike in response to a DELETE request', () => {
+    test('commentService should call deleteLike', () => {
         expect.assertions(1);
 
         let id = 2

@@ -58,3 +58,7 @@ hr{
   .table-success, .table-success>td, .table-success>th {
     background-color: #60dd87
 }
+
+.btn-light{
+    border-color: darkgrey;
+}

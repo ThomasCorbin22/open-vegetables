@@ -12,12 +12,68 @@ $(document).ready(function () {
   })
 
 
+
+  $('#createNewbtn').click(function (e) {
+    if ($(this).text().match('Create')) {
+      $('#createNew').show()
+      $(this).text('Cancel Creation')
+    } else {
+      $('#createNew').hide()
+      if($(this).next().children().find('label').text().match('Title')){
+        $(this).text('Create a new blog')
+      }
+      if($(this).next().children().find('label').text().match('Name')){
+        $(this).text('Create a new restaurant')
+      }
+    }
+  })
+
+  $('#newBlogSubmitBtn').submit(function (e) {
+    e.preventDefault()
+    let title = $('#newBlogTitle').val()
+    let body = $('#newBlogBody').val()
+
+    // axios({
+    //   url: '/blog',
+    //   method: 'post',
+    //   data: {
+    //     "title": title,
+    //     "body": body,
+    //     "user_id": 2
+    //   }
+    // })
+    //   .then((res) => {
+    //     console.log(res.data)
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+
+  })
+
+  $('#editBtn').click(function (e) {
+    if ($(this).children().text().match('Edit')) {
+      $('#updateExisting').show()
+      $(this).children().text('X')
+      $(this).parent().next().children('.card').hide()
+    } else{
+      $(this).children().text('Edit')
+      $('#updateExisting').hide()
+      $(this).parent().next().children('.card').show()
+    }
+  })
+
+  $('#existBlogDeleteBtn').click(function(e){
+    e.preventDefault()
+    
+  })
+
   $('.add-favourite').on('click', (e) => {
     let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
-    if(e.currentTarget.innerHTML.match('☆')){
-      e.currentTarget.innerHTML='★ Favourite Restaurant'
-    } else if (e.currentTarget.innerHTML.match('★')){
-      e.currentTarget.innerHTML='☆ Add to favourite'
+    if (e.currentTarget.innerHTML.match('☆')) {
+      e.currentTarget.innerHTML = '★ Favourite Restaurant'
+    } else if (e.currentTarget.innerHTML.match('★')) {
+      e.currentTarget.innerHTML = '☆ Add to favourite'
     }
     // axios({
     //   url: '/user/restaurant',

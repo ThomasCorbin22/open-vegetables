@@ -147,14 +147,23 @@ app.get('/user/reviews/userNumber:id', async (req, res) => {
 
 app.get('/user/blogs/userNumber:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
-    console.log(user)
-    res.render('user_blogs', { title: 'userBlogs', blogs: user[0].blogs })
+    let userOwnBlogs = user[0].blog_access
+    let blogImg 
+    for (let blog of userOwnBlogs){
+         blogImg = await blogService.getPicture(blog.id)
+         blog.blogImg = blogImg[0]
+    }
+    console.log(userOwnBlogs)
+
+    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs })
 })
 
 app.get('/user/restaurants/userNumber:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
-    res.render('user_restaurants', { title: 'userRestaurants', ownResta: user[0].access })
+    console.log(user[0].restaurant_access[0])
+    res.render('user_restaurants', { title: 'userRestaurants', ownResta: user[0].restaurant_access })
 })
+
 
 // Initialise passport
 initPassport(app);

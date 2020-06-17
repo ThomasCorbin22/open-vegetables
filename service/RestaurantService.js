@@ -20,6 +20,7 @@ class RestaurantService {
 
     // Searches all the restaurants
     async searchRestaurants(query, range) {
+        console.log(query)
         let results = await knex
             .select('*')
             .from("restaurants")
@@ -29,12 +30,17 @@ class RestaurantService {
                         queryBuilder.where(key, '<', parseFloat(query[key]) + range / 110.574)
                         queryBuilder.andWhere(key, '>', parseFloat(query[key]) - range / (111.320 * Math.cos(20.3 / Math.PI / 180)))
                     }
-                    else {
+                    else if (typeof query[key] === 'string'){
                         queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
+                    }
+                    else {
+                        queryBuilder.where(key, query[key])
                     }
                 }
             })
             .catch((err) => console.log(err))
+
+        console.log(results)
 
         this.restaurant = results
 

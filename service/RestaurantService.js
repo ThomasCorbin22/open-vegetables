@@ -1,5 +1,6 @@
 // Update with your config settings.
 require('dotenv').config();
+const getDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -19,6 +20,7 @@ class RestaurantService {
 
     // Searches all the restaurants
     async searchRestaurants(query, range) {
+        console.log(query)
         let results = await knex
             .select('*')
             .from("restaurants")
@@ -28,12 +30,17 @@ class RestaurantService {
                         queryBuilder.where(key, '<', parseFloat(query[key]) + range / 110.574)
                         queryBuilder.andWhere(key, '>', parseFloat(query[key]) - range / (111.320 * Math.cos(20.3 / Math.PI / 180)))
                     }
+                    else if (typeof query[key] === 'string'){
+                        queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
+                    }
                     else {
                         queryBuilder.where(key, query[key])
                     }
                 }
             })
             .catch((err) => console.log(err))
+
+        console.log(results)
 
         this.restaurant = results
 
@@ -62,6 +69,8 @@ class RestaurantService {
             item["pictures"] = restaurant_pictures
             item["categories"] = category_pictures
             item["rating"] = await this.getRating(item.id)
+            item["date_created"] = getDate(item["date_created"])
+            item["date_modified"] = getDate(item["date_modified"])
 
             this.restaurant.push(item)
         }

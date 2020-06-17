@@ -1,9 +1,56 @@
-{{> restaurantDetails}}
-{{> restaurantDetails_nav}}
+<div class='container-fluid'>
+    <div class='card'>
+        <div class='row'>
+            <div class='col-sm-4'>
+                <h4 class='card-header'><a href='/restaurant/details/summary'>{{resta.name}}</a></h4>
+                <div class='card-body'>
+                    <img class='w-100 mb-2 custom-area-small' src={{resta.main_picture_URL}}>
+                    <img class='w-100 custom-area-small' src={{resta.logo}}>
+                    <hr>
+                    <p class='card-title'></p><i class="fa fa-thumbs-up"></i>
+                    Rating</p>
+                    <p class='card-title'>☆ Add to favourite</p>
 
+                </div>
+            </div>
+            <div class='col-sm-4'>
+                <h5 class='card-header'>Restaurant Details</h5>
+
+                <ul class='list-group list-group-flush mt-3'>
+                    <h6 class="  text-muted">Description</h6>
+                    <li class='list-group-item'>{{resta.description}}</li>
+                    <h6 class="  text-muted">Price Range</h6>
+                    <li class='list-group-item'>{{resta.price_range}}</li>
+                    <h6 class="  text-muted">Categories</h6>
+                    <li class='list-group-item'>{{resta.categories}}</li>
+                    <h6 class="  text-muted">Opening Hours</h6>
+                    <li class='list-group-item'>{{resta.opening_time}}-{{resta.closing_time}}</li>
+                    <h6 class="  text-muted">Telephone Number</h6>
+                    <li class='list-group-item'>{{resta.telephone_number}}</li>
+                    <h6 class="  text-muted">Address</h6>
+                    <li class='list-group-item'>{{resta.street_address}}</li>
+                    <h6 class="  text-muted">Social Media</h6>
+                    <li class='list-group-item'><a href='{{resta.social_media_URL}}'>{{resta.social_media_URL}}</a></li>
+                </ul>
+            </div>
+            <div class='col-sm-4'>
+                <h4 class='card-header'>GeoLocation</h4>
+                <div id="app" class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div id="map" class="embed-responsive embed-responsive-16by9"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class='container-fluid'>
     <div class='row'>
         <div class='col-sm-10'>
+            <h3 class='card-header my-3'>Reviews</h3>
+
             <ul class='nav justify-content-around navbar-light bg-light mb-2'>
                 <li class='nav-item'>
                     <a href='#' class='nav-link'>Latest</a>
@@ -20,27 +67,25 @@
             </ul>
             <div class='card custom-height overflow-auto'>
                 <div class='row'>
+                    {{#each reviews}}
                     <div class='col-sm-3'>
                         <div class='card-body'>
-                            <h5 class='card-title'>User Name</h5>
-                            <img class='w-100 ' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
+                            <h5 class='card-title'>{{userName}}</h5>
+                            <img class='w-100 custom-area-small' src={{userImage}}>
                         </div>
                     </div>
                     <div class='col-sm-9'>
+
                         <div class='card-body'>
-                            <h7 class='card-subtitle text-muted'>Creation Date </h7>
-                            <h7 class='card-subtitle text-muted'>Modified Date</h7>
-                            <p class='card-text'>Some quick example text to build on the card title and make up the
-                                bulk
-                                of
-                                the card's content.</p>
-                            <img class='card-img w-50' src='/pictures/Screenshot 2020-06-06 at 3.46.29 PM.png'>
-                            <p class='card-text'>Some quick example text to build on the card title and make up the
-                                bulk
-                                of
-                                the card's content.</p>
+                            <h5 class='card-title'>{{title}}</h5>
+
+                            <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
+                            <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
+                            <p class='card-text'>{{body}}</p>
+                            <img class='card-img w-50 custom-area-small' src={{pictures}}>
                         </div>
                     </div>
+                    {{/each}}
                 </div>
             </div>
         </div>

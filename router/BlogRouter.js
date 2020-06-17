@@ -75,6 +75,7 @@ class BlogRouter {
         let post = {
             title: req.body.title,
             body: req.body.body,
+            main_picture_URL: req.body.main_picture_URL,
             user_id: req.body.user_id
         }
 
@@ -94,6 +95,7 @@ class BlogRouter {
         let post = {
             title: req.body.title,
             body: req.body.body,
+            main_picture_URL: req.body.main_picture_URL,
             user_id: req.body.user_id,
             date_modified: new Date()
         }

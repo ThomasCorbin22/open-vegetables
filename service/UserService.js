@@ -1,5 +1,6 @@
 // Update with your config settings.
 require('dotenv').config();
+const getDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -25,7 +26,12 @@ class UserService{
             .from("users")
             .modify(function(queryBuilder) {
                 for (let key in query){
-                    queryBuilder.where(key, query[key])
+                    if (typeof query[key] === 'string'){
+                        queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
+                    }
+                    else {
+                        queryBuilder.where(key, query[key])
+                    }
                 }
             })
             .catch((err) => console.log(err))
@@ -40,23 +46,13 @@ class UserService{
         this.user = []
             
         for (let item of results){
-            let accesses = await this.listAccess(item.id)
             let restaurants = await this.listRestaurants(item.id)
+            let restaurant_access = await this.listRestaurantAccess(item.id)
             let blogs = await this.listBlogs(item.id)
 
-            let user_access = []
             let user_restaurants = []
+            let user_restaurant_access = []
             let user_blogs = []
-
-            for (let access of accesses){
-                let results = await knex
-                    .select('*')
-                    .from("restaurants")
-                    .where('id', access.restaurant_id)
-                    .catch((err) => console.log(err))
-
-                user_access.push(results[0])
-            }
 
             for (let restaurant of restaurants){
                 let results = await knex
@@ -66,6 +62,16 @@ class UserService{
                     .catch((err) => console.log(err))
 
                 user_restaurants.push(results[0])
+            }
+
+            for (let access of restaurant_access){
+                let results = await knex
+                    .select('*')
+                    .from("restaurants")
+                    .where('id', access.restaurant_id)
+                    .catch((err) => console.log(err))
+
+                user_restaurant_access.push(results[0])
             }
 
             for (let blog of blogs){
@@ -78,9 +84,18 @@ class UserService{
                 user_blogs.push(results[0])
             }
 
-            item["access"] = user_access
+            let user_blog_access = await knex
+                .select('*')
+                .from("blogs")
+                .where('user_id', item.id)
+                .catch((err) => console.log(err))
+
             item["restaurants"] = user_restaurants
+            item["restaurant_access"] = user_restaurant_access
             item["blogs"] = user_blogs
+            item["blog_access"] = user_blog_access
+            item["date_created"] = getDate(item["date_created"])
+            item["date_modified"] = getDate(item["date_modified"])
 
             this.user.push(item)
         }
@@ -228,7 +243,7 @@ class UserService{
     // Deals with user access
 
     // Gets a specific user's access
-    async listAccess(id){
+    async listRestaurantAccess(id){
         let results = await knex
             .select('*')
             .from("user_access")

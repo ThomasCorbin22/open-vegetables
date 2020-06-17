@@ -41,4 +41,10 @@ exports.seed = function (knex) {
     .then(function () {
       return knex('users').del()
     })
+    .then(function () {
+      return knex('districts').del()
+    })
+    .then(function () {
+      return knex('areas').del()
+    })
 };

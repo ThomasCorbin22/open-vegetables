@@ -22,7 +22,7 @@ module.exports = (app) => {
         passReqToCallback : true
       },
       async (req, email, password, done) => {
-          console.log(req)
+        //   console.log(req)
             try {
                 let users = await knex('users').where({ email: email });
                 if (users.length > 0) {
@@ -32,7 +32,9 @@ module.exports = (app) => {
                 const newUser = {
                     email: email,
                     password: hash,
-                    display_name: req.body.displayName
+                    display_name: req.body.displayName,
+                    first_name: req.body.first_name,
+                    last_name: req.body.last_name
                 };
                 let userId = await knex('users').insert(newUser).returning('id');
                 newUser.id = userId[0];
@@ -40,7 +42,6 @@ module.exports = (app) => {
             } catch (err) {
                 done(err);
             }
-
         })
     );
 

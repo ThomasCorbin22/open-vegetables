@@ -11,12 +11,11 @@ exports.seed = function (knex) {
       "price": 1,
       "telephone_number": '911',
       "social_media_URL": 'www.facebook.com',
-      "main_picture_URL": 'https://images.pexels.com/photos/6267/menu-restaurant-vintage-table.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500',
+      "main_picture_URL": 'https://images.pexels.com/photos/1126728/pexels-photo-1126728.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "website_URL": 'www.awesome.com',
       "latitude": 22.3,
       "longitude": 114.2,
-      "opening_time": '09:00',
-      "closing_time": '21:00'
+      "monday": '09:00-21:00',
     },
     {
       "name": 'Our cool restaurant',
@@ -31,8 +30,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.cool.com',
       "latitude": 23.0,
       "longitude": 113.6,
-      "opening_time": '09:30',
-      "closing_time": '21:50'
+      "monday": '09:30-21:50',
     },
     {
       "name": 'Our niche restaurant',
@@ -47,8 +45,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.wicked.com',
       "latitude": 23.2,
       "longitude": 113.3,
-      "opening_time": '08:30',
-      "closing_time": '22:50'
+      "monday": '08:30-22:50'
     },
     {
       "name": 'Our luxurious restaurant',
@@ -63,8 +60,7 @@ exports.seed = function (knex) {
       "website_URL": 'www.dude.com',
       "latitude": 21.2,
       "longitude": 115.3,
-      "opening_time": '09:15',
-      "closing_time": '22:15'
+      "monday": '09:15-22:15'
     },
     {
       "name": 'Our old restaurant',
@@ -79,8 +75,37 @@ exports.seed = function (knex) {
       "website_URL": 'www.sweet.com',
       "latitude": 20.2,
       "longitude": 118.3,
-      "opening_time": '08:00',
-      "closing_time": '22:30'
+      "monday": '08:00-22:30'
+    },
+    {
+      "name": 'Hollie\'s wicked whamboozel',
+      "street_address": 'Elgin St',
+      "district_id": 2,
+      "description": 'It is a so extra and fabulous',
+      "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.5pBOiauMyW9wTfsBdoSowwHaEU%26pid%3DApi&f=1',
+      "price": 2,
+      "telephone_number": '20061379',
+      "social_media_URL": 'www.holliesareus.com',
+      "main_picture_URL": 'https://images.pexels.com/photos/761854/pexels-photo-761854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+      "website_URL": 'www.holly.com',
+      "latitude": 22.4,
+      "longitude": 114.1,
+      "monday": '17:00-21:00',
+    },
+    {
+      "name": 'BBQ Style',
+      "street_address": 'Aussie St',
+      "district_id": 1,
+      "description": 'Cook an egg over a frying pan',
+      "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.fqes2uPxsG1t7u-Fsv-fqwHaFj%26pid%3DApi&f=1',
+      "price": 2,
+      "telephone_number": '14307488',
+      "social_media_URL": 'www.facebook.com/bbq_style',
+      "main_picture_URL": 'https://images.pexels.com/photos/1383776/pexels-photo-1383776.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+      "website_URL": 'www.bbqstyle.com',
+      "latitude": 23.1,
+      "longitude": 113.9,
+      "monday": '10:30-21:50',
     }
   ])
     .then(function () {

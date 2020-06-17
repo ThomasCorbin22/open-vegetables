@@ -44,7 +44,7 @@ $(document).ready(function () {
       })
   })
 
-
+//control button - create new Blog, new resta, new comment, new review
   $('#createNewbtn').click(function (e) {
     if ($(this).text().match('Create')) {
       $('#createNew').show()
@@ -56,6 +56,12 @@ $(document).ready(function () {
       }
       if($(this).next().children().find('label').text().match('Name')){
         $(this).text('Create a new restaurant')
+      }
+      if($(this).next().hasClass('newComment')){
+        $(this).text('Create a new comment')
+      }
+      if($(this).next().hasClass('newReview')){
+        $(this).text('Create a new review')
       }
     }
   })
@@ -83,6 +89,8 @@ $(document).ready(function () {
 
   })
 
+//control button - edit existing Blog, existing resta, existing comment, existing review
+
   $('#editBtn').click(function (e) {
     if ($(this).children().text().match('Edit')) {
       $('#updateExisting').show()
@@ -100,6 +108,7 @@ $(document).ready(function () {
     
   })
 
+  //control add to favourite button
   $('.add-favourite').on('click',function(e) {
     let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
     if (e.currentTarget.innerHTML.match('☆')) {
@@ -124,21 +133,7 @@ $(document).ready(function () {
 
   })
 
-  $('#userImageUpload').on('change',function(e) {
-    let file = e.target.files[0]
-    console.log(file)
-
-    let reader = new FileReader()
-
-    reader.readAsDataURL(file)
-
-    reader.onload = function () {
-      console.log(reader.result)
-      $('#userImage').attr('src', reader.result)
-
-    }
-  })
-
+  // control image upload, decode image buffer to render 
   function renderImg(e,targetDOM){
     let file = e.target.files[0]
     console.log(file)
@@ -159,8 +154,15 @@ $(document).ready(function () {
     renderImg(e,$(this).next())
   })
 
- 
-
+ //control login modal - click forget pwd to hide the original page
+$('#forgetPwdBtn').on('click',function(e){
+  $('.close').click()
+})
+$('#submitSecurity').on('click',function(e){
+  e.preventDefault()
+  $('#securityPage').hide()
+  $('#resetPwdPage').show()
+})
 
 
   $('#updateuserbtn').click((e) => {

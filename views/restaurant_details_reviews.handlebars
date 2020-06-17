@@ -2,34 +2,34 @@
     <div class='card'>
         <div class='row'>
             <div class='col-sm-4'>
-                <h4 class='card-header'><a href='/restaurant/details/summary'>{{resta.name}}</a></h4>
+                <h4 class='card-header'><a href='/restaurant/details/restaNumber{{resta.id}}'>{{resta.name}}</a></h4>
                 <div class='card-body'>
                     <img class='w-100 mb-2 custom-area-small' src={{resta.main_picture_URL}}>
                     <img class='w-100 custom-area-small' src={{resta.logo}}>
                     <hr>
                     <p class='card-title'></p><i class="fa fa-thumbs-up"></i>
-                    Rating</p>
-                    <p class='card-title'>☆ Add to favourite</p>
+                    {{resta.rating}}</p>
+                    <p class='card-title add-favourite'>☆ Add to favourite</p>
 
                 </div>
             </div>
             <div class='col-sm-4'>
-                <h5 class='card-header'>Restaurant Details</h5>
+                <h4 class='card-header'>Restaurant Details</h4>
 
                 <ul class='list-group list-group-flush mt-3'>
-                    <h6 class="  text-muted">Description</h6>
+                    <h6 class=" mt-1 text-muted">Description</h6>
                     <li class='list-group-item'>{{resta.description}}</li>
-                    <h6 class="  text-muted">Price Range</h6>
+                    <h6 class=" mt-1 text-muted">Price Range</h6>
                     <li class='list-group-item'>{{resta.price_range}}</li>
-                    <h6 class="  text-muted">Categories</h6>
+                    <h6 class=" mt-1 text-muted">Categories</h6>
                     <li class='list-group-item'>{{resta.categories}}</li>
-                    <h6 class="  text-muted">Opening Hours</h6>
+                    <h6 class=" mt-1 text-muted">Opening Hours</h6>
                     <li class='list-group-item'>{{resta.opening_time}}-{{resta.closing_time}}</li>
-                    <h6 class="  text-muted">Telephone Number</h6>
+                    <h6 class=" mt-1 text-muted">Telephone Number</h6>
                     <li class='list-group-item'>{{resta.telephone_number}}</li>
-                    <h6 class="  text-muted">Address</h6>
+                    <h6 class=" mt-1 text-muted">Address</h6>
                     <li class='list-group-item'>{{resta.street_address}}</li>
-                    <h6 class="  text-muted">Social Media</h6>
+                    <h6 class=" mt-1 text-muted">Social Media</h6>
                     <li class='list-group-item'><a href='{{resta.social_media_URL}}'>{{resta.social_media_URL}}</a></li>
                 </ul>
             </div>
@@ -65,27 +65,45 @@
                     <a href='#' class='nav-link'>Publisher</a>
                 </li>
             </ul>
-            <div class='card custom-height overflow-auto'>
+            <div class='container-fluid'>
+
                 <div class='row'>
+                    <div class='col-sm-12'>
+                        <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
+                            <span>Create a new review</span>
+                        </button>
+                        {{>create_newReview}}
+                    </div>
                     {{#each reviews}}
-                    <div class='col-sm-3'>
-                        <div class='card-body'>
-                            <h5 class='card-title'>{{userName}}</h5>
-                            <img class='w-100 custom-area-small' src={{userImage}}>
-                        </div>
+                    {{#if (sameUser )}}
+                    <div class='col-sm-2'>
+                        <button type="button" id='editBtn' class=" btn btn-light h-100 btn-lg btn-block ">
+                            <span>Edit</span>
+                        </button>
                     </div>
-                    <div class='col-sm-9'>
-
-                        <div class='card-body'>
-                            <h5 class='card-title'>{{title}}</h5>
-
-                            <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
-                            <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
-                            <p class='card-text'>{{body}}</p>
-                            <img class='card-img w-50 custom-area-small' src={{pictures}}>
+                    <div class='col-sm-10'>
+                        {{/if}}
+                        <div class='card custom-height overflow-auto'>
+                            <div class='row'>
+                                <div class='col-sm-3'>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>{{userName}}</h5>
+                                        <img class='w-100 custom-area-small' src={{userImage}}>
+                                    </div>
+                                </div>
+                                <div class='col-sm-9'>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>{{title}}</h5>
+                                        <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
+                                        <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
+                                        <p class='card-text'>{{body}}</p>
+                                        <img class='card-img w-50 custom-area-sm' src={{pictures}}>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        {{/each}}
                     </div>
-                    {{/each}}
                 </div>
             </div>
         </div>

@@ -45,7 +45,14 @@ const server = https.createServer({
 }, app);
 
 // Set up middleware
-app.engine('handlebars', hbs({ defaultLayout: 'main' }))
+app.engine('handlebars', hbs(
+    {
+        helpers: {
+            inc: function (val) { return parseInt(val + 1); },
+            sameUser: function (commentId, UserId) { return commentId == UserId },
+        }
+        , defaultLayout: 'main'
+    }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
@@ -205,13 +212,21 @@ app.get('/user/reviews/:id', async (req, res) => {
 
 app.get('/user/blogs/:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
+    let userOwnBlogs = user[0].blog_access
+    let blogImg
+    for (let blog of userOwnBlogs) {
+        blogImg = await blogService.getPicture(blog.id)
+        blog.blogImg = blogImg[0]
+    }
+    console.log(userOwnBlogs)
 
-    res.render('user_blogs', { title: 'userBlogs', blogs: user[0].blogs })
+    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs })
 })
 
 app.get('/users/restaurants/:id', (req, res) => {
     res.render('user_restaurants', { title: 'userRestaurants' })
 })
+
 
 // Initialise passport
 initPassport(app);

@@ -6,6 +6,28 @@
                 <button onclick="window.location.href='/blogs/rating';" class='btn btn-primary btn-green flex-grow-1'>Rating</button>
                 <button onclick="window.location.href='/blogs/publisher';" class='btn btn-primary btn-green flex-grow-1'>Publisher</button>
             </ul>
+<<<<<<< HEAD
+
+                    {{#each blogs}}
+                        <div class='card custom-height overflow-auto'>
+                                <a href='blog/blogNumber{{id}}'>
+                                    <h2 class='card-header'> {{title}}</h2>
+                                </a>
+                            <div class='card-body'>
+                                <h7 class='card-subtitle text-muted'>{{categories}}</h7>
+                                <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
+                                <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
+                                <p class='card-text'>{{body}}</p>
+                                <img class='card-img custom-area-sm' src='{{pictures}}'>
+                            </div>
+                        </div>
+                 
+                    {{/each}}
+
+
+
+=======
+>>>>>>> origin/development
         </div>
     </div>
     <div class="row">

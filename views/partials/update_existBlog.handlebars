@@ -1,41 +1,41 @@
 <form  action='/user/blog{{id}}/userNumber{{blogs.user_id}}' method='POST' style='display:none' class='updateExisting'>
     <div class="form-group">
-        <label for="existTitle">Title</label>
-        <input type="text" class="form-control" id="existTitle" name='title' placeholder="Enter Title"
+        <label >Title</label>
+        <input type="text" class="form-control"  name='title' placeholder="Enter Title"
             value='{{title}}'>
     </div>
     <div class="form-group">
-        <label for="existCategories">Categories</label>
-        <div class='form-control' id='existCategories'>
+        <label >Categories</label>
+        <div class='form-control' >
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="existCate_1" name='category' value="Sustainability">
-                <label class="form-check-label" for="existCate_1">Sustainability</label>
+                <input class="form-check-input" type="checkbox"  name='category' value="Sustainability">
+                <label class="form-check-label" >Sustainability</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="existcate_2" name='category' value="News">
-                <label class="form-check-label" for="existcate_2">News</label>
+                <input class="form-check-input" type="checkbox"  name='category' value="News">
+                <label class="form-check-label" >News</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" id="existcate_3" name='category' value="Opinion">
-                <label class="form-check-label" for="existcate_3">Opinion</label>
+                <input class="form-check-input" type="checkbox"  name='category' value="Opinion">
+                <label class="form-check-label" >Opinion</label>
             </div>
         </div>
     </div>
     <div class='form-group'>
-        <label for='existBody'>Body</label>
-        <textarea name='body' class='form-control ' rows='3' id='existBody'>{{body}}</textarea>
+        <label >Body</label>
+        <textarea name='body' class='form-control ' rows='3' >{{body}}</textarea>
     </div>
     <div class='row'>
             <div class='mx-3 col-sm-4'>
-        <label class="custom-file-label" for="existImg">Images </label>
-        <input type="file" class='custom-file-input uploadImg' id="existImg" name='picture_URL'>
+        <label class="custom-file-label" >Images </label>
+        <input type="file" class='custom-file-input uploadImg'  name='picture_URL'>
         <img class='my-2 custom-area-sm min-area ' src='{{blogImg.picture_URL}}'>
             </div>
          </div>
     <div class='form-group'>
-        <button type="submit" id='existSubmitBtn' class="btn btn-primary">Submit</button>
-        <button type="reset" id='existResetBtn' class="btn btn-primary">Reset </button>
-        <button type="submit" id='existDeleteBtn' class="ml-auto btn btn-danger">Delete this blog !!</button>
+        <button type="submit"  class="btn btn-primary">Submit</button>
+        <button type="reset"  class="btn btn-primary">Reset </button>
+        <button type="submit"  class="ml-auto btn btn-danger">Delete this blog !!</button>
 
     </div>
 </form>

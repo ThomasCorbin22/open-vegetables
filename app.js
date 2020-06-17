@@ -198,21 +198,23 @@ app.get('/blogs/:sorted', async (req, res) => {
 
 // Users
 
-app.get('/users/info/:id', async (req, res) => {
+app.get('/user/info/:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
     res.render('user_information', { title: 'userInformation', user: user[0] })
 })
 
-app.get('/users/reviews/:id', async (req, res) => {
+app.get('/user/reviews/:id', async (req, res) => {
+    let user = await userService.getUser(req.params.id)
+
     let reviews = await reviewService.getReview(req.params.id)
     for (let review of reviews) {
         let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
         review.restaurant = restaurant[0]
     }
-    res.render('user_reviews', { title: 'userReviews', reviews: reviews })
+    res.render('user_reviews', { title: 'userReviews', reviews: reviews,user: user[0] })
 })
 
-app.get('/users/blogs/:id', async (req, res) => {
+app.get('/user/blogs/:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
     let userOwnBlogs = user[0].blog_access
     let blogImg
@@ -222,11 +224,13 @@ app.get('/users/blogs/:id', async (req, res) => {
     }
     console.log(userOwnBlogs)
 
-    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs })
+    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs,user: user[0] })
 })
 
-app.get('/users/restaurants/:id', (req, res) => {
-    res.render('user_restaurants', { title: 'userRestaurants' })
+app.get('/user/restaurants/:id', async(req, res) => {
+    let user = await userService.getUser(req.params.id)
+
+    res.render('user_restaurants', { title: 'userRestaurants',ownResta:user[0].restaurant_access,user:user[0]})
 })
 
 

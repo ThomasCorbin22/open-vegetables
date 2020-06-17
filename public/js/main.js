@@ -54,7 +54,9 @@ $(document).ready(function () {
         console.log(user_id)
         $('#profile').show()
         $('#logout').show()
-        $('profile-link').attr('href', '/user/info/' + user_id)
+        $('#profile-link').attr('href', '/user/info/' + user_id)
+        console.log($('#user_nav > li  a').attr('href'))
+        // $('#user_nav').find('a').attr('href',+user_id)
       }
     })
     .catch((error) => {
@@ -197,28 +199,29 @@ $('#submitSecurity').on('click',function(e){
   $('#resetPwdPage').show()
 })
 
-axios({
-  url: '/review/list/' + $('#restaLink').attr('href').slice(-1),
-  method: 'get'
-})
-.then((res) => {
-  if(user){
-  console.log(res.data)
-  console.log(user.id)
-  for(let review of res.data){
-    if(review.id ==user.id){
-      $(`.userID${user.id}Edit`).show()
-      $(`.userID${user.id}Edit`).next().addClass('col-sm-12').removeClass('col-sm-10')
-    }
-  }}
-  // if(user.id !== res.data.id){
+// if($('#restaLink')){
+// axios({
+//   url: '/review/list/' + $('#restaLink').attr('href').slice(-1),
+//   method: 'get'
+// })
+// .then((res) => {
+//   if(user){
+//   console.log(res.data)
+//   console.log(user.id)
+//   for(let review of res.data){
+//     if(review.id ==user.id){
+//       $(`.userID${user.id}Edit`).show()
+//       $(`.userID${user.id}Edit`).next().addClass('col-sm-12').removeClass('col-sm-10')
+//     }
+//   }}
+//   // if(user.id !== res.data.id){
 
-  // }
-})
-.catch((error) => {
-  console.log(error);
-})
-
+//   // }
+// })
+// .catch((error) => {
+//   console.log(error);
+// })
+// }
 
 
   // Update users information via put request

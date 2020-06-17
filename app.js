@@ -86,7 +86,7 @@ app.get('/restaurants/search/', async (req, res) => {
 })
 
 // Get individual restaurants
-app.get('/restaurant/details/:id', async (req, res) => {
+app.get('/restaurants/details/:id', async (req, res) => {
     let restaurants = await restaurantService.listRestaurants()
 
     for (let resta of restaurants) {
@@ -158,24 +158,33 @@ app.get('/blogs/search/', async (req, res) => {
     })
 })
 
-app.get('/blog/details/:id', async (req, res) => {
+app.get('/blogs/details/:id', async (req, res) => {
     let blogs = await blogService.listBlogs();
     for (let blog of blogs) {
         if (blog.id == req.params.id) {
             let publisher = await userService.getUser(blog.user_id)
             let commentsBlog = await commentService.getComment(blog.id)
             let commentBlog = []
+            console.log(commentsBlog)
             for (let comment of commentsBlog) {
                 let commentUser = await userService.getUser(comment.user_id)
                 comment.userName = commentUser[0].first_name
                 comment.userImage = commentUser[0].profile_picture_URL
             }
+            console.log(commentsBlog)
             blog.comments = commentBlog
             blog.userName = publisher[0].first_name
             blog.userImage = publisher[0].profile_picture_URL
             res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
         }
     }
+})
+
+app.get('/blogs/:sorted', async (req, res) => {
+    let blogs = await blogService.listBlogs()
+    console.log(blogs)
+
+    res.render('blog', { title: 'blogs', blogs: blogs })
 })
 
 // Users

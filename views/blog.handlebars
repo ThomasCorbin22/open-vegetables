@@ -2,17 +2,17 @@
     <div class='row my-2'>
         <div class="col">
             <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
-                <button class='btn btn-primary btn-green flex-grow-1'>Latest</button>
-                <button class='btn btn-primary btn-green flex-grow-1'>Rating</button>
-                <button class='btn btn-primary btn-green flex-grow-1'>Publisher</button>
+                <button onclick="window.location.href='/blogs/latest';" class='btn btn-primary btn-green flex-grow-1'>Latest</button>
+                <button onclick="window.location.href='/blogs/rating';" class='btn btn-primary btn-green flex-grow-1'>Rating</button>
+                <button onclick="window.location.href='/blogs/publisher';" class='btn btn-primary btn-green flex-grow-1'>Publisher</button>
             </ul>
         </div>
     </div>
     <div class="row">
         <div class="col">
             {{#each blogs}}
-            <div class='card custom-height overflow-auto'>
-                <a href='blog/details/{{id}}'>
+            <div class='card custom-height overflow-auto m-0'>
+                <a href='details/{{id}}'>
                     <h2 class='card-header'> {{title}}</h2>
                 </a>
                 <div class='card-body'>

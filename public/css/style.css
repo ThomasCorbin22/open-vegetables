@@ -6,11 +6,12 @@ body{
 
 a, u {
     text-decoration: none !important;
-    transition: 0.75s ease-in-out;
+    transition: 0.5s ease-in-out;
+    color:rgba(0, 0, 0, 1)
 }
 
 a:hover {
-    color:rgba(150, 150, 150, 1)
+    color:rgba(100, 100, 100, 1)
 }
 
 hr{
@@ -114,9 +115,11 @@ hr{
 .custom-height{
     max-height: 500px;
 }
+
 .custom-area-small{
-    max-height: 200px;
-    max-width: 200px;
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
 }
 
 #map{
@@ -125,8 +128,9 @@ hr{
 }
 
 .custom-area-xs{
-    max-height: 100px;
-    max-width: 100px;
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
 }
 
 .authentication {

@@ -1,4 +1,4 @@
-<form id='createNew'  action='/user/blogs/userNumber{{blogs.user_id}}' method='POST' style="display:none">
+<form id='createNew' action='/user/blogs/userNumber{{blogs.user_id}}' method='POST' style="display:none">
     <div class="form-group">
         <label for="newBlogTitle">Title</label>
         <input type="text" class="form-control" id="newBlogTitle" name='title' placeholder="Enter Title">
@@ -22,7 +22,16 @@
     </div>
     <div class='form-group'>
         <label for='newBlogBody'>Body</label>
-        <textarea name='body' class='form-control 'rows='3' id='newBlogBody'></textarea>
+        <textarea name='body' class='form-control ' rows='3' id='newBlogBody'></textarea>
+    </div>
+    <div class='form-group'>
+         <div class='row'>
+            <div class='mx-3 col-sm-4'>
+        <label class="custom-file-label" for="newImg">Imagesß </label>
+        <input type="file" class='custom-file-input uploadImg' id="newImg" name='picture_URL'>
+        <img class='custom-area-sm my-2' src='/pictures/image.png'>
+            </div>
+         </div>
     </div>
     <div class='form-group'>
         <button type="submit" id='newBlogSubmitBtn' class="btn btn-primary">Submit</button>

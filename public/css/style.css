@@ -36,11 +36,14 @@ hr{
 .custom-height{
     max-height: 500px;
 }
-.custom-area-small{
+.custom-area-sm{
     max-height: 200px;
     max-width: 200px;
 }
-
+.min-area{
+min-width: 200px;
+min-height: 200px;
+}
 .custom-area-xs{
     max-height: 100px;
     max-width: 100px;

@@ -100,7 +100,7 @@ $(document).ready(function () {
     
   })
 
-  $('.add-favourite').on('click', (e) => {
+  $('.add-favourite').on('click',function(e) {
     let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
     if (e.currentTarget.innerHTML.match('☆')) {
       e.currentTarget.innerHTML = '★ Favourite Restaurant'
@@ -124,7 +124,7 @@ $(document).ready(function () {
 
   })
 
-  $('#userImageUpload').on('change', (e) => {
+  $('#userImageUpload').on('change',function(e) {
     let file = e.target.files[0]
     console.log(file)
 
@@ -138,6 +138,29 @@ $(document).ready(function () {
 
     }
   })
+
+  function renderImg(e,targetDOM){
+    let file = e.target.files[0]
+    console.log(file)
+
+    let reader = new FileReader()
+
+    reader.readAsDataURL(file)
+
+    reader.onload = function () {
+      targetDOM.attr('src', reader.result)
+    }
+  }
+
+  $('#userImageUpload').on('change', function(e) {
+    renderImg(e,$('#userImage'))
+  })
+  $('.uploadImg').on('change',function(e) {
+    renderImg(e,$(this).next())
+  })
+
+ 
+
 
 
   $('#updateuserbtn').click((e) => {

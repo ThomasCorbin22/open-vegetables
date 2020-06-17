@@ -47,7 +47,8 @@ const server = https.createServer({
 app.engine('handlebars', hbs(
     {
         helpers: {
-            inc: function (val) { return parseInt(val+1); },
+            inc: function (val) { return parseInt(val + 1); },
+            sameUser: function (commentId, UserId) { return commentId == UserId },
         }
         , defaultLayout: 'main'
     }))
@@ -108,25 +109,22 @@ app.get('/blogs', async (req, res) => {
 })
 
 app.get('/restaurant/details/restaNumber:id', async (req, res) => {
-    let restaurants = await restaurantService.listRestaurants()
-
-    for (let resta of restaurants) {
-        if (resta.id == req.params.id) {
-            let reviews = await reviewService.listReviews(resta.id)
-            let user
-            for (let review of reviews) {
-                user = await userService.getUser(review.user_id)
-                console.log(user[0])
-                review.userName = user[0].first_name
-                review.userImage = user[0].profile_picture_URL
-            }
-
-            console.log(reviews)
-            console.log(resta)
-            res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
-        }
+    let resta = await restaurantService.getRestaurant(req.params.id)
+    console.log(resta[0])
+    let reviews = await reviewService.listReviews(resta[0].id)
+    console.log(reviews)
+    let user
+    for (let review of reviews) {
+        user = await userService.getUser(review.user_id)
+        review.userName = user[0].first_name
+        review.userImage = user[0].profile_picture_URL
     }
-})
+
+
+    res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
+}
+
+)
 
 
 app.get('/user/info/userNumber:id', async (req, res) => {
@@ -150,10 +148,10 @@ app.get('/user/reviews/userNumber:id', async (req, res) => {
 app.get('/user/blogs/userNumber:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
     let userOwnBlogs = user[0].blog_access
-    let blogImg 
-    for (let blog of userOwnBlogs){
-         blogImg = await blogService.getPicture(blog.id)
-         blog.blogImg = blogImg[0]
+    let blogImg
+    for (let blog of userOwnBlogs) {
+        blogImg = await blogService.getPicture(blog.id)
+        blog.blogImg = blogImg[0]
     }
     console.log(userOwnBlogs)
 

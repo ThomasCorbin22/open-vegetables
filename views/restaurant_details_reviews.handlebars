@@ -75,28 +75,36 @@
                         {{>create_newReview}}
                     </div>
                     {{#each reviews}}
-                    <div class='card custom-height overflow-auto'>
-                        <div class='row'>
-                            <div class='col-sm-3'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>{{userName}}</h5>
-                                    <img class='w-100 custom-area-small' src={{userImage}}>
+                    {{#if (sameUser )}}
+                    <div class='col-sm-2'>
+                        <button type="button" id='editBtn' class=" btn btn-light h-100 btn-lg btn-block ">
+                            <span>Edit</span>
+                        </button>
+                    </div>
+                    <div class='col-sm-10'>
+                        {{/if}}
+                        <div class='card custom-height overflow-auto'>
+                            <div class='row'>
+                                <div class='col-sm-3'>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>{{userName}}</h5>
+                                        <img class='w-100 custom-area-small' src={{userImage}}>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class='col-sm-9'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>{{title}}</h5>
-                                    <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
-                                    <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
-                                    <p class='card-text'>{{body}}</p>
-                                    <img class='card-img w-50 custom-area-sm' src={{pictures}}>
+                                <div class='col-sm-9'>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>{{title}}</h5>
+                                        <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
+                                        <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
+                                        <p class='card-text'>{{body}}</p>
+                                        <img class='card-img w-50 custom-area-sm' src={{pictures}}>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {{/each}}
                     </div>
-                    {{/each}}
                 </div>
-
             </div>
         </div>
     </div>

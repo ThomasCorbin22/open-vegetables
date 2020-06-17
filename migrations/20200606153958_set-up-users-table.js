@@ -8,6 +8,8 @@ exports.up = function (knex, Promise) {
         table.string("password");
         table.string("description");
         table.string("profile_picture_URL");
+        table.string("security_question");
+        table.string("security_answer");
         table.integer("number_reviews").unsigned()
         table.integer("number_blogs").unsigned()
         table.integer("number_comments").unsigned()

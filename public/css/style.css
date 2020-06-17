@@ -1,13 +1,27 @@
-.bg-light{
-    background-color: #5fda85!important;
+/* Elements */
+
+body{
+    overflow-x:hidden;
 }
 
-.navbar-nav > li > .dropdown-menu { 
-    background-color: #60dd87; 
+a, u {
+    text-decoration: none !important;
+    color: rgba(0, 0, 0, 1);
+    transition: 0.75s ease-in-out;
 }
 
-.navbar-nav > li > .dropdown-menu >.dropdown-item:hover { 
-    background-color: #7fc294; 
+a:hover {
+    color:rgba(150, 150, 150, 1)
+}
+
+hr{
+    border-top: 2px solid rgba(0, 0, 0, 0.4);
+  }
+
+/* Classes */
+
+.hover-green:hover { 
+    background-color: rgba(127, 194, 148, 1); 
 }
 
 .nav-link{
@@ -15,15 +29,11 @@
 }
 
 .navbar-nav > li > .nav-link{
-    margin-right: 1.4em;
+    margin-right: 1.4rem;
 }
 
 .nav-link:hover{
     color: rgba(0,0,0,.7);
-}
-
-hr{
-  border-top: 2px solid rgba(0, 0, 0, 0.4);
 }
 
 .list-group-item {
@@ -46,11 +56,83 @@ hr{
     max-width: 100px;
 }
 
-::placeholder { 
-    opacity: 1;
-    color:black;
-}
-
 .authentication {
     display:none
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: 0.75s ease-in-out;
+}
+
+.overlay:hover{
+    opacity: 1;
+}
+
+.thumbnail{
+    width: inherit;
+    height:inherit;
+}
+
+.caption{
+    z-index: 10;
+    text-align: center;
+    color:rgba(255,255,255, 1);
+}
+
+.btn-search{
+    background-color: rgba(255,255,255, 1);
+    color: rgba(95, 218, 133, 1);
+    border-radius: 50%;
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+.btn-search:hover{
+    background-color: rgb(54, 129, 78);
+    color: rgba(255,255,255, 1);
+    border-radius: 50%
+}
+
+.btn-green{
+    background-color: rgba(95, 218, 133, 1);
+    color: rgba(255,255,255, 1);
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+.btn-green:hover{
+    background-color: rgb(54, 129, 78);
+    color: rgba(255,255,255, 1);
+}
+
+/* Colours */
+.bg-green{
+    background-color: rgba(95, 218, 133, 1)!important;
+}
+
+.bg-light{
+    background-color: rgba(255,255,255, 1)!important;
+} */
+
+.color-white{
+    color: rgba(255,255,255, 1)!important;
+}
+
+.card-text{
+    color: rgba(255,255,255, 1)!important;
+}
+
+/* IDs */
+
+#logo{
+    height:50px;
+}
+
+/* Others */
+
+::placeholder { 
+    opacity: 1;
+    color:rgba(0, 0, 0, 1);
 }

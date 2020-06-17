@@ -17,7 +17,7 @@ class LocationService {
     }
 
     // Gets all the areas
-    async listAreas(id) {
+    async listAreas() {
         this.area = await knex
             .select('*')
             .from("areas")

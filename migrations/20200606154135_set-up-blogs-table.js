@@ -4,6 +4,7 @@ exports.up = function (knex, Promise) {
         table.string("title").notNullable();
         table.unique("title");
         table.string("body").notNullable();
+        table.string("main_picture_URL");
         table.datetime("date_created", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.datetime("date_modified", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.integer('user_id').unsigned();

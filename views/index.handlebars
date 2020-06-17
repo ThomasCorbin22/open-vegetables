@@ -1,71 +1,78 @@
 <div class='container-fluid'>
-    <div class='row'>
-        <div class='col-sm-6'>
-            <h2 class='card-header mb-2'>Daily Restaurants</h2>
-
-            <div id="demo" class="carousel slide " data-ride="carousel">
-                <!-- Indicators -->
-                <ul class="carousel-indicators ">
-                    <li data-target="#demo" data-slide-to="0" class="active"></li>
-                    <li data-target="#demo" data-slide-to="1"></li>
-                    <li data-target="#demo" data-slide-to="2"></li>
-                </ul>
-
-                <!-- The slideshow -->
+    <div class="row">
+        <h2 class='card-header mb-2 w-100'>Daily Restaurants</h2>
+    </div>
+    <div class='row p-1'>
+        <div class='col-sm-6 pr-0 pl-2 py-2'>
+            <div id="restaurant_carousel" class="carousel slide carousel-fade" data-ride="carousel">
                 <div class="carousel-inner ">
-                    <div class="carousel-item active">
-                        <a href=''><img class='w-100 img-fluid'
-                                src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png" alt="Los Angeles"></a>
-                    </div>
+                    {{#each carousel}}
                     <div class="carousel-item">
-                        <a href=''><img class='w-100' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                                alt="Chicago"></a>
+                        <a href='https://localhost:8080/restaurant/details/reviews/{{id}}'>
+                            <div
+                                class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                                <div class="caption color-white">
+                                    <h3>{{name}}</h5>
+                                        <p>{{street_address}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <img class='rounded w-100 h-100 img-fluid' src={{main_picture_URL}} alt={{name}}>
                     </div>
-                    <div class="carousel-item">
-                        <a href=''><img class='w-100' src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                                alt="New York"></a>
-                    </div>
+                    {{/each}}
                 </div>
             </div>
         </div>
-        <div class='col-sm-6'>
-            <div class='container'>
-                <div class='row'>
-                    <div class='col '><img src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                            class="rounded img-fluid" alt="..."></div>
-                    <div class='col'><img src="../pictures/Screenshot 2020-06-06 at 3.46.29 PM.png"
-                            class="rounded img-fluid" alt="..."></div>
+        <div class='col-sm-6 p-1'>
+            <div class='row w-100 m-0'>
+                {{#each thumbnails}}
+                <div class='col-6 p-1'>
+                    <div class="position-relative">
+                        <a href='https://localhost:8080/restaurant/details/reviews/{{id}}'>
+                            <div
+                                class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                                <div class="caption color-white">
+                                    <h5>{{name}}</h5>
+                                    <p class='m-0'>{{street_address}}</p>
+                                </div>
+                            </div>
+                        </a>
+                        <img src={{main_picture_URL}} class="rounded img-fluid w-100 thumbnail" alt={{name}}>
+                    </div>
                 </div>
+                {{/each}}
             </div>
         </div>
     </div>
 </div>
 
 <hr class='m-2'>
+
 <div class='container-fluid '>
     <div class='row '>
-        <div class='col-sm-10 '>
-            <h2 class='card-header mb-2'>Food Trends</h2>
-            <div class='container'>
-                <div class="row">
-                    {{#each blogs}}
-                    <div class='col-sm-6'>
-                        <div class='card custom-height overflow-auto'>
-                            <div class='card-body'>
-                                <a href=''>
-                                    <h2 class='card-title'> {{title}}</h2>
-                                </a>
-                                <h7 class='card-subtitle text-muted'>Restaurant Name </h7>
-                                <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
-                                <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
-                                <img class='card-img custom-area-small' src={{pictures}}>
-                            </div>
+        <h2 class='card-header mb-2 w-100'>Food Trends</h2>
+    </div>
+    <div class='row p-1'>
+        {{#each blogs}}
+        <div class="col-lg-3 col-md-6 col-sm-6 p-1">
+            <a href="blog/details/{{id}}">
+                <div class="card w-100 h-100">
+                    <div class='position-relative'>
+                        <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                            <h5 class="card-text">{{categories}}</h5>
                         </div>
+                        <img class="card-img-top" src={{main_picture_URL}} alt={{title}}>
                     </div>
-                    {{/each}}
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text">{{body}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <footer class="blockquote-footer">{{date_modified}}</footer>
+                    </div>
                 </div>
-            </div>
-            <div class='col-sm-2'></div>
+            </a>
         </div>
+        {{/each}}
     </div>
 </div>

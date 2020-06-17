@@ -86,6 +86,8 @@ class UserRouter {
             email: req.body.email,
             password: req.body.password,
             description: req.body.description,
+            security_question: req.body.security_question,
+            security_answer: req.body.security_answer,
             profile_picture_URL: req.body.profile_picture_URL
         }
 

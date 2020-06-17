@@ -17,85 +17,86 @@
 </head>
 
 <body>
-    <ul class='nav navbar-light m-2'>
-        <li class='nav-item mx-auto'>
-            <i class="fas fa-2x fa-carrot"></i>
-        </li>
-        <div class='mt-auto d-flex'>
-            <li class='nav-item'>
-                <a class="nav-link" href="/user/info/userNumber3">
-                    <svg class="bi bi-person-circle " width="1.6em" height="1.6em" viewbox='0 0 17 16 '
-                        fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
-                        <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                        <path fill-rule="evenodd"
-                            d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
-                    </svg>
-                </a>
-            </li>
-            <li class='nav-item'>
-                <a id='login' class='nav-link authentication' href='#' data-toggle='modal' data-target='#loginModal'> Login</a>
-            </li>
-            
-            {{>login_page}}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a href="/">
+            <img id='logo' class='my-2' src="https://localhost:8080/pictures/open-vegetables-logo-01.png" alt="Logo">
+        </a>
 
-           <li class='nav-item'>
-                <a id='signup' class='nav-link authentication' href='#' data-toggle='modal' data-target='#registerModal'> Register</a>
-            </li>
-
-            {{>register_page}}
-
-            <li class='nav-item'>
-                <a id='logout' class='nav-link authentication' href='#' data-toggle='modal'> Log Out</a>
-            </li>
-        </div>
-    </ul>
-
-    <nav class="navbar navbar-expand-sm navbar-light bg-light m-2">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMenu">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarMenu">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item ">
-                    <a class="nav-link" href="/">Home</a>
-                </li>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/blogs">Blogs</a>
+                    <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" data-toggle="dropdown">
                         Restaurants
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="restaurantLocation">
-                        <a class="dropdown-item" href="/restaurants/all">All</a>
-                        <a class="dropdown-item" href="#">Hong Kong Island</a>
-                        <a class="dropdown-item" href="#">Kowloon</a>
-                        <a class="dropdown-item" href="#">New Territories</a>
-                        <a class="dropdown-item" href="#">Outlying Islands</a>
+                    <div class="dropdown-menu bg-green" aria-labelledby="restaurantLocation">
+                        <a class="dropdown-item hover-green" href="/restaurants/all">All</a>
+                        <a class="dropdown-item hover-green" href="/restaurants/Hong Kong Island">Hong Kong Island</a>
+                        <a class="dropdown-item hover-green" href="/restaurants/Kowloon">Kowloon</a>
+                        <a class="dropdown-item hover-green" href="/restaurants/New Territories">New Territories</a>
+                        <a class="dropdown-item hover-green" href="/restaurants/Outlying Islands">Outlying Islands</a>
                     </div>
                 </li>
-                <form class="navbar-form" action="/action_page.php">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search">
-                        <div class="input-group-btn">
-                            <button type="submit"><i class="fa fa-search fa-2x"></i></button>
-                        </div>
+                <li class="nav-item">
+                    <a class="nav-link" href="/blogs/all">Blogs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/map">Map</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" data-toggle="dropdown">
+                        Log In
+                    </a>
+                    <div class="dropdown-menu bg-green" aria-labelledby="restaurantLocation">
+                        <a id='login' class='dropdown-item hover-green authentication' href='#' data-toggle='modal'
+                            data-target='#loginModal'>Login</a>
+                        <a id='signup' class='dropdown-item hover-green authentication' href='#' data-toggle='modal'
+                            data-target='#registerModal'>Sign Up</a>
+                        <a id='logout' class='dropdown-item hover-green authentication' href='#' data-toggle='modal'>Log Out</a>
                     </div>
-                </form>
-                <div class='btn btn-default'>
-                    <svg class="bi bi-map" width="1.3em" height="1.3em" viewBox="0 0 16 16" fill="currentColor"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M15.817.613A.5.5 0 0 1 16 1v13a.5.5 0 0 1-.402.49l-5 1a.502.502 0 0 1-.196 0L5.5 14.51l-4.902.98A.5.5 0 0 1 0 15V2a.5.5 0 0 1 .402-.49l5-1a.5.5 0 0 1 .196 0l4.902.98 4.902-.98a.5.5 0 0 1 .415.103zM10 2.41l-4-.8v11.98l4 .8V2.41zm1 11.98l4-.8V1.61l-4 .8v11.98zm-6-.8V1.61l-4 .8v11.98l4-.8z" />
-                    </svg> </div>
+                </li>
+                <li id='profile' class='nav-item authentication'>
+                    <a class="nav-link" href="/user/info/userNumber3">
+                        <svg class="bi bi-person-circle " width="1.6em" height="1.6em" viewbox='0 0 17 16 '
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M13.468 12.37C12.758 11.226 11.195 10 8 10s-4.757 1.225-5.468 2.37A6.987 6.987 0 0 0 8 15a6.987 6.987 0 0 0 5.468-2.63z" />
+                            <path fill-rule="evenodd" d="M8 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
+                            <path fill-rule="evenodd"
+                                d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z" />
+                        </svg>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
 
+    {{>login_page}}
+    {{>register_page}}
+
+    <div class="container-fluid p-3 bg-green text-center">
+        <form id='form-search' class="form-inline d-flex justify-content-center md-form form-sm">
+            <input id='form-input' class="form-control form-control-sm w-50" type="text" placeholder="Search" aria-label="Search">
+            <select class='form-control form-control-sm w-25 mr-2' id="form-filter" name="form-filter">
+                <option value="restaurants">Restaurants</option>
+                <option value="blogs">Blogs</option>
+                <option value="users">Users</option>
+            </select>
+            <button class="btn btn-primary btn-search btn-rounded btn-sm my-0" type="submit"><i class="fas fa-search"
+                    aria-hidden="true"></i></button>
+        </form>
+    </div>
+
     {{{body}}}
+
+    {{!-- <a href="https://www.freepik.com/free-photos-vectors/logo">Logo vector created by freepik - www.freepik.com</a> --}}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -108,7 +109,9 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-xdnamR5p45m8XTfs9ZTqdx2JGdsEhE&callback=initMap"></script>    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-xdnamR5p45m8XTfs9ZTqdx2JGdsEhE&callback=initMap"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

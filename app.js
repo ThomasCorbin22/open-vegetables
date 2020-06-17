@@ -76,10 +76,15 @@ app.get('/', async (req, res) => {
 
 // A page showing all restaurants
 app.get('/restaurants/all', async (req, res) => {
+    let start_index = 0
+    if (req.query.page){
+        start_index = Number(req.query.page)
+    }
+
     let results = await restaurantService.listRestaurants()
     res.render('restaurant', {
         title: 'restaurants-all',
-        restaurants: results
+        restaurants: results.slice(start_index, start_index + 10)
     })
 })
 
@@ -171,15 +176,12 @@ app.get('/blogs/details/:id', async (req, res) => {
         if (blog.id == req.params.id) {
             let publisher = await userService.getUser(blog.user_id)
             let commentsBlog = await commentService.getComment(blog.id)
-            let commentBlog = []
-            console.log(commentsBlog)
             for (let comment of commentsBlog) {
                 let commentUser = await userService.getUser(comment.user_id)
                 comment.userName = commentUser[0].first_name
                 comment.userImage = commentUser[0].profile_picture_URL
             }
-            console.log(commentsBlog)
-            blog.comments = commentBlog
+            blog.comments = commentsBlog
             blog.userName = publisher[0].first_name
             blog.userImage = publisher[0].profile_picture_URL
             res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })

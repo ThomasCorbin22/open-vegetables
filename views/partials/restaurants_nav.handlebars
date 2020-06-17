@@ -1,17 +1,12 @@
- <ul class='nav justify-content-around navbar-light bg-light mb-2'>
-                <li class='nav-item'>
-                    <a href='#' class='nav-link'>Hotest</a>
-                </li>
-                <li class='nav-item'>
-                    <a href='#' class='nav-link'>Rating</a>
-                </li>
-                <li clas='nav-item dropdown'>
-                    <a class='nav-link dropdown-toggle' href='#' id='locationBased' data-toggle='dropdown'>Location</a>
-                    <div class="dropdown-menu" aria-labelledby="locationBased">
-                        <a class="dropdown-item" href="All">All</a>
-                        <a class="dropdown-item" href="#">Hong Kong Island</a>
-                        <a class="dropdown-item" href="#">Kowloon</a>
-                        <a class="dropdown-item" href="#">New Territories</a>
-                    </div>
-                </li>
-            </ul>
+<div class='row my-2'>
+    <div class="col">
+        <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
+            <button onclick="window.location.href='/restaurants/latest';"
+                class='btn btn-primary btn-green flex-grow-1'>Latest</button>
+            <button onclick="window.location.href='/restaurants/rating';"
+                class='btn btn-primary btn-green flex-grow-1'>Rating</button>
+            <button onclick="window.location.href='/restaurants/location';"
+                class='btn btn-primary btn-green flex-grow-1'>Location</button>
+        </ul>
+    </div>
+</div>

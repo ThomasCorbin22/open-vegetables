@@ -49,7 +49,7 @@ $(document).ready(function () {
         $('#signup').show()
       }
       else {
-        user = res.data
+        console.log(res.data)
         $('#profile').show()
         $('#logout').show()
       }

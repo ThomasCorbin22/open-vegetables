@@ -116,7 +116,7 @@ hr{
     max-height: 500px;
 }
 
-.custom-area-small{
+.custom-area-sm{
     height: 200px;
     width: 200px;
     object-fit: cover;
@@ -135,7 +135,7 @@ hr{
 .custom-area-xs{
     height: 100px;
     width: 100px;
-    object-fit: cover;
+    object-fit:cover
 }
 
 .authentication {

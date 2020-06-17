@@ -1,5 +1,5 @@
 $(() => {
-    // List all reviews
+    // List all reviews for a restaurant
     axios({
         url: '/review/list/1',
         method: 'get'

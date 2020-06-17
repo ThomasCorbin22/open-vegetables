@@ -1,4 +1,4 @@
-let user_id = 3
+let user
 
 $(document).ready(function () {
   // Change active navbar link
@@ -49,6 +49,7 @@ $(document).ready(function () {
         $('#signup').show()
       }
       else {
+        console.log(res.data)
         user = res.data
         $('#profile').show()
         $('#logout').show()
@@ -121,15 +122,15 @@ $(document).ready(function () {
 
 //control button - edit existing Blog, existing resta, existing comment, existing review
 
-  $('#editBtn').click(function (e) {
+  $('.editBtn').click(function (e) {
     if ($(this).children().text().match('Edit')) {
-      $('#updateExisting').show()
+      $(this).parent().next().find('.updateExisting').show()
       $(this).children().text('X')
-      $(this).parent().next().children('.card').hide()
+      $(this).parent().next().find('.existContent').hide()
     } else{
       $(this).children().text('Edit')
-      $('#updateExisting').hide()
-      $(this).parent().next().children('.card').show()
+      $(this).parent().next().find('.updateExisting').hide()
+      $(this).parent().next().find('.existContent').show()
     }
   })
 
@@ -194,6 +195,29 @@ $('#submitSecurity').on('click',function(e){
   $('#resetPwdPage').show()
 })
 
+axios({
+  url: '/review/list/' + $('#restaLink').attr('href').slice(-1),
+  method: 'get'
+})
+.then((res) => {
+  if(user){
+  console.log(res.data)
+  console.log(user.id)
+  for(let review of res.data){
+    if(review.id ==user.id){
+      $(`.userID${user.id}Edit`).show()
+      $(`.userID${user.id}Edit`).next().addClass('col-sm-12').removeClass('col-sm-10')
+    }
+  }}
+  // if(user.id !== res.data.id){
+
+  // }
+})
+.catch((error) => {
+  console.log(error);
+})
+
+
 
   // Update users information via put request
   $('#updateuserbtn').click((e) => {
@@ -248,7 +272,7 @@ $('#submitSecurity').on('click',function(e){
         "email": email,
         "password": password,
         "description": description,
-        'profile_picture_URL': userImageURL
+        'profile_picture_URL': profile_picture_URL
       }
     })
       .then((res) => {

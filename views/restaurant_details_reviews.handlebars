@@ -2,7 +2,8 @@
     <div class='card'>
         <div class='row'>
             <div class='col-sm-4'>
-                <h4 class='card-header'><a href='/restaurant/details/{{resta.id}}'>{{resta.name}}</a></h4>
+                <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{resta.id}}'>{{resta.name}}</a>
+                </h4>
                 <div class='card-body'>
                     <img class='w-100 mb-2 custom-area-small' src={{resta.main_picture_URL}}>
                     <img class='w-100 custom-area-small' src={{resta.logo}}>
@@ -75,20 +76,24 @@
                         {{>create_newReview}}
                     </div>
                     {{#each reviews}}
-                    {{!-- {{#if (sameUser )}} --}}
-                    <div class='col-sm-2'>
-                        <button type="button" id='editBtn' class=" btn btn-light h-100 btn-lg btn-block ">
+                    <div class='col-sm-2 userID{{review.user_id}}Edit'>
+                        <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
                             <span>Edit</span>
                         </button>
                     </div>
                     <div class='col-sm-10'>
-                        {{!-- {{/if}} --}}
                         <div class='card custom-height overflow-auto'>
                             <div class='row'>
+                                <div class='col-sm-12'>
+                                    {{>update_existReview}}
+                                </div>
+                            </div>
+                            <div class='row existContent'>
                                 <div class='col-sm-3'>
                                     <div class='card-body'>
                                         <h5 class='card-title'>{{userName}}</h5>
                                         <img class='w-100 custom-area-small' src={{userImage}}>
+
                                     </div>
                                 </div>
                                 <div class='col-sm-9'>

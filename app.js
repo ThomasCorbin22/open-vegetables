@@ -69,7 +69,7 @@ app.use(session({
 app.get('/', async (req, res) => {
     let blogs = await blogService.listBlogs()
     let restaurants = await restaurantService.listRestaurants()
-    console.log(req.auth)
+    console.log(req.user)
     res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
 })
 
@@ -103,7 +103,7 @@ app.get('/restaurant/details/:id', async (req, res) => {
                 review.userName = user[0].first_name
                 review.userImage = user[0].profile_picture_URL
             }
-
+            console.log(reviews)
             res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
         }
     }

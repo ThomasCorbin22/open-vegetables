@@ -2,7 +2,7 @@
     <div class='card'>
         <div class='row'>
             <div class='col-sm-4'>
-                <h4 class='card-header'><a href='/restaurant/details/restaNumber{{resta.id}}'>{{resta.name}}</a></h4>
+                <h4 class='card-header'><a href='/restaurant/details/{{resta.id}}'>{{resta.name}}</a></h4>
                 <div class='card-body'>
                     <img class='w-100 mb-2 custom-area-small' src={{resta.main_picture_URL}}>
                     <img class='w-100 custom-area-small' src={{resta.logo}}>
@@ -75,14 +75,14 @@
                         {{>create_newReview}}
                     </div>
                     {{#each reviews}}
-                    {{#if (sameUser )}}
+                    {{!-- {{#if (sameUser )}} --}}
                     <div class='col-sm-2'>
                         <button type="button" id='editBtn' class=" btn btn-light h-100 btn-lg btn-block ">
                             <span>Edit</span>
                         </button>
                     </div>
                     <div class='col-sm-10'>
-                        {{/if}}
+                        {{!-- {{/if}} --}}
                         <div class='card custom-height overflow-auto'>
                             <div class='row'>
                                 <div class='col-sm-3'>

@@ -69,6 +69,7 @@ app.use(session({
 app.get('/', async (req, res) => {
     let blogs = await blogService.listBlogs()
     let restaurants = await restaurantService.listRestaurants()
+    console.log(req.auth)
     res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
 })
 
@@ -161,12 +162,12 @@ app.get('/blog/details/:id', async (req, res) => {
 
 // Users
 
-app.get('/user/info/:id', async (req, res) => {
+app.get('/users/info/:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
     res.render('user_information', { title: 'userInformation', user: user[0] })
 })
 
-app.get('/user/reviews/:id', async (req, res) => {
+app.get('/users/reviews/:id', async (req, res) => {
     let reviews = await reviewService.getReview(req.params.id)
     for (let review of reviews) {
         let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
@@ -176,7 +177,7 @@ app.get('/user/reviews/:id', async (req, res) => {
     res.render('user_reviews', { title: 'userReviews', reviews: reviews })
 })
 
-app.get('/user/blogs/:id', async (req, res) => {
+app.get('/users/blogs/:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
     let userOwnBlogs = user[0].blog_access
     let blogImg

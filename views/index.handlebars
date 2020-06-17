@@ -56,16 +56,16 @@
         {{#each blogs}}
         <div class="col-lg-3 col-md-6 col-sm-6 p-1">
             <a href="blog/details/{{id}}">
-                <div class="card w-100 h-100">
-                    <div class='position-relative'>
+                <div class="card w-100 h-100 p-0">
+                    <div class='position-relative color-white'>
                         <div class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
                             <h5 class="card-text">{{categories}}</h5>
                         </div>
                         <img class="card-img-top" src={{main_picture_URL}} alt={{title}}>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">{{title}}</h5>
-                        <p class="card-text">{{body}}</p>
+                        <h5 class="card-title color-black">{{title}}</h5>
+                        <p class="card-text color-black">{{body}}</p>
                     </div>
                     <div class="card-footer">
                         <footer class="blockquote-footer">{{date_modified}}</footer>

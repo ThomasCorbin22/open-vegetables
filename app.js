@@ -67,6 +67,7 @@ app.get('/', async (req, res) => {
 
 // Restaurants
 
+// A page showing all restaurants
 app.get('/restaurants/all', async (req, res) => {
     let results = await restaurantService.listRestaurants()
     res.render('restaurant', {
@@ -75,60 +76,7 @@ app.get('/restaurants/all', async (req, res) => {
     })
 })
 
-//routing maps
-
-app.get('/map', (req, res) => {
-    res.render('map', { title: 'map' })
-})
-
-//hong kong island
-
-app.get('/map/hong-kong-island/central', (req, res) => {
-    res.render('map', { title: 'central', location: req.params.location })
-})
-
-app.get('/map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'wan-chai', location: req.params.location })
-})
-
-app.get('/map/hong-kong-island/causeway-bay', (req, res) => {
-    res.render('map', { title: 'causeway-bay', location: req.params.location })
-})
-
-app.get('/map/hong-kong-island/north-point', (req, res) => {
-    res.render('map', { title: 'north-point', location: req.params.location })
-})
-
-//kowloon
-
-app.get('/map//map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'map', location: req.params.location })
-})
-
-app.get('/map//map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'map', location: req.params.location })
-})
-
-app.get('/map//map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'map', location: req.params.location })
-})
-
-//routing blogs
-
-app.get('/blogs', (req, res) => {
-    res.render('blog', { title: 'blog' })
-})
-
-app.get('/blogs/full_blog', (req, res) => {
-    res.render('full_blog', { title: 'full_blog' })
-})
-
-//routing restaurant
-
-app.get('/restaurant/details/summary', (req, res) => {
-    res.render('restaurant_details_summary', { title: 'restaurant-details/summary' })
-})
-
+// Results ofa search
 app.get('/restaurants/search/', async (req, res) => {
     let results = await restaurantService.searchRestaurants(req.query)
     res.render('restaurant', {
@@ -137,7 +85,8 @@ app.get('/restaurants/search/', async (req, res) => {
     })
 })
 
-app.get('/restaurant/details/:subpage/:id', async (req, res) => {
+// Get individual restaurants
+app.get('/restaurant/details/:id', async (req, res) => {
     let restaurants = await restaurantService.listRestaurants()
 
     for (let resta of restaurants) {
@@ -155,6 +104,7 @@ app.get('/restaurant/details/:subpage/:id', async (req, res) => {
     }
 })
 
+// Get list of restaurants in specific area (HKI / NT / KL / OI)
 app.get('/restaurants/:subpage', async (req, res) => {
     let results = await locationService.listAreas()
     let id
@@ -171,10 +121,26 @@ app.get('/restaurants/:subpage', async (req, res) => {
     })
 })
 
-//routing users
+// Routing maps
 
-app.get('/users/info', (req, res) => {
-    res.render('user_information', { title: 'userInformation' })
+app.get('/map', (req, res) => {
+    res.render('map', { title: 'map' })
+})
+
+app.get('/map/hong-kong-island', (req, res) => {
+    res.render('map', { title: 'hong-kong-island', location: req.params.location })
+})
+
+app.get('/map/new-territories', (req, res) => {
+    res.render('map', { title: 'new-territories', location: req.params.location })
+})
+
+app.get('/map/kowloon', (req, res) => {
+    res.render('map', { title: 'kowloon', location: req.params.location })
+})
+
+app.get('/map/outlying-islands', (req, res) => {
+    res.render('map', { title: 'outlying-islands', location: req.params.location })
 })
 
 // Blogs
@@ -190,10 +156,6 @@ app.get('/blogs/search/', async (req, res) => {
         title: 'blogs-search',
         blogs: results
     })
-})
-
-app.get('/users/blogs', (req, res) => {
-    res.render('user_blogs', { title: 'userBlogs' })
 })
 
 app.get('/blog/details/:id', async (req, res) => {
@@ -228,7 +190,6 @@ app.get('/user/reviews/:id', async (req, res) => {
     for (let review of reviews) {
         let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
         review.restaurant = restaurant[0]
-
     }
     res.render('user_reviews', { title: 'userReviews', reviews: reviews })
 })

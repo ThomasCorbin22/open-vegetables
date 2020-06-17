@@ -6,7 +6,6 @@ body{
 
 a, u {
     text-decoration: none !important;
-    color: rgba(0, 0, 0, 1);
     transition: 0.75s ease-in-out;
 }
 
@@ -188,14 +187,14 @@ hr{
 
 .bg-light{
     background-color: rgba(255,255,255, 1)!important;
-} */
+}
 
 .color-white{
     color: rgba(255,255,255, 1)!important;
 }
 
-.card-text{
-    color: rgba(255,255,255, 1)!important;
+.color-black{
+    color: rgba(0,0,0, 1)!important;
 }
 
 /* IDs */

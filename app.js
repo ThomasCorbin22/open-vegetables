@@ -67,9 +67,55 @@ app.get('/restaurants/all', async (req,res)=>{
     })
 })
 
+//routing maps
+
 app.get('/map', (req,res)=>{
-    res.render('map',{title:'map'})
+    res.render('map', {title:'map'})
 })
+
+//hong kong island
+
+app.get('/map/hong-kong-island/central', (req,res)=>{
+    res.render('map',{title:'central',location: req.params.location})
+})
+
+app.get('/map/hong-kong-island/wan-chai', (req,res)=>{
+    res.render('map',{title:'wan-chai',location: req.params.location})
+})
+
+app.get('/map/hong-kong-island/causeway-bay', (req,res)=>{
+    res.render('map',{title:'causeway-bay',location: req.params.location})
+})
+
+app.get('/map/hong-kong-island/north-point', (req,res)=>{
+    res.render('map',{title:'north-point',location: req.params.location})
+})
+
+//kowloon
+
+app.get('/map//map/hong-kong-island/wan-chai', (req,res)=>{
+    res.render('map',{title:'map',location: req.params.location})
+})
+
+app.get('/map//map/hong-kong-island/wan-chai', (req,res)=>{
+    res.render('map',{title:'map',location: req.params.location})
+})
+
+app.get('/map//map/hong-kong-island/wan-chai', (req,res)=>{
+    res.render('map',{title:'map',location: req.params.location})
+})
+
+//routing blogs
+
+app.get('/blogs', (req,res)=>{
+    res.render('blog',{title:'blog'})
+})
+
+app.get('/blogs/full_blog', (req,res)=>{
+    res.render('full_blog',{title:'full_blog'})
+})
+
+//routing restaurant
 
 app.get('/restaurant/details/summary',(req,res)=>{
     res.render('restaurant_details_summary',{title:'restaurant-details/summary'})
@@ -80,6 +126,8 @@ app.get('/restaurant/details/dishes',(req,res)=>{
 app.get('/restaurant/details/reviews',(req,res)=>{
     res.render('restaurant_details_reviews',{title:'restaurant-details/reviews'})
 })
+
+//routing users
 
 app.get('/users/info',(req,res)=>{
     res.render('user_information',{title:'userInformation'})

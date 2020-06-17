@@ -104,3 +104,8 @@ hr{
     max-height: 200px;
     max-width: 200px;
 }
+
+#map{
+  height: 700px;
+  width: 100%;
+}

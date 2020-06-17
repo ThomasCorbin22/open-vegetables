@@ -69,20 +69,26 @@ app.use(session({
 app.get('/', async (req, res) => {
     let blogs = await blogService.listBlogs()
     let restaurants = await restaurantService.listRestaurants()
-    console.log(req.user)
     res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
 })
 
 // Restaurants
 
+// A page showing all restaurants
 app.get('/restaurants/all', async (req, res) => {
+    let start_index = 0
+    if (req.query.page){
+        start_index = Number(req.query.page)
+    }
+
     let results = await restaurantService.listRestaurants()
     res.render('restaurant', {
         title: 'restaurants-all',
-        restaurants: results
+        restaurants: results.slice(start_index, start_index + 10)
     })
 })
 
+// Results ofa search
 app.get('/restaurants/search/', async (req, res) => {
     let results = await restaurantService.searchRestaurants(req.query)
     res.render('restaurant', {
@@ -91,7 +97,8 @@ app.get('/restaurants/search/', async (req, res) => {
     })
 })
 
-app.get('/restaurant/details/:id', async (req, res) => {
+// Get individual restaurants
+app.get('/restaurants/details/:id', async (req, res) => {
     let restaurants = await restaurantService.listRestaurants()
 
     for (let resta of restaurants) {
@@ -109,6 +116,7 @@ app.get('/restaurant/details/:id', async (req, res) => {
     }
 })
 
+// Get list of restaurants in specific area (HKI / NT / KL / OI)
 app.get('/restaurants/:subpage', async (req, res) => {
     let results = await locationService.listAreas()
     let id
@@ -123,6 +131,28 @@ app.get('/restaurants/:subpage', async (req, res) => {
         title: 'restaurants-' + req.params.subpage,
         restaurants: results
     })
+})
+
+// Routing maps
+
+app.get('/map', (req, res) => {
+    res.render('map', { title: 'map' })
+})
+
+app.get('/map/hong-kong-island', (req, res) => {
+    res.render('map', { title: 'hong-kong-island', location: req.params.location })
+})
+
+app.get('/map/new-territories', (req, res) => {
+    res.render('map', { title: 'new-territories', location: req.params.location })
+})
+
+app.get('/map/kowloon', (req, res) => {
+    res.render('map', { title: 'kowloon', location: req.params.location })
+})
+
+app.get('/map/outlying-islands', (req, res) => {
+    res.render('map', { title: 'outlying-islands', location: req.params.location })
 })
 
 // Blogs
@@ -140,24 +170,30 @@ app.get('/blogs/search/', async (req, res) => {
     })
 })
 
-app.get('/blog/details/:id', async (req, res) => {
+app.get('/blogs/details/:id', async (req, res) => {
     let blogs = await blogService.listBlogs();
     for (let blog of blogs) {
         if (blog.id == req.params.id) {
             let publisher = await userService.getUser(blog.user_id)
             let commentsBlog = await commentService.getComment(blog.id)
-            let commentBlog = []
             for (let comment of commentsBlog) {
                 let commentUser = await userService.getUser(comment.user_id)
                 comment.userName = commentUser[0].first_name
                 comment.userImage = commentUser[0].profile_picture_URL
             }
-            blog.comments = commentBlog
+            blog.comments = commentsBlog
             blog.userName = publisher[0].first_name
             blog.userImage = publisher[0].profile_picture_URL
             res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
         }
     }
+})
+
+app.get('/blogs/:sorted', async (req, res) => {
+    let blogs = await blogService.listBlogs()
+    console.log(blogs)
+
+    res.render('blog', { title: 'blogs', blogs: blogs })
 })
 
 // Users
@@ -172,7 +208,6 @@ app.get('/users/reviews/:id', async (req, res) => {
     for (let review of reviews) {
         let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
         review.restaurant = restaurant[0]
-
     }
     res.render('user_reviews', { title: 'userReviews', reviews: reviews })
 })

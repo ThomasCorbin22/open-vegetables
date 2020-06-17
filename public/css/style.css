@@ -6,12 +6,12 @@ body{
 
 a, u {
     text-decoration: none !important;
-    color: rgba(0, 0, 0, 1);
-    transition: 0.75s ease-in-out;
+    transition: 0.5s ease-in-out;
+    color:rgba(0, 0, 0, 1)
 }
 
 a:hover {
-    color:rgba(150, 150, 150, 1)
+    color:rgba(100, 100, 100, 1)
 }
 
 hr{
@@ -36,6 +36,75 @@ hr{
     color: rgba(0,0,0,.7);
 }
 
+/* Blog page */
+
+/* .leftcolumn {
+    float: left;
+    width: 75%;
+  }
+
+.blog {
+    margin-right: 2.0em;
+    font-size: 15px;
+    text-align: left;
+    background: white;
+  } */
+
+/* Header/Blog Title */
+.header {
+    padding: 30px;
+    font-size: 40px;
+    text-align: center;
+    background: white;
+}
+  
+  /* Create two unequal columns that floats next to each other */
+  /* Left column */
+.leftcolumn {
+    float: left;
+    width: 75%;
+}
+  
+  /* Right column */
+.rightcolumn {
+    float: left;
+    width: 25%;
+    padding-left: 20px;
+}
+  
+  /* Fake image */
+.fakeimg {
+    background-color: #aaa;
+    width: 100%;
+    padding: 20px;
+}
+  
+  /* Add a card effect for articles */
+.card {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+}
+  
+  /* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+  
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+    .leftcolumn, .rightcolumn {
+      width: 100%;
+      padding: 0;
+    }
+}
+  
+hr{
+    border-top: 2px solid rgba(0, 0, 0, 0.4);
+}
+
 .list-group-item {
     padding: .25rem 1.25rem;
 }
@@ -46,17 +115,27 @@ hr{
 .custom-height{
     max-height: 500px;
 }
+
 .custom-area-sm{
-    max-height: 200px;
-    max-width: 200px;
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
 }
+
+#map{
+    height: 700px;
+    width: 100%;
+}
+
 .min-area{
-min-width: 200px;
-min-height: 200px;
+    min-width: 200px;
+    min-height: 200px;
 }
+
 .custom-area-xs{
-    max-height: 100px;
-    max-width: 100px;
+    height: 100px;
+    width: 100px;
+    object-fit:cover
 }
 
 .authentication {
@@ -117,14 +196,14 @@ min-height: 200px;
 
 .bg-light{
     background-color: rgba(255,255,255, 1)!important;
-} */
+}
 
 .color-white{
     color: rgba(255,255,255, 1)!important;
 }
 
-.card-text{
-    color: rgba(255,255,255, 1)!important;
+.color-black{
+    color: rgba(0,0,0, 1)!important;
 }
 
 /* IDs */

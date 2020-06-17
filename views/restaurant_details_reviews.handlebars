@@ -5,8 +5,8 @@
                 <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{resta.id}}'>{{resta.name}}</a>
                 </h4>
                 <div class='card-body'>
-                    <img class='w-100 mb-2 custom-area-small' src={{resta.main_picture_URL}}>
-                    <img class='w-100 custom-area-small' src={{resta.logo}}>
+                    <img class='mb-2 custom-area-sm' src={{resta.main_picture_URL}}>
+                    <img class='custom-area-sm' src={{resta.logo}}>
                     <hr>
                     <p class='card-title'></p><i class="fa fa-thumbs-up"></i>
                     {{resta.rating}}</p>
@@ -46,10 +46,8 @@
             </div>
         </div>
     </div>
-</div>
-<div class='container-fluid'>
-    <div class='row'>
-        <div class='col-sm-10'>
+    <div class='row mb-3'>
+        <div class='col'>
             <h3 class='card-header my-3'>Reviews</h3>
 
             <ul class='nav justify-content-around navbar-light bg-light mb-2'>
@@ -99,8 +97,9 @@
                                 <div class='col-sm-9'>
                                     <div class='card-body'>
                                         <h5 class='card-title'>{{title}}</h5>
-                                        <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
-                                        <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>
+                                        <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
+                                        <br>
+                                        <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
                                         <p class='card-text'>{{body}}</p>
                                         <img class='card-img w-50 custom-area-sm' src={{pictures}}>
                                     </div>

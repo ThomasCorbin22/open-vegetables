@@ -2,7 +2,7 @@
 require('dotenv').config();
 
 module.exports = {
-
+  // deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main
   development: {
     client: 'postgresql',
     connection: {

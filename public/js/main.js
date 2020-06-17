@@ -1,4 +1,4 @@
-let user
+let user_id
 
 $(document).ready(function () {
   // Change active navbar link
@@ -50,9 +50,11 @@ $(document).ready(function () {
       }
       else {
         console.log(res.data)
-        user = res.data
+        user_id = res.data.id
+        console.log(user_id)
         $('#profile').show()
         $('#logout').show()
+        $('profile-link').attr('href', '/user/info/' + user_id)
       }
     })
     .catch((error) => {

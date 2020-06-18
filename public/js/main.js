@@ -55,8 +55,6 @@ $(document).ready(function () {
         $('#profile').show()
         $('#logout').show()
         $('#profile-link').attr('href', '/user/info/' + user_id)
-        console.log($('#user_nav > li  a').attr('href'))
-        // $('#user_nav').find('a').attr('href',+user_id)
       }
     })
     .catch((error) => {
@@ -79,23 +77,23 @@ $(document).ready(function () {
       })
   })
 
-//control button - create new Blog, new resta, new comment, new review
+  //control button - create new Blog, new resta, new comment, new review
   $('#createNewbtn').click(function (e) {
     if ($(this).text().match('Create')) {
       $('#createNew').show()
       $(this).text('Cancel Creation')
     } else {
       $('#createNew').hide()
-      if($(this).next().children().find('label').text().match('Title')){
+      if ($(this).next().children().find('label').text().match('Title')) {
         $(this).text('Create a new blog')
       }
-      if($(this).next().children().find('label').text().match('Name')){
+      if ($(this).next().children().find('label').text().match('Name')) {
         $(this).text('Create a new restaurant')
       }
-      if($(this).next().hasClass('newComment')){
+      if ($(this).next().hasClass('newComment')) {
         $(this).text('Create a new comment')
       }
-      if($(this).next().hasClass('newReview')){
+      if ($(this).next().hasClass('newReview')) {
         $(this).text('Create a new review')
       }
     }
@@ -124,27 +122,27 @@ $(document).ready(function () {
 
   })
 
-//control button - edit existing Blog, existing resta, existing comment, existing review
+  //control button - edit existing Blog, existing resta, existing comment, existing review
 
   $('.editBtn').click(function (e) {
     if ($(this).children().text().match('Edit')) {
       $(this).parent().next().find('.updateExisting').show()
       $(this).children().text('X')
       $(this).parent().next().find('.existContent').hide()
-    } else{
+    } else {
       $(this).children().text('Edit')
       $(this).parent().next().find('.updateExisting').hide()
       $(this).parent().next().find('.existContent').show()
     }
   })
 
-  $('#existBlogDeleteBtn').click(function(e){
+  $('#existBlogDeleteBtn').click(function (e) {
     e.preventDefault()
-    
+
   })
 
   //control add to favourite button
-  $('.add-favourite').on('click',function(e) {
+  $('.add-favourite').on('click', function (e) {
     let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
     if (e.currentTarget.innerHTML.match('☆')) {
       e.currentTarget.innerHTML = '★ Favourite Restaurant'
@@ -169,7 +167,7 @@ $(document).ready(function () {
   })
 
   // control image upload, decode image buffer to render 
-  function renderImg(e,targetDOM){
+  function renderImg(e, targetDOM) {
     let file = e.target.files[0]
     console.log(file)
 
@@ -182,46 +180,69 @@ $(document).ready(function () {
     }
   }
 
-  $('#userImageUpload').on('change', function(e) {
-    renderImg(e,$('#userImage'))
+  $('#userImageUpload').on('change', function (e) {
+    renderImg(e, $('#userImage'))
   })
-  $('.uploadImg').on('change',function(e) {
-    renderImg(e,$(this).next())
+  $('.uploadImg').on('change', function (e) {
+    renderImg(e, $(this).next())
   })
 
- //control login modal - click forget pwd to hide the original page
-$('#forgetPwdBtn').on('click',function(e){
-  $('.close').click()
-})
-$('#submitSecurity').on('click',function(e){
-  e.preventDefault()
-  $('#securityPage').hide()
-  $('#resetPwdPage').show()
-})
+  //control login modal - click forget pwd to hide the original page
+  $('#forgetPwdBtn').on('click', function (e) {
+    $('.close').click()
+  })
+  $('#submitSecurity').on('click', function (e) {
+    e.preventDefault()
+    $('#securityPage').hide()
+    $('#resetPwdPage').show()
+  })
 
-// if($('#restaLink')){
-// axios({
-//   url: '/review/list/' + $('#restaLink').attr('href').slice(-1),
-//   method: 'get'
-// })
-// .then((res) => {
-//   if(user){
-//   console.log(res.data)
-//   console.log(user.id)
-//   for(let review of res.data){
-//     if(review.id ==user.id){
-//       $(`.userID${user.id}Edit`).show()
-//       $(`.userID${user.id}Edit`).next().addClass('col-sm-12').removeClass('col-sm-10')
-//     }
-//   }}
-//   // if(user.id !== res.data.id){
+  if ($('#restaLink').text()) {
+    axios({
+      url: '/review/list/' + $('#restaLink').attr('href').slice(-1),
+      method: 'get'
+    })
+      .then((res) => {
+        if (user_id) {
+          console.log(res.data)
+          console.log(user_id)
+          for (let review of res.data) {
+            if (review.user_id == user_id) {
+              $(`.userID${user_id}Edit`).show()
+              $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+            } 
+          }
+        }
+        // if(user.id !== res.data.id){
 
-//   // }
-// })
-// .catch((error) => {
-//   console.log(error);
-// })
-// }
+        // }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+  if ($('#blogLink').text()) {
+    axios({
+      url: '/comment/list/'+$('#blogLink').attr('href').slice(-1),
+      method: 'get'
+    })
+      .then((res) => {
+        if(user_id){
+          console.log(res.data)
+          for(let comment of res.data){
+            console.log(comment)
+            if(comment.user_id == user_id){
+              $(`.userID${user_id}Edit`).show()
+              $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+            }
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+  }
 
 
   // Update users information via put request

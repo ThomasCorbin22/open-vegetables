@@ -50,7 +50,7 @@ app.engine('handlebars', hbs(
         helpers: {
             inc: function (val) { return parseInt(val + 1); },
             sameUser: function (commentId, UserId) { return commentId == UserId },
-            isdisabled: function(input) {return typeof input == 'string'}
+            isdisabled: function (input) { return typeof input == 'string' }
         }
         , defaultLayout: 'main'
     }))
@@ -129,7 +129,7 @@ app.get('/restaurants/details/:id', async (req, res) => {
                 review.userName = user[0].first_name
                 review.userImage = user[0].profile_picture_URL
             }
-
+            console.log(reviews)
             res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
         }
     }
@@ -208,85 +208,89 @@ app.get('/blogs/all', async (req, res) => {
     })
 })
 
-    app.get('/blogs/search/', async (req, res) => {
-        let results = await blogService.searchBlogs(req.query)
-        res.render('blog', {
-            title: 'blogs-search',
-            blogs: results
-        })
+app.get('/blogs/search/', async (req, res) => {
+    let results = await blogService.searchBlogs(req.query)
+    res.render('blog', {
+        title: 'blogs-search',
+        blogs: results
     })
+})
 
-    app.get('/blogs/details/:id', async (req, res) => {
-        let blogs = await blogService.listBlogs();
-        for (let blog of blogs) {
-            if (blog.id == req.params.id) {
-                let publisher = await userService.getUser(blog.user_id)
-                let commentsBlog = await commentService.getComment(blog.id)
-                for (let comment of commentsBlog) {
-                    let commentUser = await userService.getUser(comment.user_id)
-                    comment.userName = commentUser[0].first_name
-                    comment.userImage = commentUser[0].profile_picture_URL
-                }
-                blog.comments = commentsBlog
-                blog.userName = publisher[0].first_name
-                blog.userImage = publisher[0].profile_picture_URL
-                res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
+app.get('/blogs/details/:id', async (req, res) => {
+    let blogs = await blogService.listBlogs();
+    for (let blog of blogs) {
+        if (blog.id == req.params.id) {
+            let publisher = await userService.getUser(blog.user_id)
+            let commentsBlog = await commentService.getComment(blog.id)
+            for (let comment of commentsBlog) {
+                let commentUser = await userService.getUser(comment.user_id)
+                comment.userName = commentUser[0].first_name
+                comment.userImage = commentUser[0].profile_picture_URL
             }
+            blog.comments = commentsBlog
+            blog.userName = publisher[0].first_name
+            blog.userImage = publisher[0].profile_picture_URL
+            res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
         }
-    })
+    }
+})
 
-    app.get('/blogs/:sorted', async (req, res) => {
-        let blogs = await blogService.listBlogs()
-        console.log(blogs)
+app.get('/blogs/:sorted', async (req, res) => {
+    let blogs = await blogService.listBlogs()
+    console.log(blogs)
 
-        res.render('blog', { title: 'blogs', blogs: blogs })
-    })
+    res.render('blog', { title: 'blogs', blogs: blogs })
+})
 
-    // Users
+// Users
 
-    app.get('/user/info/:id', async (req, res) => {
-        let user = await userService.getUser(req.params.id)
-        res.render('user_information', { title: 'userInformation', user: user[0] })
-    })
+app.get('/user/info/:id', async (req, res) => {
+    let user = await userService.getUser(req.params.id)
+    res.render('user_information', { title: 'userInformation', user: user[0] })
+})
 
-    app.get('/user/reviews/:id', async (req, res) => {
-        let reviews = await reviewService.getReview(req.params.id)
-        for (let review of reviews) {
-            let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
-            review.restaurant = restaurant[0]
-        }
-        res.render('user_reviews', { title: 'userReviews', reviews: reviews })
-    })
+app.get('/user/reviews/:id', async (req, res) => {
+    let user = await userService.getUser(req.params.id)
 
-    app.get('/user/blogs/:id', async (req, res) => {
-        let user = await userService.getUser(req.params.id)
-        let userOwnBlogs = user[0].blog_access
-        let blogImg
-        for (let blog of userOwnBlogs) {
-            blogImg = await blogService.getPicture(blog.id)
-            blog.blogImg = blogImg[0]
-        }
-        console.log(userOwnBlogs)
+    let reviews = await reviewService.getReview(req.params.id)
+    for (let review of reviews) {
+        let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
+        review.restaurant = restaurant[0]
+    }
+    res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
+})
 
-        res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs })
-    })
+app.get('/user/blogs/:id', async (req, res) => {
+    let user = await userService.getUser(req.params.id)
+    let userOwnBlogs = user[0].blog_access
+    let blogImg
+    for (let blog of userOwnBlogs) {
+        blogImg = await blogService.getPicture(blog.id)
+        blog.blogImg = blogImg[0]
+    }
+    console.log(userOwnBlogs)
 
-    app.get('/users/restaurants/:id', (req, res) => {
-        res.render('user_restaurants', { title: 'userRestaurants' })
-    })
+    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
+})
+
+app.get('/user/restaurants/:id', async (req, res) => {
+    let user = await userService.getUser(req.params.id)
+
+    res.render('user_restaurants', { title: 'userRestaurants', ownResta: user[0].restaurant_access, user: user[0] })
+})
 
 
-    // Initialise passport
-    initPassport(app);
+// Initialise passport
+initPassport(app);
 
-    // Set up routers
-    app.use('/user', new UserRouter(userService).route());
-    app.use('/restaurant', new RestaurantRouter(restaurantService).route());
-    app.use('/blog', new BlogRouter(blogService).route());
-    app.use('/comment', new CommentRouter(commentService).route());
-    app.use('/review', new ReviewRouter(reviewService).route());
-    app.use('/auth', new AuthRouter().route());
-    app.use('/location', new LocationRouter().route());
+// Set up routers
+app.use('/user', new UserRouter(userService).route());
+app.use('/restaurant', new RestaurantRouter(restaurantService).route());
+app.use('/blog', new BlogRouter(blogService).route());
+app.use('/comment', new CommentRouter(commentService).route());
+app.use('/review', new ReviewRouter(reviewService).route());
+app.use('/auth', new AuthRouter().route());
+app.use('/location', new LocationRouter().route());
 
-    // Set up server
-    server.listen(port);
+// Set up server
+server.listen(port);

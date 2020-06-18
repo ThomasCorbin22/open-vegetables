@@ -1,0 +1,24 @@
+<form  action='/restaurant/details/{{resta.id}}' method='PUT' style='display:none' class='card-body updateExisting'  >
+    <div class="form-group">
+        <label for="existTitle">Title</label>
+        <input type="text" class="form-control" id="existTitle" name='title' placeholder="Enter Title"
+            value='{{title}}'>
+    </div>
+    <div class='form-group'>
+        <label for='existBody'>Body</label>
+        <textarea name='body' class='form-control ' rows='3' id='existBody'>{{body}}</textarea>
+    </div>
+    <div class='row'>
+            <div class='mx-3 col-sm-4'>
+        <label class="custom-file-label" for="existImg">Images </label>
+        <input type="file" class='custom-file-input uploadImg' id="existImg" name='picture_URL'>
+        <img class='my-2 custom-area-sm min-area ' src='{{pictures}}'>
+            </div>
+         </div>
+    <div class='form-group'>
+        <button type="submit" id='existSubmitBtn' class="btn btn-primary">Submit</button>
+        <button type="reset" id='existResetBtn' class="btn btn-primary">Reset </button>
+        <button type="submit" id='existDeleteBtn' class="ml-auto btn btn-danger">Delete this review !!</button>
+
+    </div>
+</form>

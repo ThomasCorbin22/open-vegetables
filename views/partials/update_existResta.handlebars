@@ -1,31 +1,31 @@
-<form id='updateExisting' action='/user/blog{{id}}/userNumber{{blogs.user_id}}' method='POST' style='display:none'>
+<form  action='/user/blog{{id}}/userNumber{{blogs.user_id}}' method='POST' style='display:none' class='updateExisting'>
     <div class="form-group">
-        <label for="existRestaName">Restaurant Name</label>
-        <input type="text" class="form-control" id="existRestaName" name='name' value='{{name}}'>
+        <label >Restaurant Name</label>
+        <input type="text" class="form-control" name='name' value='{{name}}'>
     </div>
     <div class="form-group">
-        <label for="existRestaAddress">Restaurant Address</label>
-        <input type="text" class="form-control" id="existRestaAddress" name='street_address' value={{street_address}}>
+        <label >Restaurant Address</label>
+        <input type="text" class="form-control" name='street_address' value={{street_address}}>
     </div>
     <div class="form-group">
-        <label for="existRestaPhone">Contact Number</label>
-        <input type="text" class="form-control" id="existRestaPhone" name='telephone_number' value={{telephone_number}}>
+        <label >Contact Number</label>
+        <input type="text" class="form-control" name='telephone_number' value={{telephone_number}}>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col">
-                <label for="existRestaPhone">Opening Hour</label>
+                <label >Opening Hour</label>
                 <input name='opening_time' type="text" class="form-control" value="{{opening_time}}">
             </div>
             <div class="col">
-                <label for="existRestaPhone">Closing Hour</label>
+                <label >Closing Hour</label>
                 <input name='closing_time' type="text" class="form-control" value="{{closing_time}}">
             </div>
         </div>
     </div>
     <div class="form-group">
-        <label for="existRestaPrice">Price Ranges (per each)</label>
-        <select class="form-control" id="existRestaPrice">
+        <label >Price Ranges (per each)</label>
+        <select class="form-control">
             <option>$50-100</option>
             <option>$101-150</option>
             <option>$151-200</option>
@@ -34,28 +34,28 @@
         </select>
     </div>
     <div class="form-group">
-        <label for="existRestaURL">Web Address</label>
-        <input type="text" class="form-control" id="existRestaURL" name='website_URL' value="{{website_URL}}">
+        <label >Web Address</label>
+        <input type="text" class="form-control" name='website_URL' value="{{website_URL}}">
     </div>
     <div class="form-group">
-        <label for="existRestaSocial">Social Media</label>
-        <input type="text" class="form-control" id="existRestaSocial" name='social_media_URL'
+        <label >Social Media</label>
+        <input type="text" class="form-control" name='social_media_URL'
             value="{{social_media_URL}}">
     </div>
     <div class='form-group'>
-        <label for='existRestaDescri'>Description</label>
-        <textarea name='body' class='form-control ' rows='3' id='existRestaDescri'>{{description}}</textarea>
+        <label >Description</label>
+        <textarea name='body' class='form-control ' rows='3'>{{description}}</textarea>
     </div>
     <div class="form-group">
         <div class='row'>
             <div class='mx-3 col'>
-                <label class="custom-file-label" for="existLogo"> Logo</label>
-                <input type="file"  class='custom-file-input uploadImg'id="existLogo" name='logo'>
+                <label class="custom-file-label" > Logo</label>
+                <input type="file"  class='custom-file-input uploadImg' name='logo'>
                 <img class='my-2 custom-area-sm min-area'src='{{logo}}'>
             </div>
             <div class='mx-3 col'>
-                <label class="custom-file-label" for="existImg"> Main Picture</label>
-                <input type="file"  class='custom-file-input uploadImg'id="existImg" name='main_picture_URL'>
+                <label class="custom-file-label" > Main Picture</label>
+                <input type="file"  class='custom-file-input uploadImg' name='main_picture_URL'>
                 <img class='my-2  custom-area-sm min-area' src='{{main_picture_URL}}'>
             </div>
 
@@ -63,9 +63,9 @@
 
     </div>
     <div class='form-group'>
-        <button type="submit" id='existBlogSubmitBtn' class="btn btn-primary">Submit</button>
-        <button type="reset" id='existBlogResetBtn' class="btn btn-primary">Reset </button>
-        <button type="submit" id='existBlogDeleteBtn' class="ml-auto btn btn-danger">Delete this restaurant
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="reset" class="btn btn-primary">Reset </button>
+        <button type="submit" class="ml-auto btn btn-danger">Delete this restaurant
             !!</button>
     </div>
 </form>

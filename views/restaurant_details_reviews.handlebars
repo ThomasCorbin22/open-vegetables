@@ -2,7 +2,8 @@
     <div class='card'>
         <div class='row'>
             <div class='col-sm-4'>
-                <h4 class='card-header'><a href='/restaurant/details/restaNumber{{resta.id}}'>{{resta.name}}</a></h4>
+                <h4 class='card-header'><a id='restaLink' href='/restaurants/details/{{resta.id}}'>{{resta.name}}</a>
+                </h4>
                 <div class='card-body'>
                     <img class='mb-2 custom-area-sm' src={{resta.main_picture_URL}}>
                     <img class='custom-area-sm' src={{resta.logo}}>
@@ -48,48 +49,66 @@
     <div class='row mb-3'>
         <div class='col'>
             <h3 class='card-header my-3'>Reviews</h3>
-            <div class='row'>
-                <div class='col-sm-12'>
-                    <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
-                        <span>Create a new review</span>
-                    </button>
-                    {{>create_newReview}}
-                </div>
-            </div>
-            <div class="row">
-                {{#each reviews}}
-                {{#if (sameUser )}}
-                <div class='col-sm-2'>
-                    <button type="button" id='editBtn' class=" btn btn-light h-100 btn-lg btn-block ">
-                        <span>Edit</span>
-                    </button>
-                </div>
-                <div class='col-sm-10'>
-                {{else}}
-                <div class='col-sm-12'>
-                {{/if}}
-                    <div class='card custom-height overflow-auto mt-0'>
-                        <div class='row'>
-                            <div class='col-sm-3'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>{{userName}}</h5>
-                                    <img class='custom-area-xs' src={{userImage}}>
+
+            <ul class='nav justify-content-around navbar-light bg-light mb-2'>
+                <li class='nav-item'>
+                    <a href='#' class='nav-link'>Latest</a>
+                </li>
+                <li class='nav-item'>
+                    <a href='#' class='nav-link'>Rate</a>
+                </li>
+                <li class='nav-item'>
+                    <a href='#' class='nav-link'>Hotest</a>
+                </li>
+                <li clas='nav-item dropdown'>
+                    <a href='#' class='nav-link'>Publisher</a>
+                </li>
+            </ul>
+            <div class='container-fluid'>
+
+                <div class='row'>
+                    <div class='col-sm-12'>
+                        <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
+                            <span>Create a new review</span>
+                        </button>
+                        {{>create_newReview}}
+                    </div>
+                    {{#each reviews}}
+                    <div class='col-sm-2 userID{{review.user_id}}Edit'>
+                        <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
+                            <span>Edit</span>
+                        </button>
+                    </div>
+                    <div class='col-sm-10'>
+                        <div class='card custom-height overflow-auto'>
+                            <div class='row'>
+                                <div class='col-sm-12'>
+                                    {{>update_existReview}}
                                 </div>
                             </div>
-                            <div class='col-sm-9'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>{{title}}</h5>
-                                    <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
-                                    <br>
-                                    <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
-                                    <p class='card-text'>{{body}}</p>
-                                    <img class='card-img w-50 custom-area-sm' src={{pictures}}>
+                            <div class='row existContent'>
+                                <div class='col-sm-3'>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>{{userName}}</h5>
+                                        <img class='w-100 custom-area-small' src={{userImage}}>
+
+                                    </div>
+                                </div>
+                                <div class='col-sm-9'>
+                                    <div class='card-body'>
+                                        <h5 class='card-title'>{{title}}</h5>
+                                        <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
+                                        <br>
+                                        <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
+                                        <p class='card-text'>{{body}}</p>
+                                        <img class='card-img w-50 custom-area-sm' src={{pictures}}>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {{/each}}
                     </div>
                 </div>
-                {{/each}}
             </div>
         </div>
     </div>

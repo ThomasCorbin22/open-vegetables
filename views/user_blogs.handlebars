@@ -16,7 +16,7 @@
                     </div>
                     {{#each blogs}}
                     <div class='col-sm-2'>
-                        <button type="button" id='editBtn' class=" btn btn-light h-100 btn-lg btn-block ">
+                        <button type="button"  class=" btn btn-light h-100 btn-lg btn-block editBtn ">
                             <span>Edit</span>
                         </button>
                     </div>
@@ -24,7 +24,7 @@
 
                        {{> update_existBlog}}
 
-                        <div class='card custom-height overflow-auto'>
+                        <div  class='card custom-height overflow-auto existContent' >
                             <a href='/blog/blogNumber{{id}}'>
                                 <h2 class='card-header'> {{title}}</h2>
                             </a>

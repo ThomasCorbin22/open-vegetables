@@ -77,7 +77,7 @@ app.get('/', async (req, res) => {
 // A page showing all restaurants
 app.get('/restaurants/all', async (req, res) => {
     let start_index = 0
-    if (req.query.page){
+    if (req.query.page) {
         start_index = Number(req.query.page)
     }
 
@@ -211,7 +211,7 @@ app.get('/user/reviews/:id', async (req, res) => {
         let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
         review.restaurant = restaurant[0]
     }
-    res.render('user_reviews', { title: 'userReviews', reviews: reviews,user: user[0] })
+    res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
 })
 
 app.get('/user/blogs/:id', async (req, res) => {
@@ -224,13 +224,13 @@ app.get('/user/blogs/:id', async (req, res) => {
     }
     console.log(userOwnBlogs)
 
-    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs,user: user[0] })
+    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
 })
 
-app.get('/user/restaurants/:id', async(req, res) => {
+app.get('/user/restaurants/:id', async (req, res) => {
     let user = await userService.getUser(req.params.id)
-
-    res.render('user_restaurants', { title: 'userRestaurants',ownResta:user[0].restaurant_access,user:user[0]})
+    console.log(user[0].restaurant_access)
+    res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
 })
 
 

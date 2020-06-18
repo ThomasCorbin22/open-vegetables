@@ -11,7 +11,7 @@
                         {{> create_newResta}}
 
                     </div>
-                    {{#each ownResta}}
+                    {{#each ownRestas}}
                     <div class='col-sm-2'>
                         <button type="button"  class=" btn btn-light h-100 btn-lg btn-block editBtn">
                             <span>Edit</span>
@@ -23,7 +23,7 @@
 
                         <div  class='card flex-row custom-height overflow-auto mb-3 existContent'>
                             <div class='col-sm-4'>
-                                <h5 class='card-header'><a href='/restaurants/details/{{id}}'>{{name}}</a>
+                                <h5 class='card-header'><a class='restaLink' href='/restaurants/details/{{id}}'>{{name}}</a>
                                 </h5>
                                 <div class='card-body'>
                                     <img class='w-100 mb-2 custom-area-small' src={{main_picture_URL}}>

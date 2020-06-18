@@ -197,9 +197,10 @@ $(document).ready(function () {
     $('#resetPwdPage').show()
   })
 
+  //user update reviews (edit button available)
   if ($('#restaLink').text()) {
     axios({
-      url: '/review/list/' + $('#restaLink').attr('href').slice(-1),
+      url: '/review/list/' + parseInt($('#restaLink').attr('href').match(/\d+/)),
       method: 'get'
     })
       .then((res) => {
@@ -210,28 +211,28 @@ $(document).ready(function () {
             if (review.user_id == user_id) {
               $(`.userID${user_id}Edit`).show()
               $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
-            } 
+            }
           }
         }
-        // if(user.id !== res.data.id){
-
-        // }
       })
       .catch((error) => {
         console.log(error);
       })
   }
+
+  //user update comment (edit button available)
+
   if ($('#blogLink').text()) {
     axios({
-      url: '/comment/list/'+$('#blogLink').attr('href').slice(-1),
+      url: '/comment/list/' + parseInt($('#blogLink').attr('href').match(/\d+/)),
       method: 'get'
     })
       .then((res) => {
-        if(user_id){
+        if (user_id) {
           console.log(res.data)
-          for(let comment of res.data){
+          for (let comment of res.data) {
             console.log(comment)
-            if(comment.user_id == user_id){
+            if (comment.user_id == user_id) {
               $(`.userID${user_id}Edit`).show()
               $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
             }
@@ -256,40 +257,8 @@ $(document).ready(function () {
     let description = $('#description').val()
     let profile_picture_URL = $('#userImage').attr('src')
 
-
-    // axios({
-    //   url: `/${user_id}`,
-    //   method: 'put',
-    //   data: {
-    //     "display_name": displayName,
-    //     "first_name": firstName,
-    //     "last_name": lastName,
-    //     "email": email,
-    //     "password": password,
-    //     "description": description,
-    //     'profile_picture_URL': profile_picture_URL
-    //   }
-    // })
-    //   .then((res) => {
-
-    //     $('#nameFirst').attr('placeholder', res.data)
-    //     $('#nameLast').attr('placeholder', res.data)
-    //     $('#email').attr('placeholder', res.data)
-    //     $('#nameDisplay').attr('placeholder', res.data)
-    //     $('#password').attr('placeholder', res.data)
-    //     $('#description').attr('placeholder', res.data)
-    //     $('#userImage').attr('src')
-    //   })
-
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-
-
-    let userImageURL = $('#userImage').attr('src')
-
     axios({
-      url: `/${user_id}`,
+      url: `/user/${user_id}`,
       method: 'put',
       data: {
         "display_name": displayName,
@@ -302,10 +271,131 @@ $(document).ready(function () {
       }
     })
       .then((res) => {
-        console.log(res.data)
+        console.log(res)
+        $('#nameFirst').attr('placeholder', res.data)
+        $('#nameLast').attr('placeholder', res.data)
+        $('#email').attr('placeholder', res.data)
+        $('#nameDisplay').attr('placeholder', res.data)
+        $('#password').attr('placeholder', res.data)
+        $('#description').attr('placeholder', res.data)
+        $('#userImage').attr('src')
+      })
+
+      .catch((error) => {
+        console.log(error);
+      })
+  })
+
+  // Add new restaurant + corresponding user can access it=
+  $('#newRestaSubmitBtn').click(function (e) {
+    e.preventDefault()
+    let restaName = $('#newRestaName').val()
+    let restaAddress = $('#newRestaAddress').val()
+    let restaDistrict
+    let restaDescri = $('#newRestaDescri').val()
+    let newLogo = $('#newLogo').next().attr('src')
+    let restaPrice = $('#newRestaPrice').val()
+    let restaPhone = $('#newRestaPhone').val()
+    let restaSocial = $('#newRestaSocial').val()
+    let restaURL = $('#newRestaURL').val()
+    let newImg = $('#newImg').next().attr('src')
+
+
+    let restaOp = $('#newRestaOp').val()
+    let restaCl = $('#newRestaCl').val()
+
+    axios({
+      url: '/restaurant',
+      method: 'post',
+      data: {
+        "name": restaName,
+        "street_address": restaAddress,
+        "district_id": 1,
+        "description": restaDescri,
+        "logo": newLogo,
+        "price": restaPrice,
+        "telephone_number": restaPhone,
+        "social_media_URL": restaSocial,
+        "main_picture_URL": newImg,
+        "website_URL": restaURL,
+        "latitude": 19.3,
+        "longitude": 105.2,
+        "monday": `${restaOp}-${restaCl}`,
+        "tuesday": `${restaOp}-${restaCl}`,
+        "wednesday": `${restaOp}-${restaCl}`,
+        "thursday": `${restaOp}-${restaCl}`,
+        "friday": `${restaOp}-${restaCl}`,
+        "saturday": `${restaOp}-${restaCl}`,
+        "sunday": `${restaOp}-${restaCl}`,
+      }
+    })
+      .then((res) => {
+        console.log(res.data[0])
+        axios({
+          url: '/user/access',
+          method: 'post',
+          data: {
+            "user_id": user_id,
+            "restaurant_id": res.data[0].id
+          }
+        })
+          .then((res) => {
+            console.log(res.data)
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          })
       })
       .catch((error) => {
         console.log(error);
       })
   })
-});
+})
+$('.btnGroup button:eq(1)').click(function(e){
+  let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
+axios({
+  url: '/restaurant/'+ parseInt(resta_id),
+  method: 'put',
+  data: {
+      "name": 'Our cool restaurant: V2',
+      "street_address": 'GreenLand',
+      "district_id": 4,
+      "description": 'Nicer food',
+      "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
+      "price": 2,
+      "telephone_number": '999',
+      "social_media_URL": 'www.google.com',
+      "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+      "website_URL": 'www.cool.com',
+      "latitude": 23.0,
+      "longitude": 113.6,
+      "opening_time": '09:30',
+      "closing_time": '21:50'
+  }
+})
+.then((res) => {
+  console.log(res.data)
+})
+.catch((error) => {
+  console.log(error);
+})
+})
+//Delete restaurant
+$('.btnGroup button:last-child').click(function(e){
+  e.preventDefault()
+  let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
+  console.log(resta_id)
+  axios({
+    url: '/restaurant/'+  parseInt(resta_id),
+    method: 'delete'
+  })
+  .then((res) => {
+    console.log(res.data)
+    location.reload();
+
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+})

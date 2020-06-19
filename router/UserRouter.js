@@ -111,12 +111,16 @@ class UserRouter {
         let id = req.params.id
 
         let user = {
+            display_name: req.body.display_name,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
             password: req.body.password,
             description: req.body.description,
-            date_modified: new Date()
+            date_modified: new Date(),
+            // security_question: req.body.security_question,
+            // security_answer: req.body.security_answer,
+            // profile_picture_URL: req.body.profile_picture_URL
         }
 
         return this.userService.updateUser(user, id)
@@ -401,8 +405,8 @@ class UserRouter {
     // Display's user favourite restaurants
     async displayRestaurants(req, res) {
         let user = await userService.getUser(req.params.id)
-
-        res.render('user_restaurants', { title: 'userRestaurants', ownResta: user[0].restaurant_access, user: user[0] })
+        console.log(user[0].restaurant_access)
+        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
     }
 }
 

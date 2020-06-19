@@ -12,7 +12,7 @@
                     </div>
                     <div class='col-sm-9'>
 
-                        <h4 class='card-header'>{{blog.title}}</h4>
+                        <h4 class='card-header' ><a id='blogLink' href='/blogs/details/{{blog.id}}'>{{blog.title}}</a></h4>
                         <div class='card-body'>
                             <h7 class='card-subtitle'>
                                 {{#each blog.categories}}
@@ -48,12 +48,12 @@
                         {{>create_newComment}}
                     </div>
                     {{#each comments}}
-                    <div class='col-sm-2 userID{{review.user_id}}Edit'>
+                    <div class='col-sm-2 userID{{user_id}}Edit' style='display:none'>
                         <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
                             <span>Edit</span>
                         </button>
                     </div>
-                    <div class='col-sm-10'>
+                    <div class='col-sm-12'>
                         <div class='card custom-height overflow-auto'>
                             <div class='row'>
                                 <div class='col-sm-12'>

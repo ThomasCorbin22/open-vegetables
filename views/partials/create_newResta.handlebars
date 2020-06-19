@@ -1,4 +1,4 @@
-<form id='createNew' action='/user/blogs/{{blogs.user_id}}' method='POST' style="display:none">
+<form id='createNew'  style="display:none">
     <div class="form-group">
         <label for="newRestaName">Restaurant Name</label>
         <input type="text" class="form-control" id="newRestaName" name='name' placeholder="Enter name">
@@ -14,12 +14,12 @@
     <div class="form-group">
         <div class="row">
             <div class="col">
-                <label for="newRestaPhone">Opening Hour</label>
-                <input name='opening_time' type="text" class="form-control" placeholder="">
+                <label for="newRestaOp">Opening Hour</label>
+                <input name='opening_time' type="text" id='newRestaOp'class="form-control" placeholder="">
             </div>
             <div class="col">
-                <label for="newRestaPhone">Closing Hour</label>
-                <input name='closing_time' type="text" class="form-control" placeholder="">
+                <label for="newRestaCl">Closing Hour</label>
+                <input name='closing_time' type="text" id='newRestaCl' class="form-control" placeholder="">
             </div>
         </div>
     </div>
@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class='form-group'>
-        <button type="submit" id='newSubmitBtn' class="btn btn-primary">Submit</button>
+        <button type="submit" id='newRestaSubmitBtn' class="btn btn-primary">Submit</button>
 
     </div>
 </form>

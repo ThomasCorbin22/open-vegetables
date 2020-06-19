@@ -4,7 +4,9 @@ let direction = 'ascending'
 let area = 'all'
 
 $(document).ready(function () {
-  initMap()
+  if ($('title').text().match('map')) {
+    initMap()
+  }
 
   // Change active navbar link
   if ($('title').text().match('Home')) {

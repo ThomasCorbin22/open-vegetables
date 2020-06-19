@@ -25,8 +25,6 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), options);
 }
 
-console.log('/restaurant/search?district=' + extractsDistrict())
-
 // Search all restaurants
 axios({
     url: '/restaurant/search?district=' + extractsDistrict(),
@@ -34,7 +32,7 @@ axios({
 })
 .then((res) => {
     // res.data will have all of the corresponding restaurants that have correct area and district
-    console.log(res.data)
+    // console.log(res.data)
 
     for (let restaurant in res.data){
         let lat = restaurant.latitude

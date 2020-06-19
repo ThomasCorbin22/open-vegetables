@@ -1,0 +1,14 @@
+<div class='row my-2'>
+    <div class="col">
+        <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[0]}}/{{pages.opposite_direction}}';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize'>{{pages.filter_options.[0]}}</button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[1]}}/{{pages.opposite_direction}}';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize'>{{pages.filter_options.[1]}}</button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[2]}}/{{pages.opposite_direction}}';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize'>{{pages.filter_options.[2]}}</button>
+        </ul>
+    </div>
+</div>

@@ -8,12 +8,12 @@ class UserRouter {
 
     route() {        
         // Deals with individual users
-        this.router.get('/', this.listUsers.bind(this));
+        this.router.get('/list', this.listUsers.bind(this));
         this.router.get('/search', this.searchUsers.bind(this));
-        this.router.get('/:id', this.getUser.bind(this));
-        this.router.post('/', this.postUser.bind(this));
-        this.router.put('/:id', this.putUser.bind(this));
-        this.router.delete('/:id', this.deleteUser.bind(this));
+        this.router.get('/individual/:id', this.getUser.bind(this));
+        this.router.post('/individual/', this.postUser.bind(this));
+        this.router.put('/individual/:id', this.putUser.bind(this));
+        this.router.delete('/individual/:id', this.deleteUser.bind(this));
 
         // Deals with user access
         this.router.get('/access/list/:id', this.listAccess.bind(this));
@@ -23,18 +23,24 @@ class UserRouter {
         this.router.delete('/access/:id', this.deleteAccess.bind(this));
 
         // Deals with user favourite restaurants
-        this.router.get('/restaurant/list/:id', this.listRestaurants.bind(this));
-        this.router.get('/restaurant/:id', this.getRestaurant.bind(this));
-        this.router.post('/restaurant/', this.postRestaurant.bind(this));
-        this.router.put('/restaurant/:id', this.putRestaurant.bind(this));
-        this.router.delete('/restaurant/:id', this.deleteRestaurant.bind(this));
+        this.router.get('/favourite/restaurant/list/:id', this.listRestaurants.bind(this));
+        this.router.get('/favourite/restaurant/:id', this.getRestaurant.bind(this));
+        this.router.post('/favourite/restaurant/', this.postRestaurant.bind(this));
+        this.router.put('/favourite/restaurant/:id', this.putRestaurant.bind(this));
+        this.router.delete('/favourite/restaurant/:id', this.deleteRestaurant.bind(this));
 
         // Deals with user favourite blog posts
-        this.router.get('/blog/list/:id', this.listBlogs.bind(this));
-        this.router.get('/blog/:id', this.getBlog.bind(this));
-        this.router.post('/blog/', this.postBlog.bind(this));
-        this.router.put('/blog/:id', this.putBlog.bind(this));
-        this.router.delete('/blog/:id', this.deleteBlog.bind(this));
+        this.router.get('/favourite/blog/list/:id', this.listBlogs.bind(this));
+        this.router.get('/favourite/blog/:id', this.getBlog.bind(this));
+        this.router.post('/favourite/blog/', this.postBlog.bind(this));
+        this.router.put('/favourite/blog/:id', this.putBlog.bind(this));
+        this.router.delete('/favourite/blog/:id', this.deleteBlog.bind(this));
+
+        // Deals with user favourite blog posts
+        this.router.get('/info/:id', this.displayInfo.bind(this));
+        this.router.get('/reviews/:id', this.displayReviews.bind(this));
+        this.router.post('/blogs/:id', this.displayBlogs.bind(this));
+        this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
 
         return this.router
     }
@@ -358,6 +364,45 @@ class UserRouter {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    // Display's user information
+    async displayInfo(req, res) {
+        let user = await userService.getUser(req.params.id)
+        res.render('user_information', { title: 'userInformation', user: user[0] })
+    }
+
+    // Display's user reviews
+    async displayReviews(req, res) {
+        let user = await userService.getUser(req.params.id)
+
+        let reviews = await reviewService.getReview(req.params.id)
+        for (let review of reviews) {
+            let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
+            review.restaurant = restaurant[0]
+        }
+        res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
+    }
+
+    // Display's user blogs
+    async displayBlogs(req, res) {
+        let user = await userService.getUser(req.params.id)
+        let userOwnBlogs = user[0].blog_access
+        let blogImg
+        for (let blog of userOwnBlogs) {
+            blogImg = await blogService.getPicture(blog.id)
+            blog.blogImg = blogImg[0]
+        }
+        console.log(userOwnBlogs)
+    
+        res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
+    }
+
+    // Display's user favourite restaurants
+    async displayRestaurants(req, res) {
+        let user = await userService.getUser(req.params.id)
+
+        res.render('user_restaurants', { title: 'userRestaurants', ownResta: user[0].restaurant_access, user: user[0] })
     }
 }
 

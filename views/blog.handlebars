@@ -1,18 +1,10 @@
 <div class='container-fluid'>
-    <div class='row my-2'>
-        <div class="col">
-            <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
-                <button onclick="window.location.href='/blogs/latest';" class='btn btn-primary btn-green flex-grow-1'>Latest</button>
-                <button onclick="window.location.href='/blogs/rating';" class='btn btn-primary btn-green flex-grow-1'>Rating</button>
-                <button onclick="window.location.href='/blogs/publisher';" class='btn btn-primary btn-green flex-grow-1'>Publisher</button>
-            </ul>
-        </div>
-    </div>
+    {{> filter_nav}}
     <div class="row">
         <div class="col">
             {{#each blogs}}
             <div class='card custom-height overflow-auto mt-0 mb-3'>
-                <a href='details/{{id}}'>
+                <a href='/blog/details/{{id}}'>
                     <h5 class='card-header'> {{title}}</h5>
                 </a>
                 <div class='card-body'>
@@ -40,18 +32,5 @@
             {{/each}}
         </div>
     </div>
-        <div class='row my-2'>
-        <div class="col">
-            <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
-                <button onclick="window.location.href='/blogs/all?page={{pages.first}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>First</button>
-                <button onclick="window.location.href='/blogs/all?page={{pages.previous}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>Previous</button>
-                <button onclick="window.location.href='/blogs/all?page={{pages.next}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>Next</button>
-                <button onclick="window.location.href='/blogs/all?page={{pages.last}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>Last</button>
-            </ul>
-        </div>
-    </div>
+    {{> pagination_controls}}
 </div>

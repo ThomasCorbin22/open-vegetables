@@ -1,4 +1,7 @@
 let user_id
+let filter = 'none'
+let direction = 'ascending'
+let area = 'all'
 
 $(document).ready(function () {
   // Change active navbar link
@@ -19,13 +22,13 @@ $(document).ready(function () {
   $('#form-search').on('submit', (e) => {
     e.preventDefault();
 
-    let filter = $('#form-filter').val()
+    let route = $('#form-filter').val()
     let input = $('#form-input').val()
     let url
 
-    if (filter === 'restaurants') url = '/' + filter + '/search/?name=' + input
-    else if (filter === 'blogs') url = '/' + filter + '/search/?title=' + input
-    else if (filter === 'users') url = '/' + filter + '/search/?display_name=' + input
+    if (route === 'restaurants') url = '/restaurant' + '/' + area + '/' + filter + '/' + direction + '?name=' + input
+    else if (route === 'blogs') url = '/blog' + '/' + filter + '/' + direction + '?title=' + input
+    else if (route === 'users') url = '/user/all?display_name=' + input
 
     window.location.replace(url);
   })

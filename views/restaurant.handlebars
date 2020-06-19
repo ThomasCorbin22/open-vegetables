@@ -1,14 +1,16 @@
 <div class='container-fluid'>
-    {{> restaurants_nav}}
+    {{> filter_nav}}
     <div class='row'>
         <div class="col">
             {{#each restaurants}}
             <div class='card mb-3 mt-0'>
                 <div class='row'>
                     <div class='col-sm-4'>
-                        <h5 class='card-header'><a href='/restaurants/details/{{id}}'>{{name}}</a></h5>
+                        <h5 class='card-header'><a href='/restaurant/details/{{id}}'>{{name}}</a></h5>
                         <div class='card-body'>
-                            <img class='w-100 mb-2' src={{main_picture_URL}}>
+                            {{#if main_picture_URL}}
+                            <img class='w-100 mb-2' src='{{main_picture_URL}}'>
+                            {{/if}}
                             {{#if logo}}
                             <img class='w-100 custom-area-xs' src={{logo}}>
                             {{/if}}
@@ -43,19 +45,11 @@
                                 </tr>
                                 <tr>
                                     <th>Address: </th>
-                                    <th> {{street_address}}</th>
-                                </tr>
-                                <tr>
-                                    <th>Web Address: </th>
-                                    <th> {{website_URL}}</th>
+                                    <th> {{street_address}}<br>{{district}}<br>{{area}}</th>
                                 </tr>
                                 <tr>
                                     <th>Opening Hours :</th>
-                                    <th> {{opening_time}} - {{closing_time}}</th>
-                                </tr>
-                                <tr>
-                                    <th>Social Media: </th>
-                                    <th><a href='{{social_media_URL}}'> {{social_media_URL}}</a></th>
+                                    <th> {{opening_hours}}</th>
                                 </tr>
                             </tbody>
                         </table>
@@ -65,21 +59,5 @@
             {{/each}}
         </div>
     </div>
-    <div class='row my-2'>
-        <div class="col">
-            <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
-                {{#if (isDisabled value1)}}true{{else}}false{{/if}}
-
-                <button onclick="window.location.href='/restaurants/all?page={{pages.first}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>First</button>
-                <button onclick="window.location.href='/restaurants/all?page={{pages.previous}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>Previous</button>
-                <button onclick="window.location.href='/restaurants/all?page={{pages.next}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>Next</button>
-                <button onclick="window.location.href='/restaurants/all?page={{pages.last}}';"
-                    class='btn btn-primary btn-green flex-grow-1'>Last</button>
-
-            </ul>
-        </div>
-    </div>
+    {{> pagination_controls}}
 </div>

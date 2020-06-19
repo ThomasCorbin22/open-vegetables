@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" href="https://localhost:8080/css/style.css">
 
+    <script src="https://kit.fontawesome.com/3414aa6637.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -37,18 +38,18 @@
                         Restaurants
                     </a>
                     <div class="dropdown-menu bg-green" aria-labelledby="restaurantLocation">
-                        <a class="dropdown-item hover-green" href="/restaurants/all">All</a>
-                        <a class="dropdown-item hover-green" href="/restaurants/Hong Kong Island">Hong Kong Island</a>
-                        <a class="dropdown-item hover-green" href="/restaurants/Kowloon">Kowloon</a>
-                        <a class="dropdown-item hover-green" href="/restaurants/New Territories">New Territories</a>
-                        <a class="dropdown-item hover-green" href="/restaurants/Outlying Islands">Outlying Islands</a>
+                        <a class="dropdown-item hover-green" href="/restaurant/all/alpha/descending">All</a>
+                        <a class="dropdown-item hover-green" href="/restaurant/Hong Kong Island/alpha/descending">Hong Kong Island</a>
+                        <a class="dropdown-item hover-green" href="/restaurant/Kowloon/alpha/descending">Kowloon</a>
+                        <a class="dropdown-item hover-green" href="/restaurant/New Territories/alpha/descending">New Territories</a>
+                        <a class="dropdown-item hover-green" href="/restaurant/Outlying Islands/alpha/descending">Outlying Islands</a>
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/blogs/all">Blogs</a>
+                    <a class="nav-link" href="/blog/alpha/descending">Blogs</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/map">Map</a>
+                    <a class="nav-link" href="/location/map">Map</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" data-toggle="dropdown">
@@ -98,8 +99,6 @@
 
     {{{body}}}
 
-    {{!-- <a href="https://www.freepik.com/free-photos-vectors/logo">Logo vector created by freepik - www.freepik.com</a> --}}
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -111,22 +110,22 @@
         crossorigin="anonymous"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-xdnamR5p45m8XTfs9ZTqdx2JGdsEhE&callback=initMap"></script>
+    {{!-- <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBA-xdnamR5p45m8XTfs9ZTqdx2JGdsEhE&callback=initMap"></script> --}}
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src='https://localhost:8080/js/vendor/all.min.js'></script>
 
-    {{!-- <script src="https://localhost:8080/js/restaurant.js"></script> --}}
-    {{!-- <script src="https://localhost:8080/js/blog.js"></script> --}}
-    {{!-- <script src="https://localhost:8080/js/comment.js"></script> --}}
-    {{!-- <script src="https://localhost:8080/js/review.js"></script> --}}
-    {{!-- <script src="https://localhost:8080/js/user.js"></script> --}}
-    {{!-- <script src="https://localhost:8080/js/search.js"></script> --}}
+    {{!-- <script src="https://localhost:8080/js/routes/restaurant.js"></script> --}}
+    {{!-- <script src="https://localhost:8080/js/routes/blog.js"></script> --}}
+    {{!-- <script src="https://localhost:8080/js/routes/comment.js"></script> --}}
+    {{!-- <script src="https://localhost:8080/js/routes/review.js"></script> --}}
+    {{!-- <script src="https://localhost:8080/js/routes/user.js"></script> --}}
+    {{!-- <script src="https://localhost:8080/js/routes/search.js"></script> --}}
     <script src="https://localhost:8080/js/main.js"></script>
-    <script src="https://localhost:8080/js/map.js"></script>
+    {{!-- <script src="https://localhost:8080/js/map.js"></script> --}}
 </body>
 
 </html>

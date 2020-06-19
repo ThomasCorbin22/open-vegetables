@@ -42,6 +42,10 @@ class UserRouter {
         this.router.post('/blogs/:id', this.displayBlogs.bind(this));
         this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
 
+        this.router.get('/newspaper', this.displayNewspaper.bind(this));
+        // https://localhost:8080/user/newspaper
+
+
         return this.router
     }
 
@@ -407,6 +411,14 @@ class UserRouter {
         let user = await userService.getUser(req.params.id)
         console.log(user[0].restaurant_access)
         res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
+    }
+
+    // Display's user favourite restaurants
+    async displayNewspaper(req, res) {
+        let blogs = await blogService.listBlogs()
+        let newspaper = await restaurantService.getRestaurant(2)
+        let restaurants = await restaurantService.listRestaurants()
+        res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
     }
 }
 

@@ -4,6 +4,8 @@ let direction = 'ascending'
 let area = 'all'
 
 $(document).ready(function () {
+  initMap()
+
   // Change active navbar link
   if ($('title').text().match('Home')) {
     $('.navbar-nav > li:eq(0)').addClass('active')
@@ -32,11 +34,6 @@ $(document).ready(function () {
 
     window.location.replace(url);
   })
-
-  // Add a favourite restaurant to a user
-  // $('.my-2').click(() => {
-  //   $('.my-2').text('★ Favourite restaurants')
-  // })
 
   // Adds active class to homepage carousel
   $('.carousel-item:first').addClass('active')
@@ -148,25 +145,42 @@ $(document).ready(function () {
   $('.add-favourite').on('click', function (e) {
     let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
     if (e.currentTarget.innerHTML.match('☆')) {
-      e.currentTarget.innerHTML = '★ Favourite Restaurant'
-    } else if (e.currentTarget.innerHTML.match('★')) {
-      e.currentTarget.innerHTML = '☆ Add to favourite'
+      console.log(user_id)
+      console.log(resta_id)
+      // axios({
+      //   url: '/user/favourite/restaurant',
+      //   method: 'post',
+      //   data: {
+      //     "user_id": user_id,
+      //     "restaurant_id": resta_id
+      //   }
+      // })
+      //   .then((res) => {
+      //     console.log(res)
+      //     e.currentTarget.innerHTML = '★ Favourite Restaurant'
+      //     e.attr('id', 'rest-favourite-' + res.id)
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //   })
     }
-    // axios({
-    //   url: '/user/restaurant',
-    //   method: 'post',
-    //   data: {
-    //     "user_id": 1,
-    //     "restaurant_id": 2
-    //   }
-    // })
-    //   .then((res) => {
-    //     console.log(res.data)
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+    else if (e.currentTarget.innerHTML.match('★')) {
+      axios({
+        url: '/user/favourite/restaurant',
+        method: 'post',
+        data: {
+          "user_id": user_id,
+          "restaurant_id": resta_id
+        }
+      })
+        .then((res) => {
+          e.currentTarget.innerHTML = '☆ Add to favourite'
+        })
+        .catch((error) => {
+          console.log(error);
+        })
 
+    }
   })
 
   // control image upload, decode image buffer to render 
@@ -355,12 +369,12 @@ $(document).ready(function () {
       })
   })
 })
-$('.btnGroup button:eq(1)').click(function(e){
+$('.btnGroup button:eq(1)').click(function (e) {
   let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
-axios({
-  url: '/restaurant/'+ parseInt(resta_id),
-  method: 'put',
-  data: {
+  axios({
+    url: '/restaurant/' + parseInt(resta_id),
+    method: 'put',
+    data: {
       "name": 'Our cool restaurant: V2',
       "street_address": 'GreenLand',
       "district_id": 4,
@@ -375,30 +389,31 @@ axios({
       "longitude": 113.6,
       "opening_time": '09:30',
       "closing_time": '21:50'
-  }
-})
-.then((res) => {
-  console.log(res.data)
-})
-.catch((error) => {
-  console.log(error);
-})
+    }
+  })
+    .then((res) => {
+      console.log(res.data)
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 })
 //Delete restaurant
-$('.btnGroup button:last-child').click(function(e){
+$('.btnGroup button:last-child').click(function (e) {
   e.preventDefault()
   let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
   console.log(resta_id)
   axios({
-    url: '/restaurant/'+  parseInt(resta_id),
+    url: '/restaurant/' + parseInt(resta_id),
     method: 'delete'
   })
-  .then((res) => {
-    console.log(res.data)
-    location.reload();
+    .then((res) => {
+      console.log(res.data)
+      location.reload();
 
-  })
-  .catch((error) => {
-    console.log(error);
-  })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
 })
+

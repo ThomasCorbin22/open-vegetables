@@ -327,6 +327,7 @@ class RestaurantRouter {
 
     // Displays all restaurants, subject to filters and queries
     async displayAll(req, res) {
+        console.log(req)
         let query = req.query
         let page
 
@@ -349,6 +350,7 @@ class RestaurantRouter {
         pages['area'] = req.params.area
         pages['filter'] = req.params.filter
         pages['direction'] = req.params.direction
+        if (req.user) pages['user'] = req.user.id
 
         // Allow users to switch the direction of the filters
         if (pages['direction'] === 'ascending') pages['opposite_direction'] = 'descending'

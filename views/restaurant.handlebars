@@ -15,10 +15,14 @@
                             <img class='w-100 custom-area-xs' src={{logo}}>
                             {{/if}}
                             <hr>
+                            {{#if price}}
+                            <p class='card-title'>{{price}}</p>
+                            {{/if}}
                             <p class='card-title'><i class="fa fa-thumbs-up"></i>
                                 {{rating}}</p>
+                            {{#if user}}
                             <p class='card-title add-favourite'>☆ Add to favourite</p>
-
+                            {{/if}}
                         </div>
                     </div>
                     <div class='col-sm-8'>
@@ -30,10 +34,6 @@
                                 <tr>
                                     <th scope='row'> Description: </th>
                                     <td>{{description}}</th>
-                                </tr>
-                                <tr>
-                                    <th>Price Range: </th>
-                                    <th> {{price}}</th>
                                 </tr>
                                 <tr>
                                     <th>Categories: </th>

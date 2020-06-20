@@ -15,6 +15,7 @@ function extractsLatLng(){
     return districts[spliturl]
 }
 
+var map;
 function initMap() {
     // Map options
     var options = {
@@ -25,22 +26,33 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), options);
 }
 
-// Search all restaurants
-axios({
-    url: '/restaurant/search?district=' + extractsDistrict(),
-    method: 'get'
-})
-.then((res) => {
-    // res.data will have all of the corresponding restaurants that have correct area and district
-    // console.log(res.data)
+var marker = new google.maps.Marker({
+    position: {lat: 22.3193, lng: 114.1694},
+    map: map,
+    title: 'Hello World'
+});
 
-    for (let restaurant in res.data){
-        let lat = restaurant.latitude
-        let lng = restaurant.longitude
+// // Search all restaurants
+// axios({
+//     url: '/restaurant/search?district=' + extractsDistrict(),
+//     method: 'get'
+// })
+// .then((res) => {
+//     // res.data will have all of the corresponding restaurants that have correct area and district
+//     // console.log(res.data)
 
-        // Add a marker to the google map
-    }
-})
-.catch((error) => {
-    console.log(error);
-})
+//     for (let restaurant in res.data){
+//         let lat = restaurant.latitude
+//         let lng = restaurant.longitude
+
+//         // Add a marker to the google map
+//     }
+    
+    
+
+    
+
+// })
+// .catch((error) => {
+//     console.log(error);
+// })

@@ -41,7 +41,6 @@ class AuthRouter {
     login(req, res) {
         if (this.isLoggedIn(req) === true){
             console.log('Logged in')
-            console.log(req.user)
             res.send(req.user);
         }
         else{

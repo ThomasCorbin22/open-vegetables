@@ -1,0 +1,24 @@
+<div class='row my-2'>
+    <div class="col">
+        <ul class='filter-bar d-flex justify-content-center w-100 m-0'>
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter}}/{{#if pages.direction}}descending{{else}}ascending{{/if}}?page={{pages.first.value}}';"
+                class='btn btn-primary btn-green btn-rounded btn-large mx-2'
+                {{#if pages.first.active}}{{else}}disabled{{/if}}><i class="fas fa-fast-backward"></i></button>
+                
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter}}/{{#if pages.direction}}descending{{else}}ascending{{/if}}?page={{pages.previous.value}}';"
+                class='btn btn-primary btn-green btn-rounded btn-large mx-2'
+                {{#if pages.previous.active}}{{else}}disabled{{/if}}><i class="fas fa-step-backward"></i></button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter}}/{{#if pages.direction}}descending{{else}}ascending{{/if}}?page={{pages.current.value}}';"
+                class='btn btn-primary btn-green btn-rounded btn-large mx-2'>{{pages.current.value}}</button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter}}/{{#if pages.direction}}descending{{else}}ascending{{/if}}?page={{pages.next.value}}';"
+                class='btn btn-primary btn-green btn-rounded btn-large mx-2'
+                {{#if pages.next.active}}{{else}}disabled{{/if}}><i class="fas fa-step-forward"></i></button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter}}/{{#if pages.direction}}descending{{else}}ascending{{/if}}?page={{pages.last.value}}';"
+                class='btn btn-primary btn-green btn-rounded btn-large mx-2'
+                {{#if pages.last.active}}{{else}}disabled{{/if}}><i class="fas fa-fast-forward"></i></button>
+        </ul>
+    </div>
+</div>

@@ -78,6 +78,16 @@ class LocationService {
 
     // Deals with districts
 
+    // Gets all districts
+    async listAllDistricts(id){
+        this.district = await knex
+            .select('*')
+            .from("districts")
+            .catch((err) => console.log(err))
+
+        return this.district
+    }
+
     // Gets an area's districts
     async listDistricts(id){
         this.district = await knex

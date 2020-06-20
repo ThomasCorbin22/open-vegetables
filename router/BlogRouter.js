@@ -1,20 +1,25 @@
 const express = require('express');
+const filterResults = require('../modules/filterResults.js');
+const getPagination = require('../modules/getPagination.js');
+const getDate = require('../modules/getDate.js');
 
 class BlogRouter {
-    constructor(blogService) {
+    constructor(blogService, commentService, userService) {
         this.blogService = blogService
+        this.commentService = commentService
+        this.userService = userService
         this.router = express.Router()
     }
 
     route() {
-        
+
         // Manipulate  blogs
-        this.router.get('/', this.listBlogs.bind(this));
+        this.router.get('/list', this.listBlogs.bind(this));
         this.router.get('/search', this.searchBlogs.bind(this));
-        this.router.get('/:id', this.getBlog.bind(this));
-        this.router.post('/', this.postBlog.bind(this));
-        this.router.put('/:id', this.putBlog.bind(this));
-        this.router.delete('/:id', this.deleteBlog.bind(this));
+        this.router.get('/individual/:id', this.getBlog.bind(this));
+        this.router.post('/individual/', this.postBlog.bind(this));
+        this.router.put('/individual/:id', this.putBlog.bind(this));
+        this.router.delete('/individual/:id', this.deleteBlog.bind(this));
 
         // Manipulate blog pictures
         this.router.get('/picture/list/:id', this.listPictures.bind(this));
@@ -29,6 +34,10 @@ class BlogRouter {
         this.router.post('/category/', this.postCategory.bind(this));
         this.router.put('/category/:id', this.putCategory.bind(this));
         this.router.delete('/category/:id', this.deleteCategory.bind(this));
+
+        // Deals with page routes
+        this.router.get('/details/:id', this.displaySingle.bind(this));
+        this.router.get('/:filter/:direction', this.displayAll.bind(this));
 
         return this.router
     }
@@ -76,7 +85,8 @@ class BlogRouter {
             title: req.body.title,
             body: req.body.body,
             main_picture_URL: req.body.main_picture_URL,
-            user_id: req.body.user_id
+            user_id: req.body.user_id,
+            modified: req.body.modified
         }
 
         return this.blogService.addBlog(post)
@@ -97,6 +107,7 @@ class BlogRouter {
             body: req.body.body,
             main_picture_URL: req.body.main_picture_URL,
             user_id: req.body.user_id,
+            modified: req.body.modified,
             date_modified: new Date()
         }
 
@@ -212,7 +223,7 @@ class BlogRouter {
             })
     }
 
-    // Get category
+    // Get a category
     getCategory(req, res) {
         let id = req.params.id
 
@@ -270,6 +281,71 @@ class BlogRouter {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    // Displays all blogs, subject to filters and queries
+    async displayAll(req, res) {
+        let query = req.query
+        let page
+
+        // Delete any page queries before passing to search blogs
+        if (query.page){
+            page = query.page
+            delete query['page'];
+        }
+    
+        // Search the blogs according to the query
+        let results = await this.blogService.searchBlogs(req.query)
+        
+        // Filter the results based on the url filter
+        results = filterResults('blog', req.params.filter, req.params.direction, results)
+        
+        // Add pagination
+        let pages = getPagination('blog', Number(page) || 1, results.length || 1)
+
+        // Add specified parameters to reflect in the html / hrefs
+        pages['filter'] = req.params.filter
+        pages['direction'] = req.params.direction
+
+        // Allow users to switch the direction of the filters
+        if (pages['direction'] === 'ascending') pages['opposite_direction'] = 'descending'
+        else if (pages['direction'] === 'descending') pages['opposite_direction'] = 'ascending'
+
+        // Get just the specified results for that page
+        let index = (pages.current.value - 1) * 10
+        results = results.slice(index, index + 10)
+
+        // Change blog dates to be legible
+        for (let result of results){
+            result.date_modified = getDate(result.date_modified)
+            result.date_created = getDate(result.date_created)
+        }
+    
+        res.render('blog', {
+            title: 'blogs-' + req.params.filter,
+            blogs: results,
+            pages
+        })
+    }
+
+    // Displays single blog
+    async displaySingle(req, res) {
+        let blogs = await blogService.listBlogs();
+        for (let blog of blogs) {
+            if (blog.id == req.params.id) {
+                let publisher = await userService.getUser(blog.user_id)
+                let commentsBlog = await commentService.getComment(blog.id)
+                for (let comment of commentsBlog) {
+                    let commentUser = await userService.getUser(comment.user_id)
+                    comment.userName = commentUser[0].first_name
+                    comment.userImage = commentUser[0].profile_picture_URL
+                }
+                blog.comments = commentsBlog
+                blog.userName = publisher[0].first_name
+                blog.userImage = publisher[0].profile_picture_URL
+                res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
+            }
+        }
     }
 }
 

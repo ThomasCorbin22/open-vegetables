@@ -5,6 +5,7 @@ exports.up = function (knex, Promise) {
         table.unique("title");
         table.float("rating").notNullable();
         table.string("body").notNullable();
+        table.boolean("modified");
         table.datetime("date_created", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.datetime("date_modified", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.integer('user_id').unsigned();

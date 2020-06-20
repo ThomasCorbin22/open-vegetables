@@ -15,11 +15,16 @@ class LocationRouter {
         this.router.delete('/area/:id', this.deleteArea.bind(this));
 
         // Deals with user liked districts
+        this.router.get('/district/list/all', this.listAllDistricts.bind(this));
         this.router.get('/district/list/:id', this.listDistricts.bind(this));
         this.router.get('/district/:id', this.getDistrict.bind(this));
         this.router.post('/district/', this.postDistrict.bind(this));
         this.router.put('/district/:id', this.putDistrict.bind(this));
         this.router.delete('/district/:id', this.deleteDistrict.bind(this));
+        
+        // Deals with map pages
+        this.router.get('/map', this.displayMap.bind(this));
+        this.router.get('/map/:area/:district', this.displayLocation.bind(this));
 
         return this.router
     }
@@ -95,6 +100,17 @@ class LocationRouter {
 
     // Deals with districts
 
+    // Gets all districts
+    listAllDistricts(req, res) {
+        return this.locationService.listAllDistricts()
+            .then((districts) => {
+                res.send(districts)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
     // Gets an area's districts
     listDistricts(req, res) {
         let area_id = req.params.id
@@ -166,6 +182,16 @@ class LocationRouter {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    // Displays the map
+    displayMap(req, res) {
+        res.render('map', { title: 'map' })
+    }
+
+    // Displays the location
+    displayLocation(req, res) {
+        res.render('map', { title: req.params.district, location: req.params.district })
     }
 }
 

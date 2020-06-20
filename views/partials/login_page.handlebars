@@ -20,13 +20,13 @@
                         <input type='password' class='form-control' id='pwdL' name="password">
                     </div>
                     <div class='form-group'>
-                        <button type='button' id='forgetPwdBtn'class='btn btn-sm btn-info' data-toggle='modal'
-                            data-target='#security'>Forget password</button>
+                        <button type='button' id='forgetPwdBtn' class='btn btn-sm btn-info btn-password' data-toggle='modal'
+                            data-target='#security'>Forgot your password?</button>
                     </div>
                     <div class='form-group'>
                         <button type='submit' class='btn btn-danger'>Login</button>
-                        <a href="auth/facebook" class='btn btn-info'>Log In with Facebook</a>
-                        <a href="auth/google" class='btn btn-primary'>Log In with Google</a>
+                        <a href="/auth/facebook" class='btn btn-info btn-facebook'><i class="fab fa-facebook-square"></i>  Log In with Facebook</a>
+                        <a href="/auth/google" class='btn btn-info btn-google'><i class="fab fa-google"></i>  Log In with Google</a>
                     </div>
                 </form>
             </div>
@@ -47,7 +47,7 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form id='securityPage'action='/auth/login' method='POST'>
+                <form id='securityPage' action='/auth/login' method='POST'>
                     <div class='form-group'>
                         <label>Please answer your security question:</label>
                     </div>
@@ -60,7 +60,7 @@
                     </div>
                 </form>
 
-                <form id='resetPwdPage'action='/auth/login' method='POST' style='display:none'>
+                <form id='resetPwdPage' action='/auth/login' method='POST' style='display:none'>
                     <div class='form-group'>
                         <label>Reset your password:</label>
                     </div>
@@ -76,7 +76,7 @@
                         <button type='submit' id='submitNewPwd' class='btn btn-info'>Submit</button>
                     </div>
                 </form>
-                
+
             </div>
         </div>
     </div>

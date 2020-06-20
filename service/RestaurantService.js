@@ -1,6 +1,5 @@
 // Update with your config settings.
 require('dotenv').config();
-const getDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -20,10 +19,11 @@ class RestaurantService {
 
     // Searches all the restaurants
     async searchRestaurants(query, range) {
-        console.log(query)
         let results = await knex
-            .select('*')
+            .select('*', 'restaurants.id')
             .from("restaurants")
+            .join('districts', 'restaurants.district_id', '=', 'districts.id')
+            .join('areas', 'districts.area_id', '=', 'areas.id')
             .modify(function(queryBuilder) {
                 for (let key in query){
                     if (key === 'latitude' || key === 'longitude'){
@@ -40,9 +40,7 @@ class RestaurantService {
             })
             .catch((err) => console.log(err))
 
-        console.log(results)
-
-        this.restaurant = results
+        await this.compilePicturesCategoriesRating(results)
 
         return this.restaurant
     }
@@ -69,8 +67,6 @@ class RestaurantService {
             item["pictures"] = restaurant_pictures
             item["categories"] = category_pictures
             item["rating"] = await this.getRating(item.id)
-            item["date_created"] = getDate(item["date_created"])
-            item["date_modified"] = getDate(item["date_modified"])
 
             this.restaurant.push(item)
         }
@@ -249,6 +245,18 @@ class RestaurantService {
     }
 
     // Restaurant categories
+
+    // Gets all categories
+    async listAllCategories() {
+        let results = await knex
+            .select('*')
+            .from("restaurant_categories")
+            .catch((err) => console.log(err))
+
+        this.categories = results
+
+        return this.categories
+    }
 
     // Gets a specific restaurant's categories
     async listCategories(id) {

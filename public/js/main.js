@@ -1,6 +1,12 @@
 let user_id
+let filter = 'none'
+let direction = 'ascending'
+let area = 'all'
 
 $(document).ready(function () {
+  if ($('title').text().match('map')) {
+    initMap()
+  }
   // Change active navbar link
   if ($('title').text().match('Home')) {
     $('.navbar-nav > li:eq(0)').addClass('active')
@@ -16,24 +22,90 @@ $(document).ready(function () {
   }
 
   // On search submission send get request
-  $('#form-search').on('submit', (e) => {
+  $('#main-search').on('submit', (e) => {
     e.preventDefault();
 
-    let filter = $('#form-filter').val()
-    let input = $('#form-input').val()
+    let route = $('#main-filter').val()
+    let input = $('#main-input').val()
     let url
 
-    if (filter === 'restaurants') url = '/' + filter + '/search/?name=' + input
-    else if (filter === 'blogs') url = '/' + filter + '/search/?title=' + input
-    else if (filter === 'users') url = '/' + filter + '/search/?display_name=' + input
+    if (route === 'restaurants') url = '/restaurant/' + area + '/alpha/descending?name=' + input
+    else if (route === 'blogs') url = '/blog/alpha/descending?title=' + input
+    else if (route === 'users') url = '/user/all?display_name=' + input
 
     window.location.replace(url);
   })
 
-  // Add a favourite restaurant to a user
-  // $('.my-2').click(() => {
-  //   $('.my-2').text('★ Favourite restaurants')
-  // })
+  // Adds districts to dropdown menu
+  if ($('#restaurant-district')) {
+    axios({
+      url: '/location/district/list/all',
+      method: 'get'
+    })
+      .then((res) => {
+        let districts = []
+
+        for (let item of res.data) {
+          districts.push(item.district)
+        }
+
+        districts = new Set(districts)
+        districts.delete('Not available')
+        districts = Array.from(districts)
+
+        districts.sort()
+
+        for (let item of districts) {
+          $('#restaurant-district').append(`<option value=${item}>${item}</option>`)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  // Adds districts to dropdown menu
+  if ($('#restaurant-category')) {
+    axios({
+      url: '/restaurant/category/list/all',
+      method: 'get'
+    })
+      .then((res) => {
+        let categories = []
+
+        for (let item of res.data) {
+          categories.push(item.category)
+        }
+
+        categories = new Set(categories)
+        categories.delete('Not available')
+        categories = Array.from(categories)
+
+        categories.sort()
+
+        for (let item of categories) {
+          $('#restaurant-category').append(`<option value=${item}>${item}</option>`)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  // On restaurant search submission send get request
+  $('#restaurant-search').on('submit', (e) => {
+    e.preventDefault();
+
+    let input = $('#restaurant-input').val()
+    let categories = $('#restaurant-category').val()
+    let price = $('#restaurant-price').val()
+    let district = $('#restaurant-district').val()
+    let area = $('#restaurant-area').val()
+
+    let url = '/restaurant/' + area + '/alpha/descending?name=' + input + '&categories=' + categories + '&price=' + price + '&district=' + district
+
+    window.location.replace(url);
+  })
 
   // Adds active class to homepage carousel
   $('.carousel-item:first').addClass('active')
@@ -49,9 +121,7 @@ $(document).ready(function () {
         $('#signup').show()
       }
       else {
-        console.log(res.data)
         user_id = res.data.id
-        console.log(user_id)
         $('#profile').show()
         $('#logout').show()
         $('#profile-link').attr('href', '/user/info/' + user_id)
@@ -272,32 +342,45 @@ $(document).ready(function () {
 
   $('#existBlogDeleteBtn').click(function (e) {
     e.preventDefault()
-
   })
 
   //control add to favourite button
   $('.add-favourite').on('click', function (e) {
-    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
+    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
     if (e.currentTarget.innerHTML.match('☆')) {
-      e.currentTarget.innerHTML = '★ Favourite Restaurant'
-    } else if (e.currentTarget.innerHTML.match('★')) {
-      e.currentTarget.innerHTML = '☆ Add to favourite'
+      console.log(user_id)
+      console.log(resta_id)
+      axios({
+        url: '/user/favourite/restaurant',
+        method: 'post',
+        data: {
+          "user_id": user_id,
+          "restaurant_id": resta_id
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          e.currentTarget.innerHTML = '★ Favourite Restaurant'
+          $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
     }
-    // axios({
-    //   url: '/user/restaurant',
-    //   method: 'post',
-    //   data: {
-    //     "user_id": 1,
-    //     "restaurant_id": 2
-    //   }
-    // })
-    //   .then((res) => {
-    //     console.log(res.data)
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-
+    else if (e.currentTarget.innerHTML.match('★')) {
+      let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
+      axios({
+        url: `/user/favourite/restaurant/${resta_favourite}`,
+        method: 'delete',
+      })
+        .then((res) => {
+          console.log(res)
+          e.currentTarget.innerHTML = '☆ Add to favourite'
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
   })
 
   // control image upload, decode image buffer to render 
@@ -533,52 +616,177 @@ $(document).ready(function () {
         console.log(error);
       })
   })
-})
 
-// $('.btnGroup button:eq(1)').click(function (e) {
-//   let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
-//   axios({
-//     url: '/restaurant/' + parseInt(resta_id),
-//     method: 'put',
-//     data: {
-//       "name": 'Our cool restaurant: V2',
-//       "street_address": 'GreenLand',
-//       "district_id": 4,
-//       "description": 'Nicer food',
-//       "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
-//       "price": 2,
-//       "telephone_number": '999',
-//       "social_media_URL": 'www.google.com',
-//       "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-//       "website_URL": 'www.cool.com',
-//       "latitude": 23.0,
-//       "longitude": 113.6,
-//       "opening_time": '09:30',
-//       "closing_time": '21:50'
-//     }
-//   })
-//     .then((res) => {
-//       console.log(res.data)
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//     })
-// })
-//Delete restaurant
-$('.btnRestaGroup button:last-child').click(function (e) {
-  e.preventDefault()
-  let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
-  console.log(resta_id)
-  axios({
-    url: '/restaurant/' + parseInt(resta_id),
-    method: 'delete'
+  // Add new review
+  $('#newReviewSubmitBtn').click(function (e) {
+    e.preventDefault()
+    let title = $('#newTitle').val()
+    let body = $('#newBody').val()
+    let image = $('#newImg').next().attr('src')
+    let rating
+
+    if ($('#newRating-1').prop('checked')) rating = 1
+    if ($('#newRating-2').prop('checked')) rating = 2
+    if ($('#newRating-3').prop('checked')) rating = 3
+    if ($('#newRating-4').prop('checked')) rating = 3
+    if ($('#newRating-5').prop('checked')) rating = 5
+
+    let restaurant_id = window.location.href.split('/').splice(-1)[0]
+
+    axios({
+      url: '/review',
+      method: 'post',
+      data: {
+        title,
+        body,
+        rating,
+        used_id,
+        restaurant_id
+      }
+    })
+      .then((res) => {
+        console.log(res.data)
+        // Add new review picture
+        if (image) {
+          axios({
+            url: '/review/picture',
+            method: 'post',
+            data: {
+              "picture_URL": image,
+              "review_id": res.data[0].id
+            }
+          })
+            .then((res) => {
+              location.reload();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   })
+
+  // Update existing review
+  $('.existReviewSubmit').click(function (e) {
+    e.preventDefault()
+
+    let id = e.target.attr('id').split('-').splice(-1)[0]
+    let title = $(`#existTitle-${id}`).val()
+    let body = $(`#existBody-${id}`).val()
+    let image = $(`#existImg-${id}`).next().attr('src')
+    let rating
+
+    if ($(`#existRating-1-${id}`).prop('checked')) rating = 1
+    if ($(`#existRating-2-${id}`).prop('checked')) rating = 2
+    if ($(`#existRating-3-${id}`).prop('checked')) rating = 3
+    if ($(`#existRating-4-${id}`).prop('checked')) rating = 3
+    if ($(`#existRating-5-${id}`).prop('checked')) rating = 5
+
+    let restaurant_id = window.location.href.split('/').splice(-1)[0]
+
+    console.log(id)
+
+    axios({
+      url: '/review',
+      method: 'put',
+      data: {
+        id,
+        title,
+        body,
+        rating,
+        user_id,
+        restaurant_id
+      }
+    })
     .then((res) => {
       console.log(res.data)
-      location.reload();
 
+      // Get review picture
+      axios({
+        url: '/review/picture/list/' + id,
+        method: 'get'
+      })
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+      // Add new review picture
+      if (image) {
+        let picture_id
+        axios({
+          url: '/review/picture',
+          method: 'put',
+          data: {
+            "picture_URL": image,
+            "review_id": res.data[0].id
+          }
+        })
+          .then((res) => {
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
     })
     .catch((error) => {
       console.log(error);
     })
+  })
+
+  // $('.btnGroup button:eq(1)').click(function (e) {
+  //   let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
+  //   axios({
+  //     url: '/restaurant/' + parseInt(resta_id),
+  //     method: 'put',
+  //     data: {
+  //       "name": 'Our cool restaurant: V2',
+  //       "street_address": 'GreenLand',
+  //       "district_id": 4,
+  //       "description": 'Nicer food',
+  //       "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
+  //       "price": 2,
+  //       "telephone_number": '999',
+  //       "social_media_URL": 'www.google.com',
+  //       "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  //       "website_URL": 'www.cool.com',
+  //       "latitude": 23.0,
+  //       "longitude": 113.6,
+  //       "opening_time": '09:30',
+  //       "closing_time": '21:50'
+  //     }
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     })
+  // })
+
+  //Delete restaurant
+  $('.btnRestaGroup button:last-child').click(function (e) {
+    e.preventDefault()
+    let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
+    console.log(resta_id)
+    axios({
+      url: '/restaurant/' + parseInt(resta_id),
+      method: 'delete'
+    })
+      .then((res) => {
+        console.log(res.data)
+        location.reload();
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
 })
+

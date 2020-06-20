@@ -13,7 +13,7 @@ const knex = require('knex')({
     }
 });
 
-let inputStream = Fs.createReadStream('./python/df_final-cleaned-03.csv', 'utf8');
+let inputStream = Fs.createReadStream('./python/df_final-cleaned-01.csv', 'utf8');
 
 function processData(input) {
     // Extract each row from the Excel file
@@ -21,7 +21,7 @@ function processData(input) {
     .pipe(new CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true, asObject: true}))
     .on('data', async function (row) {
         // For each row, try the following operation
-        console.log('A row arrived: ', row);
+        // console.log('A row arrived: ', row);
         knex.transaction(async (trx) => {
             try {
                 // Empty district_id variable
@@ -48,10 +48,10 @@ function processData(input) {
                         .where("district", row.district)
                         .catch((err) => console.log(err))
 
-                    console.log('row.district')
-                    console.log(row.district)
-                    console.log('results_district')
-                    console.log(results_district)
+                    // console.log('row.district')
+                    // console.log(row.district)
+                    // console.log('results_district')
+                    // console.log(results_district)
 
                     if (results_district.length == 1){
                         district_id = results_district[0].id
@@ -131,17 +131,21 @@ function processData(input) {
                         }
 
                         // Specify categories
-                        let categories = row.categories.replace(/'/g, "").replace('[', "").replace(']', "").split(' ')
+                        let categories = row.categories.split('\'')
 
                         for (let item of categories){
-                            category = {
-                                category: item,
-                                restaurant_id: restaurant_id
-                            }
+                            item = item.replace(/'/g, "").replace('[', "").replace(']', "").trim()
 
-                            await trx('restaurant_categories')
-                                .insert(category)
-                                .catch((err) => console.log(err))
+                            if (item != ''){
+                                category = {
+                                    category: item,
+                                    restaurant_id: restaurant_id
+                                }
+    
+                                await trx('restaurant_categories')
+                                    .insert(category)
+                                    .catch((err) => console.log(err))
+                            }
                         }
                     }
                 }

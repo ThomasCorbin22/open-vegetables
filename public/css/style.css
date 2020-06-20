@@ -166,12 +166,11 @@ hr{
 .btn-search{
     background-color: rgba(255,255,255, 1);
     color: rgba(95, 218, 133, 1);
-    border-radius: 50%;
     border: none;
     transition: 0.5s ease-in-out;
 }
 
-.btn-search:hover{
+.btn-search:hover, .btn-search:focus{
     background-color: rgb(54, 129, 78);
     color: rgba(255,255,255, 1);
 }
@@ -201,6 +200,18 @@ hr{
     background-color: rgb(54, 129, 78);
 }
 
+.btn-white{
+    background-color:rgba(255,255,255, 1);
+    color: rgba(0,0,0, 1);
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+.btn-white:hover, .btn-white:focus{
+    background-color: rgb(225, 225, 225);
+    box-shadow: none
+}
+
 .btn-facebook{
     background-color: rgba(66, 103, 178, 1);
     color: rgba(255,255,255, 1);
@@ -218,19 +229,19 @@ hr{
 }
 
 .btn-google{
-    background-color: rgba(245, 245, 245, 1);
+    background-color: rgba(255, 255, 255, 1);
     color: rgba(50,50,50, 1);
-    border: none;
+    border: 1px solid rgba(50,50,50);
     transition: 0.5s ease-in-out;
 }
 
 .btn-google:hover, .btn-facebook:focus{
-    background-color: rgb(215, 215, 215);
+    background-color: rgb(225, 225, 225);
     box-shadow: none
 }
 
 .btn-google:disabled{
-    background-color: rgb(215, 215, 215);
+    background-color: rgb(225, 225, 225);
 }
 
 /* Colours */

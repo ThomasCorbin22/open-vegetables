@@ -20,7 +20,7 @@ class RestaurantService {
     // Searches all the restaurants
     async searchRestaurants(query, range) {
         let results = await knex
-            .select('*')
+            .select('*', 'restaurants.id')
             .from("restaurants")
             .join('districts', 'restaurants.district_id', '=', 'districts.id')
             .join('areas', 'districts.area_id', '=', 'areas.id')
@@ -245,6 +245,18 @@ class RestaurantService {
     }
 
     // Restaurant categories
+
+    // Gets all categories
+    async listAllCategories() {
+        let results = await knex
+            .select('*')
+            .from("restaurant_categories")
+            .catch((err) => console.log(err))
+
+        this.categories = results
+
+        return this.categories
+    }
 
     // Gets a specific restaurant's categories
     async listCategories(id) {

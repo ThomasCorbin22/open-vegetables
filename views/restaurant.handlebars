@@ -1,4 +1,5 @@
 <div class='container-fluid'>
+    {{> restaurant_search}}
     {{> filter_nav}}
     <div class='row'>
         <div class="col">
@@ -20,8 +21,12 @@
                             {{/if}}
                             <p class='card-title'><i class="fa fa-thumbs-up"></i>
                                 {{rating}}</p>
-                            {{#if user}}
+                            {{#if ../user_id}}
+                            {{#if favourite}}
+                            <p id='favourite-{{favourite}}' class='card-title add-favourite'>★ Favourite Restaurant</p>
+                            {{else}}
                             <p class='card-title add-favourite'>☆ Add to favourite</p>
+                            {{/if}}
                             {{/if}}
                         </div>
                     </div>

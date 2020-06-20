@@ -14,7 +14,7 @@ class RestaurantRouter {
         this.router = express.Router()
     }
 
-    route() {        
+    route() {
         // Deals with individual restaurants
         this.router.get('/list', this.listRestaurants.bind(this));
         this.router.get('/search', this.searchRestaurants.bind(this));
@@ -31,6 +31,7 @@ class RestaurantRouter {
         this.router.delete('/picture/:id', this.deletePicture.bind(this));
 
         // Deals with restaurant categories
+        this.router.get('/category/list/all', this.listAllCategories.bind(this));
         this.router.get('/category/list/:id', this.listCategories.bind(this));
         this.router.get('/category/:id', this.getCategory.bind(this));
         this.router.post('/category/', this.postCategory.bind(this));
@@ -253,6 +254,17 @@ class RestaurantRouter {
     // Deals with restaurant categories
 
     // Gets a restaurants categories
+    listAllCategories(req, res) {
+        return this.restaurantService.listAllCategories()
+            .then((categories) => {
+                res.send(categories)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a restaurants categories
     listCategories(req, res) {
         let restaurant_id = req.params.id
 
@@ -327,72 +339,129 @@ class RestaurantRouter {
 
     // Displays all restaurants, subject to filters and queries
     async displayAll(req, res) {
-        console.log(req)
         let query = req.query
         let page
+        let category
+        let favourites
+        let user_id
 
         // Delete any page queries before passing to search restaurants
-        if (query.page){
+        if (query.page) {
             page = query.page
             delete query['page'];
         }
-    
+        if (req.params.area != 'all') query['area'] = req.params.area
+        if (query.categories) {
+            category = query.categories
+            delete query.categories
+        }
+        else if (query.categories == '') delete query.categories
+
         // Search the restaurants according to the query
-        let results = await this.restaurantService.searchRestaurants(req.query)
-        
+        let results = await this.restaurantService.searchRestaurants(query)
+
         // Filter the results based on the url filter
         results = filterResults('restaurant', req.params.filter, req.params.direction, results)
-        
+
+        // Check for category match
+        if (category) {
+            results = results.filter((result) => result.categories.includes(category))
+        }
+
         // Add pagination
-        let pages = getPagination('restaurant', Number(page) || 1, results.length || 1)
+        let pages = getPagination('restaurant', req.params.filter, Number(page) || 1, results.length || 1)
 
         // Add specified parameters to reflect in the html / hrefs
         pages['area'] = req.params.area
         pages['filter'] = req.params.filter
-        pages['direction'] = req.params.direction
-        if (req.user) pages['user'] = req.user.id
+        if (req.params.direction) {
+            if (req.params.direction == 'descending') pages['direction'] = true
+            if (req.params.direction == 'ascending') pages['direction'] = false
+        }
 
-        // Allow users to switch the direction of the filters
-        if (pages['direction'] === 'ascending') pages['opposite_direction'] = 'descending'
-        else if (pages['direction'] === 'descending') pages['opposite_direction'] = 'ascending'
+        // Check for user
+        if (req.user) user_id = req.user.id
 
         // Get just the specified results for that page
         let index = (pages.current.value - 1) * 10
         results = results.slice(index, index + 10)
 
-        // Change restaurant dates to be legible
-        for (let result of results){
-            result.date_modified = getDate(result.date_modified)
-            result.date_created = getDate(result.date_created)
+        // Get users favourite restaurants
+        if (user_id) {
+            favourites = await this.userService.listRestaurants(user_id)
+        }
+
+        // Change restaurant information to be legible
+        for (let result of results) {
             result.opening_hours = getOpeningHours(result)
             result.price = getPrice(result.price)
             if (result.rating == 0) result.rating = 'Not yet rated'
             if (result.main_picture_URL == 'Not available') delete result.main_picture_URL
+
+            if (favourites) {
+                for (let item of favourites) {
+                    if (user_id == item.user_id && result.id == item.restaurant_id) {
+                        result.favourite = item.id
+                    }
+                }
+            }
         }
-    
+
         res.render('restaurant', {
-            title: 'restaurants-' + req.params.subpage + '-' + req.params.filter,
+            title: 'restaurants-' + req.params.area + '-' + req.params.filter,
             restaurants: results,
-            pages
+            pages,
+            user_id
         })
     }
 
     // Displays single restaurant
     async displaySingle(req, res) {
-        let restaurants = await this.restaurantService.listRestaurants()
+        let user_id
+        let favourites
 
-        for (let resta of restaurants) {
-            if (resta.id == req.params.id) {
-                let reviews = await this.reviewService.listReviews(resta.id)
-                let user
-                for (let review of reviews) {
-                    user = await this.userService.getUser(review.user_id)
-                    review.userName = user[0].first_name
-                    review.userImage = user[0].profile_picture_URL
+        // Check for user
+        if (req.user) user_id = req.user.id
+
+        // Get users favourite restaurants
+        if (user_id) {
+            favourites = await this.userService.listRestaurants(user_id)
+        }
+
+        // Get the restaurant
+        let restaurant = await this.restaurantService.getRestaurant(req.params.id)
+        restaurant = restaurant[0]
+
+        // Set up restaurant information
+        restaurant.opening_hours = getOpeningHours(restaurant)
+        restaurant.price = getPrice(restaurant.price)
+        if (restaurant.rating == 0) restaurant.rating = 'Not yet rated'
+        if (restaurant.main_picture_URL == 'Not available') delete restaurant.main_picture_URL
+
+        // Get the reviews for a restaurant
+        let reviews = await this.reviewService.listReviews(restaurant.id)
+        let user
+        for (let review of reviews) {
+            user = await this.userService.getUser(review.user_id)
+            review.userName = user[0].first_name
+            review.userImage = user[0].profile_picture_URL
+        }
+
+        // Check if the restaurant is a favourite of the user
+        if (favourites) {
+            for (let item of favourites) {
+                if (user_id == item.user_id && restaurant.id == item.restaurant_id) {
+                    restaurant.favourite = item.id
                 }
-                res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
             }
         }
+
+        res.render(`restaurant_details_reviews`, {
+            title: `restaurant-details/${restaurant.name}`,
+            restaurant,
+            reviews,
+            user_id
+        })
     }
 }
 

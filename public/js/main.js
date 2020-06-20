@@ -7,7 +7,6 @@ $(document).ready(function () {
   if ($('title').text().match('map')) {
     initMap()
   }
-
   // Change active navbar link
   if ($('title').text().match('Home')) {
     $('.navbar-nav > li:eq(0)').addClass('active')
@@ -23,16 +22,87 @@ $(document).ready(function () {
   }
 
   // On search submission send get request
-  $('#form-search').on('submit', (e) => {
+  $('#main-search').on('submit', (e) => {
     e.preventDefault();
 
-    let route = $('#form-filter').val()
-    let input = $('#form-input').val()
+    let route = $('#main-filter').val()
+    let input = $('#main-input').val()
     let url
 
-    if (route === 'restaurants') url = '/restaurant' + '/' + area + '/' + filter + '/' + direction + '?name=' + input
-    else if (route === 'blogs') url = '/blog' + '/' + filter + '/' + direction + '?title=' + input
+    if (route === 'restaurants') url = '/restaurant/' + area + '/alpha/descending?name=' + input
+    else if (route === 'blogs') url = '/blog/alpha/descending?title=' + input
     else if (route === 'users') url = '/user/all?display_name=' + input
+
+    window.location.replace(url);
+  })
+
+  // Adds districts to dropdown menu
+  if ($('#restaurant-district')) {
+    axios({
+      url: '/location/district/list/all',
+      method: 'get'
+    })
+      .then((res) => {
+        let districts = []
+
+        for (let item of res.data){
+          districts.push(item.district)
+        }
+
+        districts = new Set(districts)
+        districts.delete('Not available')
+        districts = Array.from(districts)
+
+        districts.sort()
+
+        for (let item of districts){
+          $('#restaurant-district').append(`<option value=${item}>${item}</option>`)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  // Adds districts to dropdown menu
+  if ($('#restaurant-category')) {
+    axios({
+      url: '/restaurant/category/list/all',
+      method: 'get'
+    })
+      .then((res) => {
+        let categories = []
+
+        for (let item of res.data){
+          categories.push(item.category)
+        }
+
+        categories = new Set(categories)
+        categories.delete('Not available')
+        categories = Array.from(categories)
+
+        categories.sort()
+
+        for (let item of categories){
+          $('#restaurant-category').append(`<option value=${item}>${item}</option>`)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  // On restaurant search submission send get request
+  $('#restaurant-search').on('submit', (e) => {
+    e.preventDefault();
+
+    let input = $('#restaurant-input').val()
+    let categories = $('#restaurant-category').val()
+    let price = $('#restaurant-price').val()
+    let district = $('#restaurant-district').val()
+    let area = $('#restaurant-area').val()
+
+    let url = '/restaurant/' + area + '/alpha/descending?name=' + input + '&categories=' + categories + '&price=' + price + '&district=' + district
 
     window.location.replace(url);
   })
@@ -51,9 +121,7 @@ $(document).ready(function () {
         $('#signup').show()
       }
       else {
-        console.log(res.data)
         user_id = res.data.id
-        console.log(user_id)
         $('#profile').show()
         $('#logout').show()
         $('#profile-link').attr('href', '/user/info/' + user_id)
@@ -145,28 +213,10 @@ $(document).ready(function () {
 
   //control add to favourite button
   $('.add-favourite').on('click', function (e) {
-    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").slice(-1)
+    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
     if (e.currentTarget.innerHTML.match('☆')) {
       console.log(user_id)
       console.log(resta_id)
-      // axios({
-      //   url: '/user/favourite/restaurant',
-      //   method: 'post',
-      //   data: {
-      //     "user_id": user_id,
-      //     "restaurant_id": resta_id
-      //   }
-      // })
-      //   .then((res) => {
-      //     console.log(res)
-      //     e.currentTarget.innerHTML = '★ Favourite Restaurant'
-      //     e.attr('id', 'rest-favourite-' + res.id)
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //   })
-    }
-    else if (e.currentTarget.innerHTML.match('★')) {
       axios({
         url: '/user/favourite/restaurant',
         method: 'post',
@@ -176,12 +226,27 @@ $(document).ready(function () {
         }
       })
         .then((res) => {
+          console.log(res)
+          e.currentTarget.innerHTML = '★ Favourite Restaurant'
+          $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+    else if (e.currentTarget.innerHTML.match('★')) {
+      let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
+      axios({
+        url: `/user/favourite/restaurant/${resta_favourite}`,
+        method: 'delete',
+      })
+        .then((res) => {
+          console.log(res)
           e.currentTarget.innerHTML = '☆ Add to favourite'
         })
         .catch((error) => {
           console.log(error);
         })
-
     }
   })
 

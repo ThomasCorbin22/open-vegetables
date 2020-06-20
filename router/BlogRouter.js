@@ -322,7 +322,7 @@ class BlogRouter {
         }
     
         res.render('blog', {
-            title: 'blogs-' + req.params.subpage + '-' + req.params.filter,
+            title: 'blogs-' + req.params.filter,
             blogs: results,
             pages
         })

@@ -87,16 +87,17 @@
     {{>register_page}}
 
     <div class="container-fluid p-3 bg-green text-center">
-        <form id='form-search' class="form-inline d-flex justify-content-center md-form form-sm">
-            <input id='form-input' class="form-control form-control-sm w-50" type="text" placeholder="Search"
+        <form id='main-search' class="form-inline d-flex justify-content-center md-form form-sm">
+            <input id='main-input' class="form-control form-control-sm w-50" type="text" placeholder="Search"
                 aria-label="Search">
-            <select class='form-control form-control-sm w-25 mr-2' id="form-filter" name="form-filter">
+
+            <select id="main-filter" class='form-control form-control-sm w-25 mx-2' name="form-route">
                 <option value="restaurants">Restaurants</option>
                 <option value="blogs">Blogs</option>
                 <option value="users">Users</option>
             </select>
-            <button class="btn btn-primary btn-search btn-rounded btn-sm my-0" type="submit"><i class="fas fa-search"
-                    aria-hidden="true"></i></button>
+
+            <button class='btn btn-primary btn-search btn-rounded btn-sm my-0' type='submit'><i class="fas fa-search" aria-hidden="true"></i></button>
         </form>
     </div>
 

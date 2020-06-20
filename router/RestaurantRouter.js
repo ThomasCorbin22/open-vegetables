@@ -437,6 +437,9 @@ class RestaurantRouter {
         restaurant.price = getPrice(restaurant.price)
         if (restaurant.rating == 0) restaurant.rating = 'Not yet rated'
         if (restaurant.main_picture_URL == 'Not available') delete restaurant.main_picture_URL
+        if (restaurant.logo == 'Not available') delete restaurant.logo
+        if (restaurant.website_URL == 'Not available') delete restaurant.website_URL
+        if (restaurant.social_media_URL == 'Not available') delete restaurant.social_media_URL
 
         // Get the reviews for a restaurant
         let reviews = await this.reviewService.listReviews(restaurant.id)

@@ -39,10 +39,14 @@
                     <li class='list-group-item'>{{restaurant.telephone_number}}</li>
                     <h6 class=" mt-1 text-muted">Address</h6>
                     <li class='list-group-item'>{{restaurant.street_address}}</li>
+                    {{#if restaurant.website_URL}}
                     <h6 class=" mt-1 text-muted">Website</h6>
                     <li class='list-group-item'><a href='{{restaurant.website_URL}}'>{{restaurant.website_URL}}</a></li>
+                    {{/if}}
+                    {{#if restaurant.social_media_URL}}
                     <h6 class=" mt-1 text-muted">Social Media</h6>
                     <li class='list-group-item'><a href='{{restaurant.social_media_URL}}'>{{restaurant.social_media_URL}}</a></li>
+                    {{/if}}
                 </ul>
             </div>
             <div class='col-sm-4'>

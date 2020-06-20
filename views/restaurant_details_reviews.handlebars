@@ -65,12 +65,14 @@
         <div class='col'>
             <h3 class='card-header my-3'>Reviews</h3>
             <div class='row'>
+                {{#if user_id}}
                 <div class='col-sm-12'>
                     <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
                         <span>Create a new review</span>
                     </button>
                     {{>create_newReview}}
                 </div>
+                {{/if}}
                 {{#each reviews}}
                 <div class='col-sm-2 userID{{user_id}}Edit' style='display:none'>
                     <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">

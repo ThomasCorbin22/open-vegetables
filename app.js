@@ -84,33 +84,55 @@ app.get('/map', (req, res) => {
 //hong kong island
 
 app.get('/map/hong-kong-island/central', (req, res) => {
-    res.render('map', { title: 'central', location: req.params.location })
+    res.render('map', { title: 'Central', location: req.params.location })
 })
 
 app.get('/map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'wan-chai', location: req.params.location })
+    res.render('map', { title: 'Wan Chai', location: req.params.location })
 })
 
 app.get('/map/hong-kong-island/causeway-bay', (req, res) => {
-    res.render('map', { title: 'causeway-bay', location: req.params.location })
+    res.render('map', { title: 'Causeway Bay', location: req.params.location })
 })
 
 app.get('/map/hong-kong-island/north-point', (req, res) => {
-    res.render('map', { title: 'north-point', location: req.params.location })
+    res.render('map', { title: 'North Point', location: req.params.location })
 })
 
 //kowloon
 
-app.get('/map//map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'map', location: req.params.location })
+app.get('/map/kowloon/tsim-sha-tsui', (req, res) => {
+    res.render('map', { title: 'Tsim Sha Tsui', location: req.params.location })
 })
 
-app.get('/map//map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'map', location: req.params.location })
+app.get('/map/kowloon/mong-kok', (req, res) => {
+    res.render('map', { title: 'Mong Kok', location: req.params.location })
 })
 
-app.get('/map//map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'map', location: req.params.location })
+app.get('/map/kowloon/kwun-tong', (req, res) => {
+    res.render('map', { title: 'Kwun Tong', location: req.params.location })
+})
+
+app.get('/map/kowloon/tsuen-wan', (req, res) => {
+    res.render('map', { title: 'Tsuen Wan', location: req.params.location })
+})
+
+//new territories
+
+app.get('/map/kowloon/tsim-sha-tsui', (req, res) => {
+    res.render('map', { title: 'Tsim Sha Tsui', location: req.params.location })
+})
+
+app.get('/map/kowloon/mong-kok', (req, res) => {
+    res.render('map', { title: 'Mong Kok', location: req.params.location })
+})
+
+app.get('/map/kowloon/kwun-tong', (req, res) => {
+    res.render('map', { title: 'Kwun Tong', location: req.params.location })
+})
+
+app.get('/map/kowloon/tsuen-wan', (req, res) => {
+    res.render('map', { title: 'Tsuen Wan', location: req.params.location })
 })
 
 //routing blogs

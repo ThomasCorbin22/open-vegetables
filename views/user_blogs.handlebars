@@ -25,12 +25,13 @@
                        {{> update_existBlog}}
 
                         <div  class='card custom-height overflow-auto existContent' >
-                            <a class='blogLink'href='/blog/blogNumber{{id}}'>
+                            <a class='blogLink' href='/blogs/details/{{id}}'>
                                 <h2 class='card-header'> {{title}}</h2>
                             </a>
                             <div class='card-body'>
-                                {{#each cate}}
-                                <h7 class='card-subtitle text-muted cate{{id}}'>{{category}}</h7>
+                                {{#each blogCate}}
+                                <p class='blogCateID' style='display:none'>{{id}}</p>
+                                <h7 class='card-subtitle text-muted blogCate'>{{category}}</h7>
                                 {{/each}}
                                 <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
                                 <h7 class='card-subtitle text-muted'>{{date_modified}}</h7>

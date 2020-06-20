@@ -220,13 +220,14 @@ app.get('/user/blogs/:id', async (req, res) => {
     let blogImg
     for (let blog of userOwnBlogs) {
         blogImg = await blogService.getPicture(blog.id)
-        blogCate = await blogService.getCategory(blog.id)
+        blogCate = await blogService.listCategories(blog.id)
         blog.blogImg = blogImg[0]
-        blog.blogCate = blogCate[0]
+        blog.blogCate = blogCate
+        console.log(blogCate)
     }
     console.log(userOwnBlogs)
 
-    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] ,cate:blogCate })
+    res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0]  })
 })
 
 app.get('/user/restaurants/:id', async (req, res) => {

@@ -2,7 +2,8 @@
     <div class='card'>
         <div class='row'>
             <div class='col-sm-4'>
-                <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
+                <h4 class='card-header'><a id='restaLink'
+                        href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
                 </h4>
                 <div class='card-body'>
                     {{#if restaurant.main_picture_URL}}
@@ -18,7 +19,8 @@
                     <p class='card-title'></p><i class="fa fa-thumbs-up"></i>{{restaurant.rating}}</p>
                     {{#if user_id}}
                     {{#if restaurant.favourite}}
-                    <p id='favourite-{{restaurant.favourite}}' class='card-title add-favourite'>★ Favourite Restaurant</p>
+                    <p id='favourite-{{restaurant.favourite}}' class='card-title add-favourite'>★ Favourite Restaurant
+                    </p>
                     {{else}}
                     <p class='card-title add-favourite'>☆ Add to favourite</p>
                     {{/if}}
@@ -45,7 +47,8 @@
                     {{/if}}
                     {{#if restaurant.social_media_URL}}
                     <h6 class=" mt-1 text-muted">Social Media</h6>
-                    <li class='list-group-item'><a href='{{restaurant.social_media_URL}}'>{{restaurant.social_media_URL}}</a></li>
+                    <li class='list-group-item'><a
+                            href='{{restaurant.social_media_URL}}'>{{restaurant.social_media_URL}}</a></li>
                     {{/if}}
                 </ul>
             </div>
@@ -67,15 +70,17 @@
             <div class='row'>
                 {{#if user_id}}
                 <div class='col-sm-12'>
-                    <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
+                    <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3">
                         <span>Create a new review</span>
                     </button>
                     {{>create_newReview}}
                 </div>
                 {{/if}}
-                {{#each reviews}}
+            </div>
+            {{#each reviews}}
+            <div class="row">
                 <div class='col-sm-2 userID{{user_id}}Edit' style='display:none'>
-                    <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
+                    <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block mt-3">
                         <span>Edit</span>
                     </button>
                 </div>
@@ -86,7 +91,7 @@
                                 {{>update_existReview}}
                             </div>
                         </div>
-                        <div class='row existContent'>
+                        <div id='review-{{id}}' class='row existContent'>
                             <div class='col-sm-3'>
                                 <div class='card-body'>
                                     <h5 class='card-title'>{{userName}}</h5>
@@ -99,16 +104,20 @@
                                     <h5 class='card-title'>{{title}}</h5>
                                     <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
                                     <br>
+                                    {{#if modified}}
                                     <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
+                                    {{/if}}
                                     <p class='card-text'>{{body}}</p>
+                                    {{#if pictures}}
                                     <img class='card-img w-50 custom-area-sm' src={{pictures}}>
+                                    {{/if}}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {{/each}}
                 </div>
             </div>
+            {{/each}}
         </div>
     </div>
 </div>

@@ -436,6 +436,8 @@ class RestaurantRouter {
         restaurant.opening_hours = getOpeningHours(restaurant)
         restaurant.price = getPrice(restaurant.price)
         if (restaurant.rating == 0) restaurant.rating = 'Not yet rated'
+
+        // Delete unwanted information
         if (restaurant.main_picture_URL == 'Not available') delete restaurant.main_picture_URL
         if (restaurant.logo == 'Not available') delete restaurant.logo
         if (restaurant.website_URL == 'Not available') delete restaurant.website_URL
@@ -449,7 +451,7 @@ class RestaurantRouter {
             review.userName = user[0].first_name
             review.userImage = user[0].profile_picture_URL
         }
-
+        
         // Check if the restaurant is a favourite of the user
         if (favourites) {
             for (let item of favourites) {

@@ -549,13 +549,20 @@ $(document).ready(function () {
         console.log(error);
       })
   })
-  // Add new restaurant + corresponding user can access it=
+
+  // Add new review
   $('#newReviewSubmitBtn').click(function (e) {
     e.preventDefault()
     let title = $('#newTitle').val()
     let body = $('#newBody').val()
-    let rating = $('#newRating').val()
-    let newImg = $('#newImg').next().attr('src')
+    let image = $('#newImg').next().attr('src')
+    let rating
+
+    if ($('#newRating-1').prop('checked')) rating = 1
+    if ($('#newRating-2').prop('checked')) rating = 2
+    if ($('#newRating-3').prop('checked')) rating = 3
+    if ($('#newRating-4').prop('checked')) rating = 3
+    if ($('#newRating-5').prop('checked')) rating = 5
 
     let restaurant_id = window.location.href.split('/').splice(-1)[0]
 
@@ -563,19 +570,107 @@ $(document).ready(function () {
       url: '/review',
       method: 'post',
       data: {
-        "title": title,
-        "body": body,
-        "rating": rating,
-        "user_id": user_id,
-        "restaurant_id": restaurant_id
+        title,
+        body,
+        rating,
+        used_id,
+        restaurant_id
       }
     })
+      .then((res) => {
+        console.log(res.data)
+        // Add new review picture
+        if (image) {
+          axios({
+            url: '/review/picture',
+            method: 'post',
+            data: {
+              "picture_URL": image,
+              "review_id": res.data[0].id
+            }
+          })
+            .then((res) => {
+              location.reload();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
+
+  // Update existing review
+  $('.existReviewSubmit').click(function (e) {
+    e.preventDefault()
+
+    let id = e.target.attr('id').split('-').splice(-1)[0]
+    let title = $(`#existTitle-${id}`).val()
+    let body = $(`#existBody-${id}`).val()
+    let image = $(`#existImg-${id}`).next().attr('src')
+    let rating
+
+    if ($(`#existRating-1-${id}`).prop('checked')) rating = 1
+    if ($(`#existRating-2-${id}`).prop('checked')) rating = 2
+    if ($(`#existRating-3-${id}`).prop('checked')) rating = 3
+    if ($(`#existRating-4-${id}`).prop('checked')) rating = 3
+    if ($(`#existRating-5-${id}`).prop('checked')) rating = 5
+
+    let restaurant_id = window.location.href.split('/').splice(-1)[0]
+
+    console.log(id)
+
+    axios({
+      url: '/review',
+      method: 'put',
+      data: {
+        id,
+        title,
+        body,
+        rating,
+        user_id,
+        restaurant_id
+      }
+    })
+    .then((res) => {
+      console.log(res.data)
+
+      // Get review picture
+      axios({
+        url: '/review/picture/list/' + id,
+        method: 'get'
+      })
       .then((res) => {
         console.log(res.data)
       })
       .catch((error) => {
         console.log(error);
       })
+
+      // Add new review picture
+      if (image) {
+        let picture_id
+        axios({
+          url: '/review/picture',
+          method: 'put',
+          data: {
+            "picture_URL": image,
+            "review_id": res.data[0].id
+          }
+        })
+          .then((res) => {
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   })
 
   // $('.btnGroup button:eq(1)').click(function (e) {
@@ -607,6 +702,7 @@ $(document).ready(function () {
   //       console.log(error);
   //     })
   // })
+
   //Delete restaurant
   $('.btnRestaGroup button:last-child').click(function (e) {
     e.preventDefault()

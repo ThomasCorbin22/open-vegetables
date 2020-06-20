@@ -6,12 +6,12 @@ body{
 
 a, u {
     text-decoration: none !important;
-    color: rgba(0, 0, 0, 1);
-    transition: 0.75s ease-in-out;
+    transition: 0.5s ease-in-out;
+    color:rgba(0, 0, 0, 1)
 }
 
 a:hover {
-    color:rgba(150, 150, 150, 1)
+    color:rgba(100, 100, 100, 1)
 }
 
 hr{
@@ -102,7 +102,7 @@ hr{
 }
   
 hr{
-  border-top: 2px solid rgba(0, 0, 0, 0.4);
+    border-top: 2px solid rgba(0, 0, 0, 0.4);
 }
 
 .list-group-item {
@@ -115,19 +115,27 @@ hr{
 .custom-height{
     max-height: 500px;
 }
-.custom-area-small{
-    max-height: 200px;
-    max-width: 200px;
+
+.custom-area-sm{
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
 }
 
 #map{
-  height: 700px;
-  width: 100%;
+    height: 700px;
+    width: 100%;
+}
+
+.min-area{
+    min-width: 200px;
+    min-height: 200px;
 }
 
 .custom-area-xs{
-    max-height: 100px;
-    max-width: 100px;
+    height: 100px;
+    width: 100px;
+    object-fit:cover
 }
 
 .authentication {
@@ -166,7 +174,15 @@ hr{
 .btn-search:hover{
     background-color: rgb(54, 129, 78);
     color: rgba(255,255,255, 1);
-    border-radius: 50%
+}
+
+.btn-rounded{
+    border-radius: 50%;
+}
+
+.btn-large{
+    width: 40px;
+    height: 40px
 }
 
 .btn-green{
@@ -176,9 +192,45 @@ hr{
     transition: 0.5s ease-in-out;
 }
 
-.btn-green:hover{
+.btn-green:hover, .btn-green:focus{
     background-color: rgb(54, 129, 78);
+    box-shadow: none
+}
+
+.btn-green:disabled{
+    background-color: rgb(54, 129, 78);
+}
+
+.btn-facebook{
+    background-color: rgba(66, 103, 178, 1);
     color: rgba(255,255,255, 1);
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+.btn-facebook:hover, .btn-facebook:focus{
+    background-color: rgb(36, 73, 148);
+    box-shadow: none
+}
+
+.btn-facebook:disabled{
+    background-color: rgb(36, 73, 148);
+}
+
+.btn-google{
+    background-color: rgba(245, 245, 245, 1);
+    color: rgba(50,50,50, 1);
+    border: none;
+    transition: 0.5s ease-in-out;
+}
+
+.btn-google:hover, .btn-facebook:focus{
+    background-color: rgb(215, 215, 215);
+    box-shadow: none
+}
+
+.btn-google:disabled{
+    background-color: rgb(215, 215, 215);
 }
 
 /* Colours */
@@ -188,14 +240,14 @@ hr{
 
 .bg-light{
     background-color: rgba(255,255,255, 1)!important;
-} */
+}
 
 .color-white{
     color: rgba(255,255,255, 1)!important;
 }
 
-.card-text{
-    color: rgba(255,255,255, 1)!important;
+.color-black{
+    color: rgba(0,0,0, 1)!important;
 }
 
 /* IDs */

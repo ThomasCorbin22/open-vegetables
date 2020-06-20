@@ -20,6 +20,10 @@ class LocationRouter {
         this.router.post('/district/', this.postDistrict.bind(this));
         this.router.put('/district/:id', this.putDistrict.bind(this));
         this.router.delete('/district/:id', this.deleteDistrict.bind(this));
+        
+        // Deals with map pages
+        this.router.get('/map', this.displayMap.bind(this));
+        this.router.get('/map/:area/:district', this.displayLocation.bind(this));
 
         return this.router
     }
@@ -166,6 +170,16 @@ class LocationRouter {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    // Displays the map
+    displayMap(req, res) {
+        res.render('map', { title: 'map' })
+    }
+
+    // Displays the location
+    displayLocation(req, res) {
+        res.render('map', { title: req.params.district, location: req.params.district })
     }
 }
 

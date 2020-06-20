@@ -35,7 +35,15 @@ exports.seed = function (knex) {
           "blog_id": 1
         },
         {
+          "category": 'Opinion',
+          "blog_id": 1
+        },
+        {
           "category": 'News',
+          "blog_id": 2
+        },
+        {
+          "category": 'Speculation',
           "blog_id": 2
         },
         {
@@ -43,7 +51,15 @@ exports.seed = function (knex) {
           "blog_id": 3
         },
         {
+          "category": 'Breaking',
+          "blog_id": 3
+        },
+        {
           "category": 'Future',
+          "blog_id": 4
+        },
+        {
+          "category": 'Recommended',
           "blog_id": 4
         }
       ]);

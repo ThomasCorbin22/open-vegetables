@@ -6,10 +6,9 @@ module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host: '/var/run/postgresql',
-      database: 'open_vegetables',
-      user: 'postgres',
-      password: 'postgres'
+      database: process.env.DATABASE_NAME,
+      user: process.env.DATABASE_USERNAME,
+      password: process.env.DATABASE_PASSWORD
     },
     pool: {
       min: 2,

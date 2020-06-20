@@ -1,0 +1,39 @@
+<form id='createNew' action='/user/blogs/{{blogs.user_id}}' method='POST' style="display:none">
+    <div class="form-group">
+        <label for="newBlogTitle">Title</label>
+        <input type="text" class="form-control" id="newBlogTitle" name='title' placeholder="Enter Title">
+    </div>
+    <div class="form-group">
+        <label for="newBlogCategories">Categories</label>
+        <div class='form-control' id='newBlogCategories'>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="cate_1" name='category' value="Sustainability">
+                <label class="form-check-label" for="cate_1">Sustainability</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="cate_2" name='category' value="News">
+                <label class="form-check-label" for="cate_2">News</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" id="cate_3" name='category' value="Opinion">
+                <label class="form-check-label" for="cate_3">Opinion</label>
+            </div>
+        </div>
+    </div>
+    <div class='form-group'>
+        <label for='newBlogBody'>Body</label>
+        <textarea name='body' class='form-control ' rows='3' id='newBlogBody'></textarea>
+    </div>
+    <div class='form-group'>
+         <div class='row'>
+            <div class='mx-3 col-sm-4'>
+        <label class="custom-file-label" for="newImg">Images </label>
+        <input type="file" class='custom-file-input uploadImg' id="newImg" name='picture_URL'>
+        <img class='custom-area-sm my-2' src='/pictures/image.png'>
+            </div>
+         </div>
+    </div>
+    <div class='form-group'>
+        <button type="submit" id='newSubmitBtn' class="btn btn-primary">Submit</button>
+    </div>
+</form>

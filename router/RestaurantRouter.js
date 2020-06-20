@@ -1,19 +1,27 @@
 const express = require('express');
+const filterResults = require('../modules/filterResults.js');
+const getPagination = require('../modules/getPagination.js');
+const getOpeningHours = require('../modules/getOpeningHours.js');
+const getDate = require('../modules/getDate.js');
+const getPrice = require('../modules/getPrice.js');
 
 class RestaurantRouter {
-    constructor(restaurantService) {
+    constructor(restaurantService, reviewService, userService, locationService) {
         this.restaurantService = restaurantService
+        this.reviewService = reviewService
+        this.userService = userService
+        this.locationService = locationService
         this.router = express.Router()
     }
 
     route() {        
         // Deals with individual restaurants
-        this.router.get('/', this.listRestaurants.bind(this));
+        this.router.get('/list', this.listRestaurants.bind(this));
         this.router.get('/search', this.searchRestaurants.bind(this));
-        this.router.get('/:id', this.getRestaurant.bind(this));
-        this.router.post('/', this.postRestaurant.bind(this));
-        this.router.put('/:id', this.putRestaurant.bind(this));
-        this.router.delete('/:id', this.deleteRestaurant.bind(this));
+        this.router.get('/individual/:id', this.getRestaurant.bind(this));
+        this.router.post('/individual/', this.postRestaurant.bind(this));
+        this.router.put('/individual/:id', this.putRestaurant.bind(this));
+        this.router.delete('/individual/:id', this.deleteRestaurant.bind(this));
 
         // Deals with restaurant pictures
         this.router.get('/picture/list/:id', this.listPictures.bind(this));
@@ -29,13 +37,15 @@ class RestaurantRouter {
         this.router.put('/category/:id', this.putCategory.bind(this));
         this.router.delete('/category/:id', this.deleteCategory.bind(this));
 
+        // Deals with page routes
+        this.router.get('/details/:id', this.displaySingle.bind(this));
+        this.router.get('/:area/:filter/:direction', this.displayAll.bind(this));
+
         return this.router
     }
 
     // Lists all restaurants
     searchRestaurants(req, res) {
-        console.log(req.query)
-
         let query = req.query
         let range
 
@@ -102,6 +112,7 @@ class RestaurantRouter {
             friday: req.body.friday,
             saturday: req.body.saturday,
             sunday: req.body.sunday,
+            modified: req.body.modified,
         }
 
         return this.restaurantService.addRestaurant(restaurant)
@@ -138,6 +149,7 @@ class RestaurantRouter {
             friday: req.body.friday,
             saturday: req.body.saturday,
             sunday: req.body.sunday,
+            modified: req.body.modified,
             date_modified: new Date()
         }
 
@@ -311,6 +323,76 @@ class RestaurantRouter {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    // Displays all restaurants, subject to filters and queries
+    async displayAll(req, res) {
+        console.log(req)
+        let query = req.query
+        let page
+
+        // Delete any page queries before passing to search restaurants
+        if (query.page){
+            page = query.page
+            delete query['page'];
+        }
+    
+        // Search the restaurants according to the query
+        let results = await this.restaurantService.searchRestaurants(req.query)
+        
+        // Filter the results based on the url filter
+        results = filterResults('restaurant', req.params.filter, req.params.direction, results)
+        
+        // Add pagination
+        let pages = getPagination('restaurant', Number(page) || 1, results.length || 1)
+
+        // Add specified parameters to reflect in the html / hrefs
+        pages['area'] = req.params.area
+        pages['filter'] = req.params.filter
+        pages['direction'] = req.params.direction
+        if (req.user) pages['user'] = req.user.id
+
+        // Allow users to switch the direction of the filters
+        if (pages['direction'] === 'ascending') pages['opposite_direction'] = 'descending'
+        else if (pages['direction'] === 'descending') pages['opposite_direction'] = 'ascending'
+
+        // Get just the specified results for that page
+        let index = (pages.current.value - 1) * 10
+        results = results.slice(index, index + 10)
+
+        // Change restaurant dates to be legible
+        for (let result of results){
+            result.date_modified = getDate(result.date_modified)
+            result.date_created = getDate(result.date_created)
+            result.opening_hours = getOpeningHours(result)
+            result.price = getPrice(result.price)
+            if (result.rating == 0) result.rating = 'Not yet rated'
+            if (result.main_picture_URL == 'Not available') delete result.main_picture_URL
+        }
+    
+        res.render('restaurant', {
+            title: 'restaurants-' + req.params.subpage + '-' + req.params.filter,
+            restaurants: results,
+            pages
+        })
+    }
+
+    // Displays single restaurant
+    async displaySingle(req, res) {
+        let restaurants = await this.restaurantService.listRestaurants()
+
+        for (let resta of restaurants) {
+            if (resta.id == req.params.id) {
+                let reviews = await this.reviewService.listReviews(resta.id)
+                let user
+                for (let review of reviews) {
+                    user = await this.userService.getUser(review.user_id)
+                    review.userName = user[0].first_name
+                    review.userImage = user[0].profile_picture_URL
+                }
+                res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
+            }
+        }
     }
 }
 

@@ -45,7 +45,15 @@ const server = https.createServer({
 }, app);
 
 // Set up middleware
-app.engine('handlebars', hbs({ defaultLayout: 'main' }))
+app.engine('handlebars', hbs(
+    {
+        helpers: {
+            inc: function (val) { return parseInt(val + 1); },
+            sameUser: function (commentId, UserId) { return commentId == UserId },
+            isdisabled: function (input) { return typeof input == 'string' }
+        }
+        , defaultLayout: 'main'
+    }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
@@ -65,217 +73,17 @@ app.get('/', async (req, res) => {
     res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
 })
 
-// Restaurants
-
-app.get('/restaurants/all', async (req, res) => {
-    let results = await restaurantService.listRestaurants()
-    res.render('restaurant', {
-        title: 'restaurants-all',
-        restaurants: results
-    })
-})
-
-//routing maps
-
-app.get('/map', (req, res) => {
-    res.render('map', { title: 'map' })
-})
-
-//hong kong island
-
-app.get('/map/hong-kong-island/central', (req, res) => {
-    res.render('map', { title: 'Central', location: req.params.location })
-})
-
-app.get('/map/hong-kong-island/wan-chai', (req, res) => {
-    res.render('map', { title: 'Wan Chai', location: req.params.location })
-})
-
-app.get('/map/hong-kong-island/causeway-bay', (req, res) => {
-    res.render('map', { title: 'Causeway Bay', location: req.params.location })
-})
-
-app.get('/map/hong-kong-island/north-point', (req, res) => {
-    res.render('map', { title: 'North Point', location: req.params.location })
-})
-
-//kowloon
-
-app.get('/map/kowloon/tsim-sha-tsui', (req, res) => {
-    res.render('map', { title: 'Tsim Sha Tsui', location: req.params.location })
-})
-
-app.get('/map/kowloon/mong-kok', (req, res) => {
-    res.render('map', { title: 'Mong Kok', location: req.params.location })
-})
-
-app.get('/map/kowloon/kwun-tong', (req, res) => {
-    res.render('map', { title: 'Kwun Tong', location: req.params.location })
-})
-
-app.get('/map/kowloon/tsuen-wan', (req, res) => {
-    res.render('map', { title: 'Tsuen Wan', location: req.params.location })
-})
-
-//new territories
-
-app.get('/map/kowloon/tsim-sha-tsui', (req, res) => {
-    res.render('map', { title: 'Tsim Sha Tsui', location: req.params.location })
-})
-
-app.get('/map/kowloon/mong-kok', (req, res) => {
-    res.render('map', { title: 'Mong Kok', location: req.params.location })
-})
-
-app.get('/map/kowloon/kwun-tong', (req, res) => {
-    res.render('map', { title: 'Kwun Tong', location: req.params.location })
-})
-
-app.get('/map/kowloon/tsuen-wan', (req, res) => {
-    res.render('map', { title: 'Tsuen Wan', location: req.params.location })
-})
-
-//routing blogs
-
-app.get('/blogs', (req, res) => {
-    res.render('blog', { title: 'blog' })
-})
-
-app.get('/blogs/full_blog', (req, res) => {
-    res.render('full_blog', { title: 'full_blog' })
-})
-
-//routing restaurant
-
-app.get('/restaurant/details/summary', (req, res) => {
-    res.render('restaurant_details_summary', { title: 'restaurant-details/summary' })
-})
-
-app.get('/restaurants/search/', async (req, res) => {
-    let results = await restaurantService.searchRestaurants(req.query)
-    res.render('restaurant', {
-        title: 'restaurants-search',
-        restaurants: results
-    })
-})
-
-app.get('/restaurant/details/:subpage/:id', async (req, res) => {
-    let restaurants = await restaurantService.listRestaurants()
-
-    for (let resta of restaurants) {
-        if (resta.id == req.params.id) {
-            let reviews = await reviewService.listReviews(resta.id)
-            let user
-            for (let review of reviews) {
-                user = await userService.getUser(review.user_id)
-                review.userName = user[0].first_name
-                review.userImage = user[0].profile_picture_URL
-            }
-
-            res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
-        }
-    }
-})
-
-app.get('/restaurants/:subpage', async (req, res) => {
-    let results = await locationService.listAreas()
-    let id
-
-    for (let item of results) {
-        if (item['area'] === req.params.subpage) {
-            id = item['id']
-        }
-    }
-    results = await restaurantService.searchRestaurants({ id })
-    res.render('restaurant', {
-        title: 'restaurants-' + req.params.subpage,
-        restaurants: results
-    })
-})
-
-//routing users
-
-app.get('/users/info', (req, res) => {
-    res.render('user_information', { title: 'userInformation' })
-})
-
-// Blogs
-
-app.get('/blogs/all', async (req, res) => {
-    let blogs = await blogService.listBlogs()
-    res.render('blog', { title: 'blogs', blogs: blogs })
-})
-
-app.get('/blogs/search/', async (req, res) => {
-    let results = await blogService.searchBlogs(req.query)
-    res.render('blog', {
-        title: 'blogs-search',
-        blogs: results
-    })
-})
-
-app.get('/users/blogs', (req, res) => {
-    res.render('user_blogs', { title: 'userBlogs' })
-})
-
-app.get('/blog/details/:id', async (req, res) => {
-    let blogs = await blogService.listBlogs();
-    for (let blog of blogs) {
-        if (blog.id == req.params.id) {
-            let publisher = await userService.getUser(blog.user_id)
-            let commentsBlog = await commentService.getComment(blog.id)
-            let commentBlog = []
-            for (let comment of commentsBlog) {
-                let commentUser = await userService.getUser(comment.user_id)
-                comment.userName = commentUser[0].first_name
-                comment.userImage = commentUser[0].profile_picture_URL
-            }
-            blog.comments = commentBlog
-            blog.userName = publisher[0].first_name
-            blog.userImage = publisher[0].profile_picture_URL
-            res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
-        }
-    }
-})
-
-// Users
-
-app.get('/user/info/:id', async (req, res) => {
-    let user = await userService.getUser(req.params.id)
-    res.render('user_information', { title: 'userInformation', user: user[0] })
-})
-
-app.get('/user/reviews/:id', async (req, res) => {
-    let reviews = await reviewService.getReview(req.params.id)
-    for (let review of reviews) {
-        let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
-        review.restaurant = restaurant[0]
-
-    }
-    res.render('user_reviews', { title: 'userReviews', reviews: reviews })
-})
-
-app.get('/user/blogs/:id', async (req, res) => {
-    let user = await userService.getUser(req.params.id)
-
-    res.render('user_blogs', { title: 'userBlogs', blogs: user[0].blogs })
-})
-
-app.get('/users/restaurants/:id', (req, res) => {
-    res.render('user_restaurants', { title: 'userRestaurants' })
-})
-
 // Initialise passport
 initPassport(app);
 
 // Set up routers
 app.use('/user', new UserRouter(userService).route());
-app.use('/restaurant', new RestaurantRouter(restaurantService).route());
-app.use('/blog', new BlogRouter(blogService).route());
+app.use('/restaurant', new RestaurantRouter(restaurantService, reviewService, userService, locationService).route());
+app.use('/blog', new BlogRouter(blogService, commentService, userService).route());
 app.use('/comment', new CommentRouter(commentService).route());
 app.use('/review', new ReviewRouter(reviewService).route());
 app.use('/auth', new AuthRouter().route());
-app.use('/location', new LocationRouter().route());
+app.use('/location', new LocationRouter(locationService).route());
 
 // Set up server
 server.listen(port);

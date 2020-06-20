@@ -1,5 +1,6 @@
 // Update with your config settings.
 require('dotenv').config();
+const getDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -24,6 +25,8 @@ class CommentService {
 
             item["likes"] = likesDislikes[0]
             item["dislikes"] = likesDislikes[1]
+            item["date_created"] = getDate(item["date_created"])
+            item["date_modified"] = getDate(item["date_modified"])
 
             this.comment.push(item)
         }

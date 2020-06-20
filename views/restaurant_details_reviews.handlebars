@@ -2,16 +2,27 @@
     <div class='card'>
         <div class='row'>
             <div class='col-sm-4'>
-                <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{resta.id}}'>{{resta.name}}</a>
+                <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
                 </h4>
                 <div class='card-body'>
-                    <img class='mb-2 custom-area-sm' src={{resta.main_picture_URL}}>
-                    <img class='custom-area-sm' src={{resta.logo}}>
+                    {{#if restaurant.main_picture_URL}}
+                    <img class='mb-2 custom-area-sm' src={{restaurant.main_picture_URL}}>
+                    {{/if}}
+                    {{#if restaurant.logo}}
+                    <img class='custom-area-sm' src={{restaurant.logo}}>
+                    {{/if}}
                     <hr>
-                    <p class='card-title'></p><i class="fa fa-thumbs-up"></i>
-                    {{resta.rating}}</p>
+                    {{#if restaurant.price}}
+                    <p class='card-title'>{{restaurant.price}}</p>
+                    {{/if}}
+                    <p class='card-title'></p><i class="fa fa-thumbs-up"></i>{{restaurant.rating}}</p>
+                    {{#if user_id}}
+                    {{#if restaurant.favourite}}
+                    <p id='favourite-{{restaurant.favourite}}' class='card-title add-favourite'>★ Favourite Restaurant</p>
+                    {{else}}
                     <p class='card-title add-favourite'>☆ Add to favourite</p>
-
+                    {{/if}}
+                    {{/if}}
                 </div>
             </div>
             <div class='col-sm-4'>
@@ -19,19 +30,19 @@
 
                 <ul class='list-group list-group-flush mt-3'>
                     <h6 class=" mt-1 text-muted">Description</h6>
-                    <li class='list-group-item'>{{resta.description}}</li>
-                    <h6 class=" mt-1 text-muted">Price Range</h6>
-                    <li class='list-group-item'>{{resta.price_range}}</li>
+                    <li class='list-group-item'>{{restaurant.description}}</li>
                     <h6 class=" mt-1 text-muted">Categories</h6>
-                    <li class='list-group-item'>{{resta.categories}}</li>
+                    <li class='list-group-item'>{{restaurant.categories}}</li>
                     <h6 class=" mt-1 text-muted">Opening Hours</h6>
-                    <li class='list-group-item'>{{resta.opening_time}}-{{resta.closing_time}}</li>
+                    <li class='list-group-item'>{{restaurant.opening_hours}}</li>
                     <h6 class=" mt-1 text-muted">Telephone Number</h6>
-                    <li class='list-group-item'>{{resta.telephone_number}}</li>
+                    <li class='list-group-item'>{{restaurant.telephone_number}}</li>
                     <h6 class=" mt-1 text-muted">Address</h6>
-                    <li class='list-group-item'>{{resta.street_address}}</li>
+                    <li class='list-group-item'>{{restaurant.street_address}}</li>
+                    <h6 class=" mt-1 text-muted">Website</h6>
+                    <li class='list-group-item'><a href='{{restaurant.website_URL}}'>{{restaurant.website_URL}}</a></li>
                     <h6 class=" mt-1 text-muted">Social Media</h6>
-                    <li class='list-group-item'><a href='{{resta.social_media_URL}}'>{{resta.social_media_URL}}</a></li>
+                    <li class='list-group-item'><a href='{{restaurant.social_media_URL}}'>{{restaurant.social_media_URL}}</a></li>
                 </ul>
             </div>
             <div class='col-sm-4'>
@@ -39,7 +50,7 @@
                 <div id="app" class="container">
                     <div class="row">
                         <div class="col">
-                            <div id="map" class="embed-responsive embed-responsive-16by9"></div>
+                            <div id="map" class="embed-responsive embed-responsive-16by9 h-100"></div>
                         </div>
                     </div>
                 </div>
@@ -49,65 +60,47 @@
     <div class='row mb-3'>
         <div class='col'>
             <h3 class='card-header my-3'>Reviews</h3>
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
+                        <span>Create a new review</span>
+                    </button>
+                    {{>create_newReview}}
+                </div>
+                {{#each reviews}}
+                <div class='col-sm-2 userID{{user_id}}Edit' style='display:none'>
+                    <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
+                        <span>Edit</span>
+                    </button>
+                </div>
+                <div class='col-sm-12'>
+                    <div class='card custom-height overflow-auto'>
+                        <div class='row'>
+                            <div class='col-sm-12'>
+                                {{>update_existReview}}
+                            </div>
+                        </div>
+                        <div class='row existContent'>
+                            <div class='col-sm-3'>
+                                <div class='card-body'>
+                                    <h5 class='card-title'>{{userName}}</h5>
+                                    <img class='w-100 custom-area-small' src={{userImage}}>
 
-            <ul class='nav justify-content-around navbar-light bg-light mb-2'>
-                <li class='nav-item'>
-                    <a href='#' class='nav-link'>Latest</a>
-                </li>
-                <li class='nav-item'>
-                    <a href='#' class='nav-link'>Rate</a>
-                </li>
-                <li class='nav-item'>
-                    <a href='#' class='nav-link'>Hotest</a>
-                </li>
-                <li clas='nav-item dropdown'>
-                    <a href='#' class='nav-link'>Publisher</a>
-                </li>
-            </ul>
-            <div class='container-fluid'>
-
-                <div class='row'>
-                    <div class='col-sm-12'>
-                        <button type="button" id='createNewbtn' class="btn btn-light btn-lg btn-block mb-3">
-                            <span>Create a new review</span>
-                        </button>
-                        {{>create_newReview}}
-                    </div>
-                    {{#each reviews}}
-                    <div class='col-sm-2 userID{{user_id}}Edit' style='display:none'>
-                        <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
-                            <span>Edit</span>
-                        </button>
-                    </div>
-                    <div class='col-sm-12'>
-                        <div class='card custom-height overflow-auto'>
-                            <div class='row'>
-                                <div class='col-sm-12'>
-                                    {{>update_existReview}}
                                 </div>
                             </div>
-                            <div class='row existContent'>
-                                <div class='col-sm-3'>
-                                    <div class='card-body'>
-                                        <h5 class='card-title'>{{userName}}</h5>
-                                        <img class='w-100 custom-area-small' src={{userImage}}>
-
-                                    </div>
-                                </div>
-                                <div class='col-sm-9'>
-                                    <div class='card-body'>
-                                        <h5 class='card-title'>{{title}}</h5>
-                                        <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
-                                        <br>
-                                        <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
-                                        <p class='card-text'>{{body}}</p>
-                                        <img class='card-img w-50 custom-area-sm' src={{pictures}}>
-                                    </div>
+                            <div class='col-sm-9'>
+                                <div class='card-body'>
+                                    <h5 class='card-title'>{{title}}</h5>
+                                    <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
+                                    <br>
+                                    <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
+                                    <p class='card-text'>{{body}}</p>
+                                    <img class='card-img w-50 custom-area-sm' src={{pictures}}>
                                 </div>
                             </div>
                         </div>
-                        {{/each}}
                     </div>
+                    {{/each}}
                 </div>
             </div>
         </div>

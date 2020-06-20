@@ -1,4 +1,4 @@
-function getPagination(route, page, number){
+function getPagination(route, filter, page, number){
     let api = route
     let filter_options
     let current = {value: page}
@@ -15,8 +15,12 @@ function getPagination(route, page, number){
     let next = {value:current.value + 1, active:true}
     if (next.value > last.value) next.active = false
 
-    if (route = 'restaurant') filter_options = ['latest', 'rating', 'location']
-    else if (route = 'blogs') filter_options = ['latest', 'rating', 'publisher']
+    if (route = 'restaurant') filter_options = [{value: 'alpha', active:false}, {value: 'latest', active:false}, {value: 'rating', active:false}, {value: 'location', active:false}]
+    else if (route = 'blogs') filter_options = [{value: 'alpha', active:false}, {value: 'latest', active:false}, {value: 'rating', active:false}, {value: 'publisher', active:false}]
+
+    for (let i = 0; i < filter_options.length; i++){
+        if (filter == filter_options[i].value) filter_options[i].active = true
+    }
 
     return {
         api,

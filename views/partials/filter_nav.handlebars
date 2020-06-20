@@ -1,14 +1,20 @@
 <div class='row my-2'>
     <div class="col">
         <ul class='filter-bar d-flex justify-content-around w-100 m-0'>
-            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[0]}}/{{pages.opposite_direction}}';"
-                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize'>{{pages.filter_options.[0]}}</button>
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[0].value}}/descending';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize' {{#if pages.filter_options.[0].active}}disabled{{/if}}>{{pages.filter_options.[0].value}}</button>
 
-            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[1]}}/{{pages.opposite_direction}}';"
-                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize'>{{pages.filter_options.[1]}}</button>
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[1].value}}/descending';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize' {{#if pages.filter_options.[1].active}}disabled{{/if}}>{{pages.filter_options.[1].value}}</button>
 
-            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[2]}}/{{pages.opposite_direction}}';"
-                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize'>{{pages.filter_options.[2]}}</button>
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter}}/{{#if pages.direction}}ascending{{else}}descending{{/if}}';"
+                class='btn btn-primary btn-green mx-1 text-capitalize'>{{#if pages.direction}}<i class="fas fa-angle-down"></i>{{else}}<i class="fas fa-angle-up"></i>{{/if}}</button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[2].value}}/descending';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize' {{#if pages.filter_options.[2].active}}disabled{{/if}}>{{pages.filter_options.[2].value}}</button>
+
+            <button onclick="window.location.href='/{{pages.api}}{{#if pages.area}}/{{pages.area}}{{/if}}/{{pages.filter_options.[3].value}}/descending';"
+                class='btn btn-primary btn-green flex-grow-1 mx-1 text-capitalize' {{#if pages.filter_options.[3].active}}disabled{{/if}}>{{pages.filter_options.[3].value}}</button>
         </ul>
     </div>
 </div>

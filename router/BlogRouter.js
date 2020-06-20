@@ -223,7 +223,7 @@ class BlogRouter {
             })
     }
 
-    // Get category
+    // Get a category
     getCategory(req, res) {
         let id = req.params.id
 

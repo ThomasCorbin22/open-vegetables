@@ -148,7 +148,7 @@ $(document).ready(function () {
   })
 
   //control button - create new Blog, new resta, new comment, new review
-  $('#createNewbtn').click(function (e) {
+  $('#createNewBtn').click(function (e) {
     if ($(this).text().match('Create')) {
       $('#createNew').show()
       $(this).text('Cancel Creation')
@@ -169,27 +169,140 @@ $(document).ready(function () {
     }
   })
 
-  $('#newBlogSubmitBtn').submit(function (e) {
+  //delete exist blog
+  $('.btnBlogGroup button:last-child').click(function (e) {
+    e.preventDefault()
+    let blogId = $(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/)
+    console.log(blogId)
+    axios({
+      url: '/blog/' + parseInt(blogId),
+      method: 'delete'
+    })
+      .then((res) => {
+        console.log(res.data)
+        location.reload();
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
+
+
+  //update exist blog + categories + images
+  $('.btnBlogGroup button:first-child').click(function (e) {
+    e.preventDefault()
+    let title = $(this).closest('form').find('.blogTitle').val()
+    let body = $(this).closest('form').find(".blogBody").val()
+    let categories = []
+    $.each($('input[name="category"]:checked'), function (e) {
+      axios({
+        url: '/blog/category/' + parseInt($(this).attr('name').match(/\d+/)),
+        method: 'put',
+        data: {
+          "category": $(this).val(),
+          "blog_id": blog_ID
+        }
+      })
+        .then((res) => {
+          console.log(res.data)
+          // location.reload()
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      categories.push($(this).val())
+    })
+    let image_url = $(this).closest('form').find('.blogPic').attr('src')
+    let blog_ID = parseInt($(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/))
+    console.log(title, body, categories, image_url, blog_ID)
+    axios({
+      url: '/blog/' + blog_ID,
+      method: 'put',
+      data: {
+        "title": title,
+        "body": body,
+        "user_id": user_id
+      }
+    })
+      .then((res) => {
+        axios({
+          url: '/blog/picture/' + blog_ID,
+          method: 'put',
+          data: {
+            "picture_URL": image_url,
+            "blog_id": blog_ID
+          }
+        })
+          .then((res) => {
+            console.log(res.data)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
+
+
+  //add new blog + categories + images
+  $('#newBlogSubmitBtn').click(function (e) {
     e.preventDefault()
     let title = $('#newBlogTitle').val()
     let body = $('#newBlogBody').val()
+    let image_url = $('#newImg').next().attr('src')
+    axios({
+      url: '/blog',
+      method: 'post',
+      data: {
+        "title": title,
+        "body": body,
+        "user_id": user_id
+      }
+    })
+      .then((res) => {
+        console.log(res.data)
+        $.each($("input[name='category']:checked"), function () {
+          axios({
+            url: '/blog/category',
+            method: 'post',
+            data: {
+              "category": $(this).val(),
+              "blog_id": res.data[0].id
+            }
+          })
+            .then((res) => {
+              console.log(res.data)
 
-    // axios({
-    //   url: '/blog',
-    //   method: 'post',
-    //   data: {
-    //     "title": title,
-    //     "body": body,
-    //     "user_id": 2
-    //   }
-    // })
-    //   .then((res) => {
-    //     console.log(res.data)
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        })
+        axios({
+          url: '/blog/picture',
+          method: 'post',
+          data: {
+            "picture_URL": image_url,
+            "blog_id": res.data[0].id
+          }
+        })
+          .then((res) => {
+            console.log(res.data)
+            location.reload();
+          })
+          .catch((error) => {
+            console.log(error);
+          })
 
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   })
 
   //control button - edit existing Blog, existing resta, existing comment, existing review
@@ -290,6 +403,7 @@ $(document).ready(function () {
         if (user_id) {
           console.log(res.data)
           console.log(user_id)
+          $('#createNewBtn').show()
           for (let review of res.data) {
             if (review.user_id == user_id) {
               $(`.userID${user_id}Edit`).show()
@@ -313,6 +427,7 @@ $(document).ready(function () {
       .then((res) => {
         if (user_id) {
           console.log(res.data)
+          $('#createNewBtn').show()
           for (let comment of res.data) {
             console.log(comment)
             if (comment.user_id == user_id) {
@@ -434,56 +549,6 @@ $(document).ready(function () {
         console.log(error);
       })
   })
-
-  $('.btnGroup button:eq(1)').click(function (e) {
-    let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
-    axios({
-      url: '/restaurant/' + parseInt(resta_id),
-      method: 'put',
-      data: {
-        "name": 'Our cool restaurant: V2',
-        "street_address": 'GreenLand',
-        "district_id": 4,
-        "description": 'Nicer food',
-        "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
-        "price": 2,
-        "telephone_number": '999',
-        "social_media_URL": 'www.google.com',
-        "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-        "website_URL": 'www.cool.com',
-        "latitude": 23.0,
-        "longitude": 113.6,
-        "opening_time": '09:30',
-        "closing_time": '21:50'
-      }
-    })
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  })
-
-  //Delete restaurant
-  $('.btnGroup button:last-child').click(function (e) {
-    e.preventDefault()
-    let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
-    console.log(resta_id)
-    axios({
-      url: '/restaurant/' + parseInt(resta_id),
-      method: 'delete'
-    })
-      .then((res) => {
-        console.log(res.data)
-        location.reload();
-
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  })
-
   // Add new restaurant + corresponding user can access it=
   $('#newReviewSubmitBtn').click(function (e) {
     e.preventDefault()
@@ -513,5 +578,52 @@ $(document).ready(function () {
       })
   })
 
+  // $('.btnGroup button:eq(1)').click(function (e) {
+  //   let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
+  //   axios({
+  //     url: '/restaurant/' + parseInt(resta_id),
+  //     method: 'put',
+  //     data: {
+  //       "name": 'Our cool restaurant: V2',
+  //       "street_address": 'GreenLand',
+  //       "district_id": 4,
+  //       "description": 'Nicer food',
+  //       "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
+  //       "price": 2,
+  //       "telephone_number": '999',
+  //       "social_media_URL": 'www.google.com',
+  //       "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  //       "website_URL": 'www.cool.com',
+  //       "latitude": 23.0,
+  //       "longitude": 113.6,
+  //       "opening_time": '09:30',
+  //       "closing_time": '21:50'
+  //     }
+  //   })
+  //     .then((res) => {
+  //       console.log(res.data)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     })
+  // })
+  //Delete restaurant
+  $('.btnRestaGroup button:last-child').click(function (e) {
+    e.preventDefault()
+    let resta_id = $(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/)
+    console.log(resta_id)
+    axios({
+      url: '/restaurant/' + parseInt(resta_id),
+      method: 'delete'
+    })
+      .then((res) => {
+        console.log(res.data)
+        location.reload();
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  })
 })
 

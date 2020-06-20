@@ -194,11 +194,38 @@ $(document).ready(function () {
     e.preventDefault()
     let title = $(this).closest('form').find('.blogTitle').val()
     let body = $(this).closest('form').find(".blogBody").val()
-    let categories = []
+    let image_url = $(this).closest('form').find('.blogPic').attr('src')
+    let blog_ID = parseInt($(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/))
+    console.log(title, body, image_url, blog_ID)
+
+    axios({
+      url: '/blog/category/list/' + blog_ID,
+      method: 'get'
+    })
+      .then((res) => {
+        console.log(res.data)
+        if ($('input[name="category"]:checked').val()) {
+          for (let blogCate of res.data)
+            axios({
+              url: '/blog/category/' + blogCate.id,
+              method: 'delete'
+            })
+              .then((res) => {
+                console.log(res.data)
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
     $.each($('input[name="category"]:checked'), function (e) {
       axios({
-        url: '/blog/category/' + parseInt($(this).attr('name').match(/\d+/)),
-        method: 'put',
+        url: '/blog/category',
+        method: 'post',
         data: {
           "category": $(this).val(),
           "blog_id": blog_ID
@@ -206,16 +233,11 @@ $(document).ready(function () {
       })
         .then((res) => {
           console.log(res.data)
-          // location.reload()
         })
         .catch((error) => {
           console.log(error);
         })
-      categories.push($(this).val())
     })
-    let image_url = $(this).closest('form').find('.blogPic').attr('src')
-    let blog_ID = parseInt($(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/))
-    console.log(title, body, categories, image_url, blog_ID)
     axios({
       url: '/blog/' + blog_ID,
       method: 'put',
@@ -236,12 +258,11 @@ $(document).ready(function () {
         })
           .then((res) => {
             console.log(res.data)
+            location.reload()
           })
           .catch((error) => {
             console.log(error);
           })
-
-
       })
       .catch((error) => {
         console.log(error);
@@ -482,6 +503,52 @@ $(document).ready(function () {
       .catch((error) => {
         console.log(error);
       })
+  })
+
+
+  // update existing restaurant 
+  $('.btnRestaGroup button:first-child').click(function (e) {
+    e.preventDefault()
+    let restaName = $(this).closest('form').find('.restaName').val()
+    let restaAddress = $(this).closest('form').find('.restaAddress').val()
+    let restaDistrict
+    let restaDescri = $(this).closest('form').find('.restaDescri').val()
+    let restaLogo = $(this).closest('form').find('.restaLogo').attr('src')
+    let restaPrice = $(this).closest('form').find('.restaPrice').val()
+    let restaPhone = $(this).closest('form').find('.restaTele').val()
+    let restaSocial = $(this).closest('form').find('.restaSocial').val()
+    let restaURL = $(this).closest('form').find('.restaWeb').val()
+    let restaImg = $(this).closest('form').find('.restaPic').attr('src')
+
+
+    let restaOp = $(this).closest('form').find('.restaOp').val()
+    let restaCl = $(this).closest('form').find('.restaCl').val()
+    axios({
+      url: '/restaurant/2',
+      method: 'put',
+      data: {
+          "name": restaName,
+          "street_address": restaAddress,
+          "district_id": 4,
+          "description": restaDescri,
+          "logo": restaLogo,
+          "price": restaPrice,
+          "telephone_number": restaPhone,
+          "social_media_URL": restaSocial,
+          "main_picture_URL": restaImg,
+          "website_URL": restaURL,
+          "latitude": 23.0,
+          "longitude": 113.6,
+          "opening_time": restaOp,
+          "closing_time": restaCl
+      }
+  })
+  .then((res) => {
+      console.log(res.data)
+  })
+  .catch((error) => {
+      console.log(error);
+  })
   })
 
   // Add new restaurant + corresponding user can access it=

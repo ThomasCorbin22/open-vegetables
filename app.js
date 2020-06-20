@@ -87,3 +87,168 @@ app.use('/location', new LocationRouter(locationService).route());
 
 // Set up server
 server.listen(port);
+
+
+// // Restaurants
+
+// // A page showing all restaurants
+// app.get('/restaurants/all', async (req, res) => {
+//     let start_index = 0
+//     if (req.query.page) {
+//         start_index = Number(req.query.page)
+//     }
+
+//     let results = await restaurantService.listRestaurants()
+//     res.render('restaurant', {
+//         title: 'restaurants-all',
+//         restaurants: results.slice(start_index, start_index + 10)
+//     })
+// })
+
+// // Results ofa search
+// app.get('/restaurants/search/', async (req, res) => {
+//     let results = await restaurantService.searchRestaurants(req.query)
+//     res.render('restaurant', {
+//         title: 'restaurants-search',
+//         restaurants: results
+//     })
+// })
+
+// // Get individual restaurants
+// app.get('/restaurants/details/:id', async (req, res) => {
+//     let restaurants = await restaurantService.listRestaurants()
+
+//     for (let resta of restaurants) {
+//         if (resta.id == req.params.id) {
+//             let reviews = await reviewService.listReviews(resta.id)
+//             let user
+//             for (let review of reviews) {
+//                 user = await userService.getUser(review.user_id)
+//                 review.userName = user[0].first_name
+//                 review.userImage = user[0].profile_picture_URL
+//             }
+//             console.log(reviews)
+//             res.render(`restaurant_details_reviews`, { title: `restaurant-details/${resta.name}`, resta: resta, reviews: reviews })
+//         }
+//     }
+// })
+
+// // Get list of restaurants in specific area (HKI / NT / KL / OI)
+// app.get('/restaurants/:subpage', async (req, res) => {
+//     let results = await locationService.listAreas()
+//     let id
+
+//     for (let item of results) {
+//         if (item['area'] === req.params.subpage) {
+//             id = item['id']
+//         }
+//     }
+//     results = await restaurantService.searchRestaurants({ id })
+//     res.render('restaurant', {
+//         title: 'restaurants-' + req.params.subpage,
+//         restaurants: results
+//     })
+// })
+
+// // Routing maps
+
+// app.get('/map', (req, res) => {
+//     res.render('map', { title: 'map' })
+// })
+
+// app.get('/map/hong-kong-island', (req, res) => {
+//     res.render('map', { title: 'hong-kong-island', location: req.params.location })
+// })
+
+// app.get('/map/new-territories', (req, res) => {
+//     res.render('map', { title: 'new-territories', location: req.params.location })
+// })
+
+// app.get('/map/kowloon', (req, res) => {
+//     res.render('map', { title: 'kowloon', location: req.params.location })
+// })
+
+// app.get('/map/outlying-islands', (req, res) => {
+//     res.render('map', { title: 'outlying-islands', location: req.params.location })
+// })
+
+// // Blogs
+
+// app.get('/blogs/all', async (req, res) => {
+//     let blogs = await blogService.listBlogs()
+//     res.render('blog', { title: 'blogs', blogs: blogs })
+// })
+
+// app.get('/blogs/search/', async (req, res) => {
+//     let results = await blogService.searchBlogs(req.query)
+//     res.render('blog', {
+//         title: 'blogs-search',
+//         blogs: results
+//     })
+// })
+
+// app.get('/blogs/details/:id', async (req, res) => {
+//     let blogs = await blogService.listBlogs();
+//     for (let blog of blogs) {
+//         if (blog.id == req.params.id) {
+//             let publisher = await userService.getUser(blog.user_id)
+//             let commentsBlog = await commentService.getComment(blog.id)
+//             for (let comment of commentsBlog) {
+//                 let commentUser = await userService.getUser(comment.user_id)
+//                 comment.userName = commentUser[0].first_name
+//                 comment.userImage = commentUser[0].profile_picture_URL
+//             }
+//             blog.comments = commentsBlog
+//             blog.userName = publisher[0].first_name
+//             blog.userImage = publisher[0].profile_picture_URL
+//             res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
+//         }
+//     }
+// })
+
+// app.get('/blogs/:sorted', async (req, res) => {
+//     let blogs = await blogService.listBlogs()
+//     console.log(blogs)
+
+//     res.render('blog', { title: 'blogs', blogs: blogs })
+// })
+
+// // Users
+
+// app.get('/user/info/:id', async (req, res) => {
+//     let user = await userService.getUser(req.params.id)
+//     res.render('user_information', { title: 'userInformation', user: user[0] })
+// })
+
+// app.get('/user/reviews/:id', async (req, res) => {
+//     let user = await userService.getUser(req.params.id)
+
+//     let reviews = await reviewService.getReview(req.params.id)
+//     for (let review of reviews) {
+//         let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
+//         review.restaurant = restaurant[0]
+//     }
+//     res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
+// })
+
+// app.get('/user/blogs/:id', async (req, res) => {
+//     let user = await userService.getUser(req.params.id)
+//     let userOwnBlogs = user[0].blog_access
+//     let blogImg
+//     for (let blog of userOwnBlogs) {
+//         blogImg = await blogService.getPicture(blog.id)
+//         blogCate = await blogService.listCategories(blog.id)
+//         blog.blogImg = blogImg[0]
+//         blog.blogCate = blogCate
+//         console.log(blogCate)
+//     }
+//     console.log(userOwnBlogs)
+
+//     res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0]  })
+// })
+
+// app.get('/user/restaurants/:id', async (req, res) => {
+//     let user = await userService.getUser(req.params.id)
+//     console.log(user[0].restaurant_access)
+//     res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
+// })

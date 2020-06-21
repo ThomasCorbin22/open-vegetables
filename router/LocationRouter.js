@@ -137,6 +137,7 @@ class LocationRouter {
             })
     }
 
+
     // Adds a district
     postDistrict(req, res) {
         let district = {
@@ -183,6 +184,7 @@ class LocationRouter {
                 console.log(err)
             })
     }
+    
 
     // Displays the map
     displayMap(req, res) {

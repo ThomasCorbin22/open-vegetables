@@ -110,6 +110,8 @@ class LocationService {
         return this.district
     }
 
+
+
     // Adds new district
     async addDistrict(district){
         await knex('districts')

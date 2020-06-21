@@ -16,6 +16,7 @@ let userService
 let reviewService
 let restaurantService
 let blogService
+let locationService
 
 let userRouter
 
@@ -121,7 +122,7 @@ describe('UserRouter testing with userservice', () => {
             getReview: jest.fn().mockResolvedValue({ restaurant_id: true })
         }
 
-        userRouter = new UserRouter(userService, reviewService, restaurantService, blogService)
+        userRouter = new UserRouter(userService, blogService, locationService, restaurantService, reviewService)
     })
 
     test('userRouter should call searchUsers in response to a GET request', () => {

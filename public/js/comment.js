@@ -193,7 +193,7 @@ $(document).ready(function () {
       // If the comment is disliked then we update it to be liked
       if (liked === false && disliked === true){
         axios({
-          url: '/comment/' + user_id + '/' + comment_id,
+          url: '/comment/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {
@@ -228,7 +228,7 @@ $(document).ready(function () {
       // If the comment is already liked then we unlike it
       else if (liked === true){
         axios({
-          url: '/comment/like/' + user_id + '/' + comment_id,
+          url: '/comment/like/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {
@@ -298,7 +298,7 @@ $(document).ready(function () {
       // If the comment is liked then we update it to be disliked
       if (liked === true && disliked === false){
         axios({
-          url: '/comment/' + user_id + '/' + comment_id,
+          url: '/comment/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {
@@ -334,7 +334,7 @@ $(document).ready(function () {
       // If the comment is already disliked then we unlike it
       else if (liked === true){
         axios({
-          url: '/comment/' + user_id + '/' + comment_id,
+          url: '/comment/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {

@@ -90,6 +90,11 @@ class CommentService {
 
     // Deletes a comment
     async deleteComment(id) {
+        await knex('likes_dislikes')
+            .del()
+            .where('comment_id', id)
+            .catch((err) => console.log(err))
+
         await knex('comments')
             .del()
             .where('id', id)

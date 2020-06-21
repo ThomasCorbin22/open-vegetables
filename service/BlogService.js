@@ -123,6 +123,18 @@ class BlogService {
 
     // Deletes a blog post
     async deleteBlog(id) {
+        let results = await knex('comments')
+            .select('*')
+            .where('blog_id', id)
+            .catch((err) => console.log(err))
+
+        for (let result of results){
+            await knex('likes_dislikes')
+                .del()
+                .where('comment_id', result.id)
+                .catch((err) => console.log(err))
+        }
+
         await knex('comments')
             .del()
             .where('blog_id', id)

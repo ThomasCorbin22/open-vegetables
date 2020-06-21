@@ -97,7 +97,11 @@ describe('UserRouter testing with userservice', () => {
             getBlog : jest.fn().mockResolvedValue(true),
             addBlog : jest.fn().mockResolvedValue(true),
             updateBlog : jest.fn().mockResolvedValue(true),
-            deleteBlog : jest.fn().mockResolvedValue(true)
+            deleteBlog : jest.fn().mockResolvedValue(true),
+
+            checkSecurity : jest.fn().mockResolvedValue(true),
+            lostPassword : jest.fn().mockResolvedValue(true),
+            changePassword : jest.fn().mockResolvedValue(true)
         }
 
         userRouter = new UserRouter(userService)

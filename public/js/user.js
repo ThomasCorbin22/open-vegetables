@@ -43,19 +43,83 @@ $(document).ready(function () {
                 profile_picture_URL
             }
         })
-            .then((res) => {
-                console.log(res)
-                $('#nameFirst').attr('placeholder', res.data)
-                $('#nameLast').attr('placeholder', res.data)
-                $('#email').attr('placeholder', res.data)
-                $('#nameDisplay').attr('placeholder', res.data)
-                $('#password').attr('placeholder', res.data)
-                $('#description').attr('placeholder', res.data)
-                $('#userImage').attr('src')
-            })
+        .then((res) => {
+            console.log(res)
+            $('#nameFirst').attr('placeholder', res.data)
+            $('#nameLast').attr('placeholder', res.data)
+            $('#email').attr('placeholder', res.data)
+            $('#nameDisplay').attr('placeholder', res.data)
+            $('#password').attr('placeholder', res.data)
+            $('#description').attr('placeholder', res.data)
+            $('#userImage').attr('src')
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    })
 
+    $('#submitSecurity').click((e) => {
+        e.preventDefault()
+        let email = $('#securityEmail').val()
+        let answer = $('#securityAns').val()
+
+        axios({
+            url: `/user/security`,
+            method: 'put',
+            data: {
+                email,
+                answer,
+            }
+        })
+        .then((res) => {
+            if (res.data != false) {
+                user_answer = res.data
+                $('#securityPage').hide()
+                $('#resetPwdPage').show()
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+    })
+
+    $('#submitNewPwd').click((e) => {
+        e.preventDefault()
+        let password_01 = $('#resetPwd').val()
+        let password_02 = $('#resetPwd2').val()
+
+        if (password_01 === password_02 && password_01 !== null){
+            axios({
+                url: `/user/lost`,
+                method: 'put',
+                data: {
+                    id: user_answer.id,
+                    answer: user_answer.answer,
+                    password: password_01,
+                }
+            })
+            .then((res) => {
+                axios({
+                    url: `/auth/login`,
+                    method: 'post',
+                    data: {
+                        email: user_answer.email,
+                        password: password_01,
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+            })
             .catch((error) => {
                 console.log(error);
             })
+        }
+        else if (password_01 !== password_02){
+            $('#resetPwdPage').append('<p>The passwords do not match.</p>')
+        }
+        else if (password_01 === null && password_02 === null){
+            $('#resetPwdPage').append('<p>You need to put entries in both fields.</p>')
+        }
     })
 })

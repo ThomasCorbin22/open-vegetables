@@ -75,7 +75,7 @@ describe('BlogService testing with blogservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].title).toBe('Some cool post')
-                expect(results[0].body).toBe('Image theres a great article written here')
+                expect(results[0].body).toBe('Imagine theres a great article written here')
                 expect(results[0].user_id).toBe(1)
             })
     })
@@ -85,13 +85,10 @@ describe('BlogService testing with blogservice', () => {
         
         return blogService.listBlogs()
             .then((results) => {
-                console.log(results)
-                expect(results.length).toBe(3)
+                expect(results.length).toBe(4)
                 expect(results[0].title).toBe('Some cool post')
-                expect(results[0].pictures).toEqual([
-                    'https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-                  ])
-                expect(results[0].categories).toEqual([ 'Sustainability' ])
+                expect(typeof results[0].pictures).toEqual('object')
+                expect(typeof results[0].categories).toEqual('object')
                 expect(results[1].title).toBe('Another post')
                 expect(results[2].title).toBe('Yet one more')
             })
@@ -108,10 +105,8 @@ describe('BlogService testing with blogservice', () => {
                 expect(results[0].title).toBe('Another post')
                 expect(results[0].body).toBe('We could win a pulitzer for this')
                 expect(results[0].user_id).toBe(2)
-                expect(results[0].pictures).toEqual([
-                    'https://images.pexels.com/photos/784633/pexels-photo-784633.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
-                  ])
-                expect(results[0].categories).toEqual([ 'News' ])
+                expect(typeof results[0].pictures).toEqual('object')
+                expect(typeof results[0].categories).toEqual('object')
             })
     })
 
@@ -152,7 +147,7 @@ describe('BlogService testing with blogservice', () => {
 
                 return blogService.listBlogs()
                     .then((list) => {
-                        expect(list.length).toBe(2)
+                        expect(list.length).toBe(3)
                     })
             })
     })
@@ -164,7 +159,7 @@ describe('BlogService testing with blogservice', () => {
         
         return blogService.listPictures(id)
             .then((results) => {
-                expect(results.length).toBe(1)
+                expect(results.length).toBe(4)
                 expect(results[0].picture_URL).toBe('https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
                 expect(results[0].blog_id).toBe(1)
             })
@@ -178,8 +173,8 @@ describe('BlogService testing with blogservice', () => {
         return blogService.getPicture(id)
             .then((results) => {
                 expect(results.length).toBe(1)
-                expect(results[0].picture_URL).toBe('https://images.pexels.com/photos/784633/pexels-photo-784633.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
-                expect(results[0].blog_id).toBe(2)
+                expect(results[0].picture_URL).toBe('https://images.pexels.com/photos/965117/pexels-photo-965117.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')
+                expect(results[0].blog_id).toBe(1)
             })
     })
 
@@ -230,7 +225,7 @@ describe('BlogService testing with blogservice', () => {
         
         return blogService.listCategories(id)
             .then((results) => {
-                expect(results.length).toBe(1)
+                expect(results.length).toBe(2)
                 expect(results[0].category).toBe('Sustainability')
                 expect(results[0].blog_id).toBe(1)
             })
@@ -244,8 +239,8 @@ describe('BlogService testing with blogservice', () => {
         return blogService.getCategory(id)
             .then((results) => {
                 expect(results.length).toBe(1)
-                expect(results[0].category).toBe('News')
-                expect(results[0].blog_id).toBe(2)
+                expect(results[0].category).toBe('Opinion')
+                expect(results[0].blog_id).toBe(1)
             })
     })
 

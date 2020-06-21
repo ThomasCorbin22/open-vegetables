@@ -92,8 +92,6 @@ class ReviewService {
 
         await this.getReview(id)
 
-        console.log(this.review)
-
         return this.review
     }
 

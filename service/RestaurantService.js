@@ -345,7 +345,7 @@ class RestaurantService {
                 count++
             }
 
-            this.rating = (total_rating / count).toFixed(2)
+            this.rating = parseFloat((total_rating / count).toFixed(2))
         }
         else {
             this.rating = 'Not yet rated'

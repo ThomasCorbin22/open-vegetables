@@ -43,9 +43,9 @@ class UserRouter {
         this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
 
         // Deals with passwords
-        this.router.get('/security', this.checkSecurity.bind(this));
-        this.router.get('/lost', this.lostPassword.bind(this));
-        this.router.get('/password/:id', this.updatePassword.bind(this));
+        this.router.put('/security', this.checkSecurity.bind(this));
+        this.router.put('/lost', this.lostPassword.bind(this));
+        this.router.put('/password/:id', this.updatePassword.bind(this));
 
         return this.router
     }
@@ -419,8 +419,8 @@ class UserRouter {
         let answer = req.body.answer
 
         return this.userService.checkSecurity(email, answer)
-            .then((restaurant) => {
-                res.send(restaurant)
+            .then((user) => {
+                res.send(user)
             })
             .catch((err) => {
                 console.log(err)
@@ -429,13 +429,13 @@ class UserRouter {
 
     // Updates lost password
     lostPassword(req, res) {
-        let id = req.params.id
+        let id = req.body.id
         let answer = req.body.answer
         let password = req.body.password
 
         return this.userService.lostPassword(id, answer, password)
-            .then((restaurant) => {
-                res.send(restaurant)
+            .then((user) => {
+                res.send(user)
             })
             .catch((err) => {
                 console.log(err)
@@ -444,12 +444,13 @@ class UserRouter {
 
     // Updates  password
     updatePassword(req, res) {
-        let email = req.body.email
-        let answer = req.body.answer
+        let id = req.params.id
+        let original_password = req.params.original_password
+        let new_password = req.params.new_password
 
-        return this.userService.lostPassword(email, answer)
-            .then((restaurant) => {
-                res.send(restaurant)
+        return this.userService.changePassword(id, original_password, new_password)
+            .then((user) => {
+                res.send(user)
             })
             .catch((err) => {
                 console.log(err)

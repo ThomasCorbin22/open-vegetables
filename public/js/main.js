@@ -2,6 +2,7 @@ let user_id
 let filter = 'none'
 let direction = 'ascending'
 let area = 'all'
+let user_answer
 
 // Initially hide the logged in links
 $('#profile').hide()

@@ -105,7 +105,7 @@ describe('RestaurantService testing with restaurantservice', () => {
         
         return restaurantService.listRestaurants()
             .then((results) => {
-                expect(results.length).toBe(5)
+                expect(results.length).toBe(7)
                 expect(results[0].name).toBe('Our awesome restaurant')
                 expect(results[0].pictures).toEqual([
                     'https://images.pexels.com/photos/1036857/pexels-photo-1036857.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500'
@@ -180,7 +180,7 @@ describe('RestaurantService testing with restaurantservice', () => {
 
                 return restaurantService.listRestaurants()
                     .then((list) => {
-                        expect(list.length).toBe(4)
+                        expect(list.length).toBe(6)
                     })
             })
     })

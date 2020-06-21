@@ -37,6 +37,10 @@ async function initMap() {
 }
 
 $(document).ready(function () {
+    if ($('title').text().match(/^Map/)) {
+        $('.navbar-nav > li:eq(3)').addClass('active')
+    }
+
     if ($('title').text().match('map')) {
         initMap()
 

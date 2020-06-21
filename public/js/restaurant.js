@@ -75,6 +75,46 @@ $(document).ready(function () {
     })
 
 
+    //control add restaurant favourite button
+    $('.add-favourite').on('click', function (e) {
+        let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
+        if (e.currentTarget.innerHTML.match('☆')) {
+            console.log(user_id)
+            console.log(resta_id)
+            axios({
+                url: '/user/favourite/restaurant',
+                method: 'post',
+                data: {
+                    "user_id": user_id,
+                    "restaurant_id": resta_id
+                }
+            })
+                .then((res) => {
+                    console.log(res)
+                    e.currentTarget.innerHTML = '★ Favourite Restaurant'
+                    $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+        else if (e.currentTarget.innerHTML.match('★')) {
+            let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
+            axios({
+                url: `/user/favourite/restaurant/${resta_favourite}`,
+                method: 'delete',
+            })
+                .then((res) => {
+                    console.log(res)
+                    e.currentTarget.innerHTML = '☆ Add to favourite'
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+    })
+
+
     // update existing restaurant 
     $('.btnRestaGroup button:first-child').click(function (e) {
         e.preventDefault()

@@ -6,7 +6,7 @@ class LocationRouter {
         this.router = express.Router()
     }
 
-    route() {        
+    route() {
         // Deals with individual areas
         this.router.get('/area/list/', this.listAreas.bind(this));
         this.router.get('/area/:id', this.getArea.bind(this));
@@ -21,7 +21,7 @@ class LocationRouter {
         this.router.post('/district/', this.postDistrict.bind(this));
         this.router.put('/district/:id', this.putDistrict.bind(this));
         this.router.delete('/district/:id', this.deleteDistrict.bind(this));
-        
+
         // Deals with map pages
         this.router.get('/map', this.displayMap.bind(this));
         this.router.get('/map/:area/:district', this.displayLocation.bind(this));
@@ -191,7 +191,7 @@ class LocationRouter {
 
     // Displays the location
     displayLocation(req, res) {
-        res.render('map', { title: req.params.district, location: req.params.district })
+        res.render('map', { title: 'map-' + req.params.district })
     }
 }
 

@@ -28,8 +28,8 @@ exports.seed = function (knex) {
       "social_media_URL": 'www.google.com',
       "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "website_URL": 'www.cool.com',
-      "latitude": 23.0,
-      "longitude": 113.6,
+      "latitude": 22.29,
+      "longitude": 114.1688,
       "monday": '09:30-21:50',
     },
     {
@@ -43,8 +43,8 @@ exports.seed = function (knex) {
       "social_media_URL": 'www.twitter.com',
       "main_picture_URL": 'https://images.pexels.com/photos/67468/pexels-photo-67468.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
       "website_URL": 'www.wicked.com',
-      "latitude": 23.2,
-      "longitude": 113.3,
+      "latitude": 22.29,
+      "longitude": 114.1488,
       "monday": '08:30-22:50'
     },
     {
@@ -103,8 +103,8 @@ exports.seed = function (knex) {
       "social_media_URL": 'www.facebook.com/bbq_style',
       "main_picture_URL": 'https://images.pexels.com/photos/1383776/pexels-photo-1383776.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "website_URL": 'www.bbqstyle.com',
-      "latitude": 23.1,
-      "longitude": 113.9,
+      "latitude": 22.27,
+      "longitude": 114.1488,
       "monday": '10:30-21:50',
     }
   ])

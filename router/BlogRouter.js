@@ -330,13 +330,15 @@ class BlogRouter {
 
     // Displays single blog
     async displaySingle(req, res) {
-        let blogs = await blogService.listBlogs();
+        let blogs = await this.blogService.listBlogs();
         for (let blog of blogs) {
             if (blog.id == req.params.id) {
-                let publisher = await userService.getUser(blog.user_id)
-                let commentsBlog = await commentService.getComment(blog.id)
+                blog.date_created = getDate(blog.date_created)
+                blog.date_modified = getDate(blog.date_modified)
+                let publisher = await this.userService.getUser(blog.user_id)
+                let commentsBlog = await this.commentService.getComment(blog.id)
                 for (let comment of commentsBlog) {
-                    let commentUser = await userService.getUser(comment.user_id)
+                    let commentUser = await this.userService.getUser(comment.user_id)
                     comment.userName = commentUser[0].first_name
                     comment.userImage = commentUser[0].profile_picture_URL
                 }

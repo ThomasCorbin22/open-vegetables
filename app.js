@@ -49,7 +49,6 @@ app.engine('handlebars', hbs(
     {
         helpers: {
             inc: function (val) { return parseInt(val + 1); },
-            sameUser: function (commentId, UserId) { return commentId == UserId },
             isdisabled: function (input) { return typeof input == 'string' }
         }
         , defaultLayout: 'main'
@@ -57,7 +56,7 @@ app.engine('handlebars', hbs(
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit:'50mb'}));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(session({
     secret: 'supersecret',
@@ -77,7 +76,7 @@ app.get('/', async (req, res) => {
 initPassport(app);
 
 // Set up routers
-app.use('/user', new UserRouter(userService).route());
+app.use('/user', new UserRouter(userService, blogService, locationService,restaurantService).route());
 app.use('/restaurant', new RestaurantRouter(restaurantService, reviewService, userService, locationService).route());
 app.use('/blog', new BlogRouter(blogService, commentService, userService).route());
 app.use('/comment', new CommentRouter(commentService).route());

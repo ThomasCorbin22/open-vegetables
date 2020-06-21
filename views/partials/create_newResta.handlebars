@@ -1,4 +1,4 @@
-<form id='createNew'  style="display:none">
+<form id='createNew' style="display:none">
     <div class="form-group">
         <label for="newRestaName">Restaurant Name</label>
         <input type="text" class="form-control" id="newRestaName" name='name' placeholder="Enter name">
@@ -15,13 +15,23 @@
         <div class="row">
             <div class="col">
                 <label for="newRestaOp">Opening Hour</label>
-                <input name='opening_time' type="text" id='newRestaOp'class="form-control" placeholder="">
+                <input name='opening_time' type="text" id='newRestaOp' class="form-control" placeholder="">
             </div>
             <div class="col">
                 <label for="newRestaCl">Closing Hour</label>
                 <input name='closing_time' type="text" id='newRestaCl' class="form-control" placeholder="">
             </div>
         </div>
+    </div>
+    <div class="form-group">
+        <label>Categories</label>
+        <select id='newRestaCate'class="form-control restaCate" >
+        </select>
+    </div>
+    <div class="form-group">
+        <label>District</label>
+        <select id='newRestaDist'class="form-control restaDist">
+        </select>
     </div>
     <div class="form-group">
         <label for="newRestaPrice">Price Ranges (per each)</label>
@@ -54,9 +64,16 @@
 
             </div>
             <div class=' mx-3 col'>
-                <label class="custom-file-label" for="newImg"> Main Picture</label>
-                <input type="file" class='custom-file-input uploadImg' id="newImg" name='main_picture_URL'>
+                <label class="custom-file-label" for="newMainImg"> Main Picture</label>
+                <input type="file" class='custom-file-input uploadImg' id="newMainImg" name='main_picture_URL'>
                 <img class='custom-area-sm my-2 ' src='/pictures/image.png'>
+
+            </div>
+            <div class=' mx-3 col'>
+                <label class="custom-file-label" for="newPic"> More Pictures</label>
+                <input type="file" class='custom-file-input uploadImgMore'  name='picture_URL'>
+                <div id='newPic'></div>
+                
 
             </div>
 

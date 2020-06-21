@@ -1,8 +1,12 @@
 const express = require('express');
+const getDate = require('../modules/getDate.js');
 
 class UserRouter {
-    constructor(userService) {
+    constructor(userService, blogService, locationService,restaurantService) {
         this.userService = userService
+        this.blogService = blogService
+        this.locationService = locationService
+        this.restaurantService = restaurantService
         this.router = express.Router()
     }
 
@@ -39,8 +43,8 @@ class UserRouter {
         // Deals with user favourite blog posts
         this.router.get('/info/:id', this.displayInfo.bind(this));
         this.router.get('/reviews/:id', this.displayReviews.bind(this));
-        this.router.post('/blogs/:id', this.displayBlogs.bind(this));
-        this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
+        this.router.get('/blogs/:id', this.displayBlogs.bind(this));
+        this.router.get('/restaurants/:id', this.displayRestaurants.bind(this));
 
         this.router.get('/newspaper', this.displayNewspaper.bind(this));
         // https://localhost:8080/user/newspaper
@@ -376,17 +380,17 @@ class UserRouter {
 
     // Display's user information
     async displayInfo(req, res) {
-        let user = await userService.getUser(req.params.id)
+        let user = await this.userService.getUser(req.params.id)
         res.render('user_information', { title: 'userInformation', user: user[0] })
     }
 
     // Display's user reviews
     async displayReviews(req, res) {
-        let user = await userService.getUser(req.params.id)
+        let user = await this.userService.getUser(req.params.id)
 
-        let reviews = await reviewService.getReview(req.params.id)
+        let reviews = await this.reviewService.getReview(req.params.id)
         for (let review of reviews) {
-            let restaurant = await restaurantService.getRestaurant(review.restaurant_id)
+            let restaurant = await this.restaurantService.getRestaurant(review.restaurant_id)
             review.restaurant = restaurant[0]
         }
         res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
@@ -394,13 +398,20 @@ class UserRouter {
 
     // Display's user blogs
     async displayBlogs(req, res) {
-        let user = await userService.getUser(req.params.id)
+        let user = await this.userService.getUser(req.params.id)
         let userOwnBlogs = user[0].blog_access
+        console.log(userOwnBlogs)
         let blogImg
+        let blogCate
         for (let blog of userOwnBlogs) {
-            blogImg = await blogService.getPicture(blog.id)
-            blog.blogImg = blogImg[0]
+            blogImg = await this.blogService.listPictures(blog.id)
+            blogCate = await this.blogService.listCategories(blog.id)
+            blog.blogImg = blogImg
+            blog.blogCate = blogCate
+            blog.date_created = getDate(blog.date_created)
+            blog.date_modified = getDate(blog.date_modified)
         }
+        console.log(blogImg)
         console.log(userOwnBlogs)
     
         res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
@@ -408,18 +419,29 @@ class UserRouter {
 
     // Display's user favourite restaurants
     async displayRestaurants(req, res) {
-        let user = await userService.getUser(req.params.id)
-        console.log(user[0].restaurant_access)
-        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
+        let user = await this.userService.getUser(req.params.id)
+        let ownRestas = user[0].restaurant_access
+        for(let resta of ownRestas){
+            let district = await this.locationService.getDistrict(resta.district_id)
+            let restaPic = await this.restaurantService.listPictures(resta.id)
+            let restaCate = await this.restaurantService.listCategories(resta.id)
+            resta.district = district[0]
+            resta.restaPic = restaPic
+            resta.restaCate = restaCate
+        }
+        console.log(ownRestas)
+        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: ownRestas, user: user[0] })
     }
 
     // Display's user favourite restaurants
     async displayNewspaper(req, res) {
-        let blogs = await blogService.listBlogs()
-        let newspaper = await restaurantService.getRestaurant(2)
-        let restaurants = await restaurantService.listRestaurants()
+        let blogs = await this.blogService.listBlogs()
+        let newspaper = await this.restaurantService.getRestaurant(2)
+        let restaurants = await this.restaurantService.listRestaurants()
         res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
     }
+
+
 }
 
 module.exports = UserRouter

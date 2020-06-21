@@ -1,6 +1,6 @@
 // Update with your config settings.
 require('dotenv').config();
-const getDate = require('../modules/getDate.js');
+const updateDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -31,8 +31,8 @@ class ReviewService {
             }
 
             item["pictures"] = review_pictures
-            item["date_created"] = getDate(item["date_created"])
-            item["date_modified"] = getDate(item["date_modified"])
+            item["date_created"] = updateDate(item["date_created"])
+            item["date_modified"] = updateDate(item["date_modified"])
 
             this.review.push(item)
         }
@@ -91,6 +91,8 @@ class ReviewService {
             .catch((err) => console.log(err))
 
         await this.getReview(id)
+
+        console.log(this.review)
 
         return this.review
     }

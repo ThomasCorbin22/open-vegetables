@@ -1,6 +1,6 @@
 // Update with your config settings.
 require('dotenv').config();
-const getDate = require('../modules/getDate.js');
+const updateDate = require('../modules/getDate.js');
 
 const knex = require('knex')({
     client: 'postgresql',
@@ -39,6 +39,18 @@ class UserService{
         this.user = results
 
         return this.user
+    }
+
+    // Search all the users
+    async checkSecurity(email, answer){
+        let results = await knex
+            .select('*')
+            .from("users")
+            .where("email", email)
+            .catch((err) => console.log(err))
+
+        if (results[0].security_answer == answer) return { id:results[0].security_answer, answer }
+        else return false
     }
 
     // Add access, restaurants and blogs to a restaurant
@@ -94,8 +106,8 @@ class UserService{
             item["restaurant_access"] = user_restaurant_access
             item["blogs"] = user_blogs
             item["blog_access"] = user_blog_access
-            item["date_created"] = getDate(item["date_created"])
-            item["date_modified"] = getDate(item["date_modified"])
+            item["date_created"] = updateDate(item["date_created"])
+            item["date_modified"] = updateDate(item["date_modified"])
 
             this.user.push(item)
         }
@@ -147,6 +159,9 @@ class UserService{
 
     // Updates a user
     async updateUser(user, id){      
+        let password = await this.getUser(id)
+        user.password = password.password
+
         await knex('users')
             .update(user)
             .where('id', id)

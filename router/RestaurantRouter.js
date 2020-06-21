@@ -2,7 +2,6 @@ const express = require('express');
 const filterResults = require('../modules/filterResults.js');
 const getPagination = require('../modules/getPagination.js');
 const getOpeningHours = require('../modules/getOpeningHours.js');
-const getDate = require('../modules/getDate.js');
 const getPrice = require('../modules/getPrice.js');
 
 class RestaurantRouter {
@@ -342,7 +341,6 @@ class RestaurantRouter {
         let query = req.query
         let page
         let category
-        let favourites
         let user_id
 
         // Delete any page queries before passing to search restaurants
@@ -351,6 +349,8 @@ class RestaurantRouter {
             delete query['page'];
         }
         if (req.params.area != 'all') query['area'] = req.params.area
+
+        // If categories exist, save them in a separate variable
         if (query.categories) {
             category = query.categories
             delete query.categories
@@ -386,25 +386,12 @@ class RestaurantRouter {
         let index = (pages.current.value - 1) * 10
         results = results.slice(index, index + 10)
 
-        // Get users favourite restaurants
-        if (user_id) {
-            favourites = await this.userService.listRestaurants(user_id)
-        }
-
         // Change restaurant information to be legible
         for (let result of results) {
             result.opening_hours = getOpeningHours(result)
             result.price = getPrice(result.price)
             if (result.rating == 0) result.rating = 'Not yet rated'
             if (result.main_picture_URL == 'Not available') delete result.main_picture_URL
-
-            if (favourites) {
-                for (let item of favourites) {
-                    if (user_id == item.user_id && result.id == item.restaurant_id) {
-                        result.favourite = item.id
-                    }
-                }
-            }
         }
 
         res.render('restaurant', {
@@ -442,6 +429,11 @@ class RestaurantRouter {
         if (restaurant.logo == 'Not available') delete restaurant.logo
         if (restaurant.website_URL == 'Not available') delete restaurant.website_URL
         if (restaurant.social_media_URL == 'Not available') delete restaurant.social_media_URL
+
+        // Check for empty pictures
+        for (let picture of restaurant.pictures){
+            if (picture = 'Not available') restaurant.pictures = []
+        }
 
         // Get the reviews for a restaurant
         let reviews = await this.reviewService.listReviews(restaurant.id)

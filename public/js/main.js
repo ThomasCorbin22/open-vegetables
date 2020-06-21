@@ -3,109 +3,16 @@ let filter = 'none'
 let direction = 'ascending'
 let area = 'all'
 
+// Initially hide the logged in links
+$('#profile').hide()
+$('#logout').hide()
+
 $(document).ready(function () {
-  if ($('title').text().match('map')) {
-    initMap()
-  }
+
   // Change active navbar link
   if ($('title').text().match('Home')) {
     $('.navbar-nav > li:eq(0)').addClass('active')
   }
-  if ($('title').text().match(/^Restaurants/)) {
-    $('.navbar-nav > li:eq(1)').addClass('active')
-  }
-  if ($('title').text().match(/^Blogs/)) {
-    $('.navbar-nav > li:eq(2)').addClass('active')
-  }
-  if ($('title').text().match(/^Map/)) {
-    $('.navbar-nav > li:eq(3)').addClass('active')
-  }
-
-  // On search submission send get request
-  $('#main-search').on('submit', (e) => {
-    e.preventDefault();
-
-    let route = $('#main-filter').val()
-    let input = $('#main-input').val()
-    let url
-
-    if (route === 'restaurants') url = '/restaurant/' + area + '/alpha/descending?name=' + input
-    else if (route === 'blogs') url = '/blog/alpha/descending?title=' + input
-    else if (route === 'users') url = '/user/all?display_name=' + input
-
-    window.location.replace(url);
-  })
-
-  // Adds districts to dropdown menu
-  if ($('#restaurant-district')) {
-    axios({
-      url: '/location/district/list/all',
-      method: 'get'
-    })
-      .then((res) => {
-        let districts = []
-
-        for (let item of res.data) {
-          districts.push(item.district)
-        }
-
-        districts = new Set(districts)
-        districts.delete('Not available')
-        districts = Array.from(districts)
-
-        districts.sort()
-
-        for (let item of districts) {
-          $('#restaurant-district').append(`<option value=${item}>${item}</option>`)
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-
-  // Adds districts to dropdown menu
-  if ($('#restaurant-category')) {
-    axios({
-      url: '/restaurant/category/list/all',
-      method: 'get'
-    })
-      .then((res) => {
-        let categories = []
-
-        for (let item of res.data) {
-          categories.push(item.category)
-        }
-
-        categories = new Set(categories)
-        categories.delete('Not available')
-        categories = Array.from(categories)
-
-        categories.sort()
-
-        for (let item of categories) {
-          $('#restaurant-category').append(`<option value=${item}>${item}</option>`)
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
-
-  // On restaurant search submission send get request
-  $('#restaurant-search').on('submit', (e) => {
-    e.preventDefault();
-
-    let input = $('#restaurant-input').val()
-    let categories = $('#restaurant-category').val()
-    let price = $('#restaurant-price').val()
-    let district = $('#restaurant-district').val()
-    let area = $('#restaurant-area').val()
-
-    let url = '/restaurant/' + area + '/alpha/descending?name=' + input + '&categories=' + categories + '&price=' + price + '&district=' + district
-
-    window.location.replace(url);
-  })
 
   // Adds active class to homepage carousel
   $('.carousel-item:first').addClass('active')
@@ -117,13 +24,22 @@ $(document).ready(function () {
   })
     .then((res) => {
       if (res.data === 'Not Logged In') {
+        $('#login-dropdown').show()
         $('#login').show()
         $('#signup').show()
+        
+        $('#profile').hide()
+        $('#logout').hide()
       }
       else {
         user_id = res.data.id
         $('#profile').show()
         $('#logout').show()
+
+        $('#login-dropdown').hide()
+        $('#login').hide()
+        $('#signup').hide()
+
         $('#profile-link').attr('href', '/user/info/' + user_id)
       }
     })

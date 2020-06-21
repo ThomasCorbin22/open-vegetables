@@ -21,7 +21,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a href="/">
-            <img id='logo' class='my-2' src="https://localhost:8080/pictures/open-vegetables-logo-01.png" alt="Logo">
+            <img id='logo' class='my-2' src="/pictures/open-vegetables-logo-01.png" alt="Logo">
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -39,13 +39,16 @@
                         Restaurants
                     </a>
                     <div class="dropdown-menu bg-green" aria-labelledby="restaurantLocation">
-                        <a class="dropdown-item hover-green" href="/restaurant/all/alpha/descending">All</a>
-                        <a class="dropdown-item hover-green" href="/restaurant/Hong Kong Island/alpha/descending">Hong
+                        <a class="dropdown-item color-white hover-green" href="/restaurant/all/alpha/descending">All</a>
+                        <a class="dropdown-item color-white hover-green"
+                            href="/restaurant/Hong Kong Island/alpha/descending">Hong
                             Kong Island</a>
-                        <a class="dropdown-item hover-green" href="/restaurant/Kowloon/alpha/descending">Kowloon</a>
-                        <a class="dropdown-item hover-green" href="/restaurant/New Territories/alpha/descending">New
+                        <a class="dropdown-item color-white hover-green"
+                            href="/restaurant/Kowloon/alpha/descending">Kowloon</a>
+                        <a class="dropdown-item color-white hover-green"
+                            href="/restaurant/New Territories/alpha/descending">New
                             Territories</a>
-                        <a class="dropdown-item hover-green"
+                        <a class="dropdown-item color-white hover-green"
                             href="/restaurant/Outlying Islands/alpha/descending">Outlying Islands</a>
                     </div>
                 </li>
@@ -56,19 +59,18 @@
                     <a class="nav-link" href="/location/map">Map</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="restaurantLocation" data-toggle="dropdown">
-                        Log In
+                    <a id="login-dropdown" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                        Log In / Sign Up
                     </a>
-                    <div class="dropdown-menu bg-green" aria-labelledby="restaurantLocation">
-                        <a id='login' class='dropdown-item hover-green authentication' href='#' data-toggle='modal'
-                            data-target='#loginModal'>Login</a>
-                        <a id='signup' class='dropdown-item hover-green authentication' href='#' data-toggle='modal'
-                            data-target='#registerModal'>Sign Up</a>
-                        <a id='logout' class='dropdown-item hover-green authentication' href='#' data-toggle='modal'>Log
-                            Out</a>
+                    <div class="dropdown-menu bg-green" aria-labelledby="login-dropdown">
+                        <a id='login' class="dropdown-item color-white hover-green" href="#" data-toggle='modal' data-target='#loginModal'>Log In</a>
+                        <a id='signup' class="dropdown-item color-white hover-green" href="#" data-toggle='modal' data-target='#registerModal'>Sign Up</a>
                     </div>
                 </li>
-                <li id='profile' class='nav-item authentication'>
+                <li class="nav-item dropdown">
+                    <a id='logout' class='nav-link' href='#' data-toggle='modal'>Log Out</a>
+                </li>
+                <li id='profile' class='nav-item'>
                     <a id='profile-link' class="nav-link" href="">
                         <svg class="bi bi-person-circle " width="1.6em" height="1.6em" viewbox='0 0 17 16 '
                             fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +97,6 @@
             <select id="main-filter" class='form-control form-control-sm w-25 mx-2' name="form-route">
                 <option value="restaurants">Restaurants</option>
                 <option value="blogs">Blogs</option>
-                <option value="users">Users</option>
             </select>
 
             <button class='btn btn-primary btn-search btn-rounded btn-sm my-0' type='submit'><i class="fas fa-search"
@@ -122,14 +123,14 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src='/js/vendor/all.min.js'></script>
 
-    {{!-- <script src="/js/routes/restaurant.js"></script> --}}
-    {{!-- <script src="/js/routes/blog.js"></script> --}}
-    {{!-- <script src="/js/routes/comment.js"></script> --}}
-    {{!-- <script src="/js/routes/review.js"></script> --}}
-    {{!-- <script src="/js/routes/user.js"></script> --}}
-    {{!-- <script src="/js/routes/search.js"></script> --}}
     <script src="/js/map.js"></script>
     <script src="/js/main.js"></script>
+    <script src="/js/search.js"></script>
+    <script src="/js/restaurant.js"></script>
+    <script src="/js/blog.js"></script>
+    <script src="/js/user.js"></script>
+    <script src="/js/comment.js"></script>
+    <script src="/js/review.js"></script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQHc3vxhObyJ3Oancsb7ZoXGPesEMMd2g&callback=initMap">
         </script>>

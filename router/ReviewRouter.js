@@ -79,11 +79,14 @@ class ReviewRouter {
             title: req.body.title,
             body: req.body.body,
             rating: req.body.rating,
+            modified: req.body.modified,
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id,
             date_modified: new Date()
         }
 
+        console.log(review)
+        
         return this.reviewService.updateReview(review, id)
             .then((review) => {
                 res.send(review)

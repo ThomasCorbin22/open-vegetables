@@ -18,8 +18,6 @@ module.exports = (passport) => {
         callbackURL: "/auth/facebook/callback",
         profileFields: ['id', 'email', 'name', 'gender', 'displayName', 'picture.type(large)', 'profileUrl']
     }, async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
-
         let userResult = await knex('users').where({ facebook_ID: profile.id });
         if (userResult == 0) {
             let user = {

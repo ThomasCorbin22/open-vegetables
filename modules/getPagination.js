@@ -16,7 +16,7 @@ function getPagination(route, filter, page, number){
     if (next.value > last.value) next.active = false
 
     if (route = 'restaurant') filter_options = [{value: 'alpha', active:false}, {value: 'latest', active:false}, {value: 'rating', active:false}, {value: 'location', active:false}]
-    else if (route = 'blogs') filter_options = [{value: 'alpha', active:false}, {value: 'latest', active:false}, {value: 'rating', active:false}, {value: 'publisher', active:false}]
+    else if (route = 'blog') filter_options = [{value: 'alpha', active:false}, {value: 'latest', active:false}, {value: 'rating', active:false}, {value: 'publisher', active:false}]
 
     for (let i = 0; i < filter_options.length; i++){
         if (filter == filter_options[i].value) filter_options[i].active = true

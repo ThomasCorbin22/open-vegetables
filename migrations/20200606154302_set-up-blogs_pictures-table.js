@@ -1,7 +1,7 @@
 exports.up = function (knex, Promise) {
     return knex.schema.createTable('blog_pictures', (table) => {
         table.increments();
-        table.string("picture_URL");
+        table.text("picture_URL");
         table.integer('blog_id').unsigned();
         table.foreign('blog_id').references('blogs.id');
     });

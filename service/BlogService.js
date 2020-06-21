@@ -34,7 +34,7 @@ class BlogService {
             })
             .catch((err) => console.log(err))
 
-        this.blog = results
+        await this.compilePicturesCategories(results)
 
         return this.blog
     }

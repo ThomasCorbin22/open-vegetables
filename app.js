@@ -7,6 +7,9 @@ const fs = require('fs');
 const https = require('https');
 const hbs = require('express-handlebars')
 
+// Custom module
+const getDate = require('./modules/getDate.js');
+
 // Require router modules
 const UserRouter = require('./router/UserRouter');
 const RestaurantRouter = require('./router/RestaurantRouter');
@@ -69,6 +72,11 @@ app.use(session({
 app.get('/', async (req, res) => {
     let blogs = await blogService.listBlogs()
     let restaurants = await restaurantService.listRestaurants()
+
+    for (let blog of blogs){
+        blog.date_modified = getDate(blog.date_modified).split(' ').splice(-1)[0]
+    }
+
     res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
 })
 

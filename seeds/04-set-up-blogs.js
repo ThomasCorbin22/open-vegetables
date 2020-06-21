@@ -4,7 +4,7 @@ exports.seed = function (knex) {
   return knex('blogs').insert([
     {
       "title": 'Some cool post',
-      "body": 'Image theres a great article written here',
+      "body": 'Imagine theres a great article written here',
       "main_picture_URL": 'https://images.pexels.com/photos/347134/pexels-photo-347134.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "user_id": 1
     },

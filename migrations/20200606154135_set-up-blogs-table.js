@@ -3,8 +3,8 @@ exports.up = function (knex, Promise) {
         table.increments();
         table.string("title").notNullable();
         table.unique("title");
-        table.string("body").notNullable();
-        table.string("main_picture_URL");
+        table.text("body").notNullable();
+        table.text("main_picture_URL");
         table.boolean("modified");
         table.datetime("date_created", { precision: 6 }).defaultTo(knex.fn.now(6));
         table.datetime("date_modified", { precision: 6 }).defaultTo(knex.fn.now(6));

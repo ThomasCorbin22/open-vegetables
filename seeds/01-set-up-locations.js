@@ -31,7 +31,7 @@ exports.seed = function (knex) {
         "area_id": 3
       },
       {
-        "district": 'New Territories',
+        "district": 'Sai Kung',
         "area_id": 4
       }
     ]);

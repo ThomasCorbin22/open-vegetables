@@ -36,20 +36,6 @@ hr{
     color: rgba(0,0,0,.7);
 }
 
-/* Blog page */
-
-/* .leftcolumn {
-    float: left;
-    width: 75%;
-  }
-
-.blog {
-    margin-right: 2.0em;
-    font-size: 15px;
-    text-align: left;
-    background: white;
-  } */
-
 /* Header/Blog Title */
 .header {
     padding: 30px;
@@ -122,6 +108,12 @@ hr{
     object-fit: cover;
 }
 
+.custom-area-md{
+    height: 295px;
+    width: 295px;
+    object-fit: cover;
+}
+
 #map{
     height: 700px;
     width: 100%;
@@ -136,10 +128,6 @@ hr{
     height: 100px;
     width: 100px;
     object-fit:cover
-}
-
-.authentication {
-    display:none
 }
 
 .overlay {
@@ -161,6 +149,10 @@ hr{
     z-index: 10;
     text-align: center;
     color:rgba(255,255,255, 1);
+}
+
+.table-headers{
+    width:200px
 }
 
 .btn-search{
@@ -259,6 +251,10 @@ hr{
 
 .color-black{
     color: rgba(0,0,0, 1)!important;
+}
+
+.flex-basis-0{
+    flex-basis: 0 !important;
 }
 
 /* IDs */

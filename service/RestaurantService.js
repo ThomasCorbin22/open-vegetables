@@ -88,7 +88,6 @@ class RestaurantService {
 
     // Gets a specific restaurant
     async getRestaurant(id) {
-        console.log(id)
         let results = await knex
             .select('*', 'restaurants.id')
             .from("restaurants")
@@ -346,7 +345,7 @@ class RestaurantService {
                 count++
             }
 
-            this.rating = total_rating / count
+            this.rating = (total_rating / count).toFixed(2)
         }
         else {
             this.rating = 'Not yet rated'

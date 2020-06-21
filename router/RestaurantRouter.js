@@ -341,7 +341,6 @@ class RestaurantRouter {
         let query = req.query
         let page
         let category
-        let favourites
         let user_id
 
         // Delete any page queries before passing to search restaurants
@@ -387,28 +386,13 @@ class RestaurantRouter {
         let index = (pages.current.value - 1) * 10
         results = results.slice(index, index + 10)
 
-        // Get users favourite restaurants
-        if (user_id) {
-            favourites = await this.userService.listRestaurants(user_id)
-        }
-
         // Change restaurant information to be legible
         for (let result of results) {
             result.opening_hours = getOpeningHours(result)
             result.price = getPrice(result.price)
             if (result.rating == 0) result.rating = 'Not yet rated'
             if (result.main_picture_URL == 'Not available') delete result.main_picture_URL
-
-            if (favourites) {
-                for (let item of favourites) {
-                    if (user_id == item.user_id && result.id == item.restaurant_id) {
-                        result.favourite = item.id
-                    }
-                }
-            }
         }
-
-        console.log(results)
 
         res.render('restaurant', {
             title: 'restaurants-' + req.params.area + '-' + req.params.filter,
@@ -468,8 +452,6 @@ class RestaurantRouter {
                 }
             }
         }
-
-        console.log(restaurant)
 
         res.render(`restaurant_details_reviews`, {
             title: `restaurant-details/${restaurant.name}`,

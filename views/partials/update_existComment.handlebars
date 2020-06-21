@@ -1,18 +1,16 @@
-<form  action='/user/blog{{id}}/{{blogs.user_id}}' method='POST' style='display:none' class='updateExisting'>
+<form id='existForm-{{id}}' style='display:none' class='updateExisting'>
     <div class="form-group">
         <label for="existTitle">Title</label>
-        <input type="text" class="form-control" id="existTitle" name='title' placeholder="Enter Title"
+        <input type="text" class="form-control" id="existTitle-{{id}}" name='title' placeholder="Enter Title"
             value='{{title}}'>
     </div>
     <div class='form-group'>
         <label for='existBody'>Body</label>
-        <textarea name='body' class='form-control ' rows='3' id='existBody'>{{body}}</textarea>
+        <textarea name='body' class='form-control ' rows='3' id='existBody-{{id}}'>{{body}}</textarea>
     </div>
    
     <div class='form-group'>
-        <button type="submit" id='existSubmitBtn' class="btn btn-primary">Submit</button>
-        <button type="reset" id='existResetBtn' class="btn btn-primary">Reset </button>
-        <button type="submit" id='existDeleteBtn' class="ml-auto btn btn-danger">Delete this blog !!</button>
-
+        <button type="submit" id='existCommentSubmitBtn-{{id}}' class="existCommentSubmit btn btn-primary">Submit</button>
+        <button type="submit" id='existCommentDeleteBtn-{{id}}' class="existCommentDelete ml-auto btn btn-danger">Delete</button>
     </div>
 </form>

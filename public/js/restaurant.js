@@ -9,26 +9,26 @@ $(document).ready(function () {
             url: '/location/district/list/all',
             method: 'get'
         })
-            .then((res) => {
-                let districts = []
+        .then((res) => {
+            let districts = []
 
-                for (let item of res.data) {
-                    districts.push(item.district)
-                }
+            for (let item of res.data) {
+                districts.push(item.district)
+            }
 
-                districts = new Set(districts)
-                districts.delete('Not available')
-                districts = Array.from(districts)
+            districts = new Set(districts)
+            districts.delete('Not available')
+            districts = Array.from(districts)
 
-                districts.sort()
+            districts.sort()
 
-                for (let item of districts) {
-                    $('#restaurant-district').append(`<option value=${item}>${item}</option>`)
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+            for (let item of districts) {
+                $('#restaurant-district').append(`<option value=${item}>${item}</option>`)
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     // Adds districts to dropdown menu
@@ -37,26 +37,26 @@ $(document).ready(function () {
             url: '/restaurant/category/list/all',
             method: 'get'
         })
-            .then((res) => {
-                let categories = []
+        .then((res) => {
+            let categories = []
 
-                for (let item of res.data) {
-                    categories.push(item.category)
-                }
+            for (let item of res.data) {
+                categories.push(item.category)
+            }
 
-                categories = new Set(categories)
-                categories.delete('Not available')
-                categories = Array.from(categories)
+            categories = new Set(categories)
+            categories.delete('Not available')
+            categories = Array.from(categories)
 
-                categories.sort()
+            categories.sort()
 
-                for (let item of categories) {
-                    $('#restaurant-category').append(`<option value=${item}>${item}</option>`)
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+            for (let item of categories) {
+                $('#restaurant-category').append(`<option value=${item}>${item}</option>`)
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
 
     // On restaurant search submission send get request
@@ -76,27 +76,28 @@ $(document).ready(function () {
 
 
     //control add restaurant favourite button
-    $('.add-favourite').on('click', function (e) {
-        let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
+    $('.add-favourite-restaurant').on('click', function (e) {
+        let restaurant_id = window.location.href.split('/').splice(-1)[0]
+
         if (e.currentTarget.innerHTML.match('☆')) {
             console.log(user_id)
-            console.log(resta_id)
+            console.log(restaurant_id)
             axios({
                 url: '/user/favourite/restaurant',
                 method: 'post',
                 data: {
-                    "user_id": user_id,
-                    "restaurant_id": resta_id
+                    user_id,
+                    restaurant_id
                 }
             })
-                .then((res) => {
-                    console.log(res)
-                    e.currentTarget.innerHTML = '★ Favourite Restaurant'
-                    $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
+            .then((res) => {
+                console.log(res)
+                e.currentTarget.innerHTML = '★ Favourite Restaurant'
+                $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         }
         else if (e.currentTarget.innerHTML.match('★')) {
             let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
@@ -104,13 +105,13 @@ $(document).ready(function () {
                 url: `/user/favourite/restaurant/${resta_favourite}`,
                 method: 'delete',
             })
-                .then((res) => {
-                    console.log(res)
-                    e.currentTarget.innerHTML = '☆ Add to favourite'
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
+            .then((res) => {
+                console.log(res)
+                e.currentTarget.innerHTML = '☆ Add to favourite'
+            })
+            .catch((error) => {
+                console.log(error);
+            })
         }
     })
 
@@ -152,12 +153,12 @@ $(document).ready(function () {
                 "closing_time": restaCl
             }
         })
-            .then((res) => {
-                console.log(res.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+        .then((res) => {
+            console.log(res.data)
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     })
 
     // Add new restaurant + corresponding user can access it=
@@ -203,27 +204,27 @@ $(document).ready(function () {
                 "sunday": `${restaOp}-${restaCl}`,
             }
         })
-            .then((res) => {
-                console.log(res.data[0])
-                axios({
-                    url: '/user/access',
-                    method: 'post',
-                    data: {
-                        "user_id": user_id,
-                        "restaurant_id": res.data[0].id
-                    }
+        .then((res) => {
+            console.log(res.data[0])
+            axios({
+                url: '/user/access',
+                method: 'post',
+                data: {
+                    "user_id": user_id,
+                    "restaurant_id": res.data[0].id
+                }
+            })
+                .then((res) => {
+                    console.log(res.data)
+                    location.reload();
                 })
-                    .then((res) => {
-                        console.log(res.data)
-                        location.reload();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                .catch((error) => {
+                    console.log(error);
+                })
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     })
 
 

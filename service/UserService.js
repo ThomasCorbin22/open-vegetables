@@ -41,6 +41,18 @@ class UserService{
         return this.user
     }
 
+    // Search all the users
+    async checkSecurity(email, answer){
+        let results = await knex
+            .select('*')
+            .from("users")
+            .where("email", email)
+            .catch((err) => console.log(err))
+
+        if (results[0].security_answer == answer) return { id:results[0].security_answer, answer }
+        else return false
+    }
+
     // Add access, restaurants and blogs to a restaurant
     async compileAccessRestBlogs(results){
         this.user = []
@@ -147,6 +159,9 @@ class UserService{
 
     // Updates a user
     async updateUser(user, id){      
+        let password = await this.getUser(id)
+        user.password = password.password
+
         await knex('users')
             .update(user)
             .where('id', id)

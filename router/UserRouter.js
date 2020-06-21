@@ -42,9 +42,10 @@ class UserRouter {
         this.router.post('/blogs/:id', this.displayBlogs.bind(this));
         this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
 
-        this.router.get('/newspaper', this.displayNewspaper.bind(this));
-        // https://localhost:8080/user/newspaper
-
+        // Deals with passwords
+        this.router.get('/security', this.checkSecurity.bind(this));
+        this.router.get('/lost', this.lostPassword.bind(this));
+        this.router.get('/password/:id', this.updatePassword.bind(this));
 
         return this.router
     }
@@ -119,12 +120,11 @@ class UserRouter {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
-            password: req.body.password,
             description: req.body.description,
             date_modified: new Date(),
-            // security_question: req.body.security_question,
-            // security_answer: req.body.security_answer,
-            // profile_picture_URL: req.body.profile_picture_URL
+            security_question: req.body.security_question,
+            security_answer: req.body.security_answer,
+            profile_picture_URL: req.body.profile_picture_URL
         }
 
         return this.userService.updateUser(user, id)
@@ -413,12 +413,47 @@ class UserRouter {
         res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
     }
 
-    // Display's user favourite restaurants
-    async displayNewspaper(req, res) {
-        let blogs = await blogService.listBlogs()
-        let newspaper = await restaurantService.getRestaurant(2)
-        let restaurants = await restaurantService.listRestaurants()
-        res.render('index', { title: 'Home', blogs: blogs.slice(0, 4), carousel: restaurants.slice(0, 3), thumbnails: restaurants.slice(3, 7) })
+    // Checks the security question
+    checkSecurity(req, res) {
+        let email = req.body.email
+        let answer = req.body.answer
+
+        return this.userService.checkSecurity(email, answer)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Updates lost password
+    lostPassword(req, res) {
+        let id = req.params.id
+        let answer = req.body.answer
+        let password = req.body.password
+
+        return this.userService.lostPassword(id, answer, password)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Updates  password
+    updatePassword(req, res) {
+        let email = req.body.email
+        let answer = req.body.answer
+
+        return this.userService.lostPassword(email, answer)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 }
 

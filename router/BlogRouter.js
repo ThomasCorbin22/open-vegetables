@@ -288,7 +288,6 @@ class BlogRouter {
         let query = req.query
         let page
         let category
-        let favourites
         let user_id
 
         // Delete any page queries before passing to search blogs
@@ -332,23 +331,11 @@ class BlogRouter {
         let index = (pages.current.value - 1) * 10
         results = results.slice(index, index + 10)
 
-        // Get users favourite blogs
-        if (user_id) {
-            favourites = await this.userService.listBlogs(user_id)
-        }
-
         // Change blog dates to be legible
         for (let result of results){
             result.date_modified = updateDate(result.date_modified).split(' ').splice(-1)[0]
             result.date_created = updateDate(result.date_created).split(' ').splice(-1)[0]
 
-            if (favourites) {
-                for (let item of favourites) {
-                    if (user_id == item.user_id && result.id == item.blog_id) {
-                        result.favourite = item.id
-                    }
-                }
-            }
             if (result.body.length > 250){
                 result.body = result.body.substring(0, 250) + '...'
             }
@@ -365,17 +352,29 @@ class BlogRouter {
 
     // Displays single blog
     async displaySingle(req, res) {
+        let user_id
+        let favourites
+
+        // Check for user
+        if (req.user) user_id = req.user.id
+
+        // Get users favourite blogs
+        if (user_id) {
+            favourites = await this.userService.listBlogs(user_id)
+        }
+
         // Get the correct blog
-        let blog = await blogService.getBlog(req.params.id);
+        let blog = await this.blogService.getBlog(req.params.id);
+        blog = blog[0]
 
         // Get the publisher
-        let publisher = await userService.getUser(blog.user_id)
+        let publisher = await this.userService.getUser(blog.user_id)
 
         // List the comments for the blog
-        let comments = await commentService.listComments(blog.id)
-        for (let comment of commentsBlog) {
-            let commentUser = await userService.getUser(comment.user_id)
-            comment.userName = commentUser[0].first_name
+        let comments = await this.commentService.listComments(blog.id)
+        for (let comment of comments) {
+            let commentUser = await this.userService.getUser(comment.user_id)
+            comment.userName = commentUser[0].display_name
             comment.userImage = commentUser[0].profile_picture_URL
         }
 
@@ -383,7 +382,25 @@ class BlogRouter {
         blog.userName = publisher[0].display_name
         blog.userImage = publisher[0].profile_picture_URL
 
-        res.render('blog_details', { title: `blog-details/${blog.title}`, blog, comments})
+        // Update information to be people legible
+        blog.date_modified = updateDate(blog.date_modified).split(' ').splice(-1)[0]
+        blog.date_created = updateDate(blog.date_created).split(' ').splice(-1)[0]
+
+        // Check if the blog is a favourite of the user
+        if (favourites) {
+            for (let item of favourites) {
+                if (user_id == item.user_id && blog.id == item.blog) {
+                    blog.favourite = item.id
+                }
+            }
+        }
+
+        res.render('blog_details', { 
+            title: `blog-details/${blog.title}`, 
+            blog, 
+            comments, 
+            user_id
+        })
     }
 }
 

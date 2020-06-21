@@ -19,13 +19,15 @@
                         <input type='password' class='form-control' id='pwdL' name="password">
                     </div>
                     <div class='form-group'>
-                        <button type='button' id='forgetPwdBtn' class='btn btn-sm btn-info btn-password' data-toggle='modal'
-                            data-target='#security'>Forgot your password?</button>
+                        <button type='button' id='forgetPwdBtn' class='btn btn-sm btn-info btn-password'
+                            data-toggle='modal' data-target='#security'>Forgot your password?</button>
                     </div>
                     <div class='form-group d-flex'>
                         <button type='submit' class='btn btn-danger flex-grow-1'>Login</button>
-                        <a href="/auth/facebook" class='btn btn-info btn-facebook mx-2 flex-grow-1'><i class="fab fa-facebook-square"></i>  Log in with Facebook</a>
-                        <a href="/auth/google" class='btn btn-info btn-google flex-grow-1'><i class="fab fa-google"></i>  Log in with Google</a>
+                        <a href="/auth/facebook" class='btn btn-info btn-facebook mx-2 flex-grow-1'><i
+                                class="fab fa-facebook-square"></i> Log in with Facebook</a>
+                        <a href="/auth/google" class='btn btn-info btn-google flex-grow-1'><i class="fab fa-google"></i>
+                            Log in with Google</a>
                     </div>
                 </form>
             </div>
@@ -46,9 +48,13 @@
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form id='securityPage' action='/auth/login' method='POST'>
+                <form id='securityPage'>
                     <div class='form-group'>
-                        <label>Please answer your security question:</label>
+                        <label>Please provide your email and answer your security question:</label>
+                    </div>
+                    <div class='form-group'>
+                        <label for='securityEmail'>Email</label>
+                        <input type='email' class='form-control' id='securityEmail' name="securityEmail">
                     </div>
                     <div class='form-group'>
                         <label for='securityAns'>Security Question</label>
@@ -59,7 +65,7 @@
                     </div>
                 </form>
 
-                <form id='resetPwdPage' action='/auth/login' method='POST' style='display:none'>
+                <form id='resetPwdPage'style='display:none'>
                     <div class='form-group'>
                         <label>Reset your password:</label>
                     </div>

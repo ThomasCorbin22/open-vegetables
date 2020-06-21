@@ -75,8 +75,6 @@ class ReviewRouter {
     putReview(req, res) {
         let id = req.params.id
 
-        console.log(req.params)
-
         let review = {
             title: req.body.title,
             body: req.body.body,
@@ -87,6 +85,8 @@ class ReviewRouter {
             date_modified: new Date()
         }
 
+        console.log(review)
+        
         return this.reviewService.updateReview(review, id)
             .then((review) => {
                 res.send(review)

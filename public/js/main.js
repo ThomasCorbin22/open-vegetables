@@ -3,6 +3,10 @@ let filter = 'none'
 let direction = 'ascending'
 let area = 'all'
 
+// Initially hide the logged in links
+$('#profile').hide()
+$('#logout').hide()
+
 $(document).ready(function () {
 
   // Change active navbar link

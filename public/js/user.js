@@ -20,7 +20,6 @@ $(document).ready(function () {
         renderImg(e, $(this).next())
     })
 
-
     // Update users information via put request
     $('#updateuserbtn').click((e) => {
         e.preventDefault()
@@ -36,13 +35,12 @@ $(document).ready(function () {
             url: `/user/${user_id}`,
             method: 'put',
             data: {
-                "display_name": displayName,
-                "first_name": firstName,
-                "last_name": lastName,
-                "email": email,
-                "password": password,
-                "description": description,
-                'profile_picture_URL': profile_picture_URL
+                displayName,
+                firstName,
+                lastName,
+                email,
+                description,
+                profile_picture_URL
             }
         })
             .then((res) => {

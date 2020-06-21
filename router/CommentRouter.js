@@ -7,13 +7,6 @@ class CommentRouter {
     }
 
     route() {        
-        // Deals with individual comments
-        this.router.get('/list/:id', this.listComments.bind(this));
-        this.router.get('/:id', this.getComment.bind(this));
-        this.router.post('/', this.postComment.bind(this));
-        this.router.put('/:id', this.putComment.bind(this));
-        this.router.delete('/:id', this.deleteComment.bind(this));
-
         // Deals with user liked comments
         this.router.get('/like/user/:id/:comment', this.getUserLike.bind(this));
         this.router.get('/like/list/:id', this.listLikes.bind(this));
@@ -21,6 +14,13 @@ class CommentRouter {
         this.router.post('/like/', this.postLike.bind(this));
         this.router.put('/like/:id', this.putLike.bind(this));
         this.router.delete('/like/:id', this.deleteLike.bind(this));
+        
+        // Deals with individual comments
+        this.router.get('/list/:id', this.listComments.bind(this));
+        this.router.get('/:id', this.getComment.bind(this));
+        this.router.post('/', this.postComment.bind(this));
+        this.router.put('/:id', this.putComment.bind(this));
+        this.router.delete('/:id', this.deleteComment.bind(this));
 
         return this.router
     }
@@ -124,9 +124,6 @@ class CommentRouter {
     getUserLike(req,res){
         let user_id = req.params.id
         let comment_id = req.params.comment
-
-        console.log(user_id)
-        console.log(comment_id)
 
         return this.commentService.getUserLike(user_id, comment_id)
             .then((like) => {

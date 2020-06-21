@@ -1,27 +1,39 @@
 $(document).ready(function () {
 
-  // shows edit button for user to update reviews (edit button available)
+
+  //user update reviews (edit button available)
   if ($('#restaLink').text()) {
     axios({
-      url: '/review/list/' + parseInt($('#restaLink').attr('href').match(/\d+/)),
+      url: '/auth/login',
       method: 'get'
     })
-    .then((res) => {
-      if (user_id) {
-        console.log(res.data)
-        console.log(user_id)
-        $('#createNewBtn').show()
-        for (let review of res.data) {
-          if (review.user_id == user_id) {
-            $(`.userID${user_id}Edit`).show()
-            $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
-          }
-        }
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+      .then((res) => {
+        if (res.data !== 'Not Logged In') user_id = res.data.id
+
+        axios({
+          url: '/review/list/' + parseInt($('#restaLink').attr('href').match(/\d+/)),
+          method: 'get'
+        })
+          .then((res) => {
+            if (user_id) {
+              console.log(res.data)
+              console.log(user_id)
+              $('#createNewBtn').show()
+              for (let review of res.data) {
+                if (review.user_id == user_id) {
+                  $(`.userID${user_id}Edit`).show()
+                  $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+                }
+              }
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   // Add new review
@@ -55,30 +67,30 @@ $(document).ready(function () {
         restaurant_id
       }
     })
-    .then((res) => {
-      console.log(res.data)
-      // Add new review picture
-      if (image) {
-        axios({
-          url: '/review/picture',
-          method: 'post',
-          data: {
-            "picture_URL": image,
-            "review_id": res.data[0].id
-          }
-        })
-        .then((res) => {
-          location.reload();
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
-      else location.reload();
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+      .then((res) => {
+        console.log(res.data)
+        // Add new review picture
+        if (image) {
+          axios({
+            url: '/review/picture',
+            method: 'post',
+            data: {
+              "picture_URL": image,
+              "review_id": res.data[0].id
+            }
+          })
+            .then((res) => {
+              location.reload();
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+        else location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   })
 
   // Update existing review
@@ -115,46 +127,45 @@ $(document).ready(function () {
         restaurant_id
       }
     })
-    .then((res) => {
-      console.log(res.data)
-      let review_id = res.data[0].id
+      .then((res) => {
+        console.log(res.data)
+        let review_id = res.data[0].id
 
-      if (image) {
-        // Get review pictures
-        axios({
-          url: '/review/picture/list/' + id,
-          method: 'get'
-        })
-        .then((res) => {
-          console.log(res.data)
-          let picture_id = res.data[0].id
-
-          // Update new review picture
+        if (image) {
+          // Get review pictures
           axios({
-            url: '/review/picture',
-            method: 'put',
-            data: {
-              id: picture_id,
-              "picture_URL": image,
-              "review_id": review_id
-            }
+            url: '/review/picture/list/' + id,
+            method: 'get'
           })
-          .then((res) => {
-            location.reload();
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
-      else location.reload();
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+            .then((res) => {
+              console.log(res.data)
+              let picture_id = res.data[0].id
+
+              // Update new review picture
+              axios({
+                url: '/review/picture/' + picture_id,
+                method: 'put',
+                data: {
+                  "picture_URL": image,
+                  "review_id": review_id
+                }
+              })
+                .then((res) => {
+                  location.reload();
+                })
+                .catch((error) => {
+                  console.log(error);
+                })
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+        else location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   })
 
   // Delete existing review
@@ -167,12 +178,12 @@ $(document).ready(function () {
       url: '/review/' + id,
       method: 'delete',
     })
-    .then((res) => {
-      console.log(res.data)
-      location.reload();
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+      .then((res) => {
+        console.log(res.data)
+        location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   })
 })

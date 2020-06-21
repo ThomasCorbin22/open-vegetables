@@ -24,7 +24,7 @@ $(document).ready(function () {
         $('#login-dropdown').show()
         $('#login').show()
         $('#signup').show()
-        
+
         $('#profile').hide()
         $('#logout').hide()
       }
@@ -82,6 +82,61 @@ $(document).ready(function () {
     }
   })
 
+  // render the category list & district list to front end
+  if ($('.restaLink')) {
+
+    axios({
+      url: '/restaurant/category/list/all',
+      method: 'get'
+    })
+      .then((res) => {
+        console.log('Got here')
+        let categories = []
+
+        for (let item of res.data) {
+          categories.push(item.category)
+        }
+
+        categories = new Set(categories)
+        categories.delete('Not available')
+        categories = Array.from(categories)
+
+        categories.sort()
+
+        for (let item of categories) {
+          $('.restaCate').append(`<option value=${item}>${item}</option>`)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
+    axios({
+      url: '/location/district/list/all',
+      method: 'get'
+    })
+      .then((res) => {
+        console.log('Got here too')
+        let districts = []
+
+        for (let item of res.data) {
+          districts.push(item.district)
+        }
+
+        districts = new Set(districts)
+        districts.delete('Not available')
+        districts = Array.from(districts)
+
+        districts.sort()
+        for (let [i, item] of districts.entries()) {
+          $('.restaDist').append(`<option value=${i} ${item}>${item}</option>`)
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
   //control button - edit existing Blog, existing resta, existing comment, existing review
 
   $('.editBtn').click(function (e) {
@@ -96,6 +151,59 @@ $(document).ready(function () {
     }
   })
 
+  $('#existBlogDeleteBtn').click(function (e) {
+    e.preventDefault()
+  })
+
+  //control add to favourite button
+  $('.add-favourite').on('click', function (e) {
+    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
+    if (e.currentTarget.innerHTML.match('☆')) {
+      console.log(user_id)
+      console.log(resta_id)
+      axios({
+        url: '/user/favourite/restaurant',
+        method: 'post',
+        data: {
+          "user_id": user_id,
+          "restaurant_id": resta_id
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          e.currentTarget.innerHTML = '★ Favourite Restaurant'
+          $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+    else if (e.currentTarget.innerHTML.match('★')) {
+      let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
+      axios({
+        url: `/user/favourite/restaurant/${resta_favourite}`,
+        method: 'delete',
+      })
+        .then((res) => {
+          console.log(res)
+          e.currentTarget.innerHTML = '☆ Add to favourite'
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+  })
+
+  $('#userImageUpload').on('change', function (e) {
+    renderImg(e, $('#userImage'))
+  })
+  $('.uploadImg').on('change', function (e) {
+    renderImg(e, $(this).next())
+  })
+  $('.uploadImgMore').on('change', function (e) {
+    renderImg(e, $(this).next())
+  })
+
   //control login modal - click forget pwd to hide the original page
   $('#forgetPwdBtn').on('click', function (e) {
     $('.close').click()
@@ -107,3 +215,25 @@ $(document).ready(function () {
   })
 })
 
+
+
+// control image upload, decode image buffer to render 
+function renderImg(e, targetDOM) {
+  let file = e.target.files[0]
+  console.log(file)
+
+  let reader = new FileReader()
+
+  reader.readAsDataURL(file)
+
+  reader.onload = function () {
+    console.log(targetDOM)
+
+    if (targetDOM.attr('src')) {
+      targetDOM.attr('src', reader.result)
+    }
+    else {
+      targetDOM.append(`<img class='custom-area-sm mb-1' title='${file.name}' src='${reader.result}'>`)
+    }
+  }
+}

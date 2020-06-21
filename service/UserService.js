@@ -242,6 +242,8 @@ class UserService {
         await this.getUser(id)
 
         user.password = this.user.password
+        user.security_question = this.user.security_question
+        user.security_answer = this.user.security_answer
 
         await knex('users')
             .update(user)

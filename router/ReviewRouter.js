@@ -7,19 +7,19 @@ class ReviewRouter {
     }
 
     route() {        
-        // Deals with individual reviews
-        this.router.get('/list/:id', this.listReviews.bind(this));
-        this.router.get('/:id', this.getReview.bind(this));
-        this.router.post('/', this.postReview.bind(this));
-        this.router.put('/:id', this.putReview.bind(this));
-        this.router.delete('/:id', this.deleteReview.bind(this));
-
         // Deals with review pictures
         this.router.get('/picture/list/:id', this.listPictures.bind(this));
         this.router.get('/picture/:id', this.getPicture.bind(this));
         this.router.post('/picture/', this.postPicture.bind(this));
         this.router.put('/picture/:id', this.putPicture.bind(this));
         this.router.delete('/picture/:id', this.deletePicture.bind(this));
+
+        // Deals with individual reviews
+        this.router.get('/list/:id', this.listReviews.bind(this));
+        this.router.get('/:id', this.getReview.bind(this));
+        this.router.post('/', this.postReview.bind(this));
+        this.router.put('/:id', this.putReview.bind(this));
+        this.router.delete('/:id', this.deleteReview.bind(this));
         
         return this.router
     }
@@ -84,8 +84,6 @@ class ReviewRouter {
             restaurant_id: req.body.restaurant_id,
             date_modified: new Date()
         }
-
-        console.log(review)
         
         return this.reviewService.updateReview(review, id)
             .then((review) => {

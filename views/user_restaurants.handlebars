@@ -1,39 +1,35 @@
 <div class='container-fluid'>
     <div class='row '>
-        <div class='col-sm-10 '>
+        <div class='col-sm-12 '>
             {{> user_nav}}
-            <div class='container-fluid'>
-                <div class='row'>
-                    <div class='col-sm-12'>
-                        <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3">
-                            <span>Create a new restaurant</span>
-                        </button>
-                        {{> create_newResta}}
+            <div class='row'>
+                <div class='col-sm-12'>
+                    <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3">
+                        <span>Create a new restaurant</span>
+                    </button>
+                    {{> create_newResta}}
 
-                    </div>
-                    {{#each ownRestas}}
-                    <div class='col-sm-2'>
-                        <button type="button"  class=" btn btn-light h-100 btn-lg btn-block editBtn">
-                            <span>Edit</span>
-                        </button>
-                    </div>
+                </div>
+                {{#each ownRestas}}
+                <div class='col-sm-2 my-2 mt-4'>
+                    <button type="button" class=" btn btn-light h-100 btn-lg btn-block editBtn">
+                        <span>Edit</span>
+                    </button>
+                </div>
 
-                    <div class='col-sm-10'>
-                        {{> update_existResta}}
+                <div class='col-sm-10'>
+                    {{> update_existResta}}
 
-                        <div  class='card flex-row custom-height overflow-auto mb-3 existContent'>
+                    <div class='card p-0 mb-3 existContent'>
+                        <h5 class='card-header'><a class='restaLink' href='/restaurant/details/{{id}}'>{{name}}</a></h5>
+                        <div class="row">
                             <div class='col-sm-4'>
-                                <h5 class='card-header'><a class='restaLink' href='/restaurants/details/{{id}}'>{{name}}</a>
-                                </h5>
                                 <div class='card-body'>
-                                    <img class='w-100 mb-2 custom-area-small' src={{main_picture_URL}}>
-                                    <img class='w-100 custom-area-small' src={{logo}}>
-
-
+                                    <img class='w-100  mb-2 custom-area-sm' src={{main_picture_URL}}>
+                                    <img class='  custom-area-xs' src={{logo}}>
                                 </div>
                             </div>
                             <div class='col-sm-8'>
-                                <h5 class='card-header'>Restaurant details</h5>
                                 <table class='table'>
                                     <tbody>
                                         <tr>
@@ -53,6 +49,10 @@
                                             <th> {{telephone_number}}</th>
                                         </tr>
                                         <tr>
+                                            <th>District: </th>
+                                            <th> {{district.district}}</th>
+                                        </tr>
+                                        <tr>
                                             <th>Address: </th>
                                             <th> {{street_address}}</th>
                                         </tr>
@@ -61,20 +61,45 @@
                                             <th> {{website_URL}}</th>
                                         </tr>
                                         <tr>
-                                            <th>Opening Hours :</th>
-                                            <th> {{opening_time}} - {{closing_time}}</th>
+                                            <th>Opening Hours </th>
+                                            <th>
+                                                <div class="dropdown">
+                                                    <h5 class="btn btn-secondary dropdown-toggle"
+                                                        data-toggle="dropdown">
+                                                        More Details
+                                                        <span class="caret"></span></h5>
+                                                    <ul class="dropdown-menu">
+                                                        <li>{{monday}}</li>
+                                                        <li>{{tuesday}}</li>
+                                                        <li>{{wednesday}}</li>
+                                                        <li>{{thursday}}</li>
+                                                        <li>{{friday}}</li>
+                                                        <li>{{saturaday}}</li>
+                                                        <li>{{sunday}}</li>
+                                                    </ul>
+                                                </div>
+                                            </th>
                                         </tr>
                                         <tr>
                                             <th>Social Media: </th>
                                             <th><a href='{{social_media_URL}}'> {{social_media_URL}}</a></th>
+                                        </tr>
+                                        <tr>
+                                            <th>Pictures </th>
+                                            {{#each restaPic}}
+                                            <th>
+                                                <img class=' mb-2 custom-area-xs' alt='restaPic{{id}}'
+                                                    src={{picture_URL}}>
+                                            </th>
+                                            {{/each}}
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    {{/each}}
                 </div>
+                {{/each}}
             </div>
         </div>
     </div>

@@ -20,7 +20,7 @@ $(document).ready(function () {
         renderImg(e, $(this).next())
     })
 
-    // Update users information via put request
+    // Update password
     $('#updatePasswordbtn').click((e) => {
         e.preventDefault()
         let original_password = $('#oldPassword').val()
@@ -34,14 +34,14 @@ $(document).ready(function () {
                 new_password,
             }
         })
-        .then((res) => {
-            console.log(res)
-            $("#form-change-password").append('<p>Password changed successfully.</p>')
-        })
-        .catch((error) => {
-            console.log(error);
-            $("#form-change-password").append('<p>Something went wrong.</p>')
-        })
+            .then((res) => {
+                console.log(res)
+                $("#form-change-password").append('<p>Password changed successfully.</p>')
+            })
+            .catch((error) => {
+                console.log(error);
+                $("#form-change-password").append('<p>Something went wrong.</p>')
+            })
     })
 
     // Update users information via put request
@@ -53,9 +53,10 @@ $(document).ready(function () {
         let displayName = $('#nameDisplay').val()
         let description = $('#description').val()
         let profile_picture_URL = $('#userImage').attr('src')
+        console.log(user_id)
 
         axios({
-            url: `/user/${user_id}`,
+            url: `/user/individual/${user_id}`,
             method: 'put',
             data: {
                 displayName,
@@ -66,19 +67,19 @@ $(document).ready(function () {
                 profile_picture_URL
             }
         })
-        .then((res) => {
-            console.log(res)
-            $('#nameFirst').attr('placeholder', res.data)
-            $('#nameLast').attr('placeholder', res.data)
-            $('#email').attr('placeholder', res.data)
-            $('#nameDisplay').attr('placeholder', res.data)
-            $('#password').attr('placeholder', res.data)
-            $('#description').attr('placeholder', res.data)
-            $('#userImage').attr('src')
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+            .then((res) => {
+                console.log(res)
+                $('#nameFirst').attr('placeholder', first_name)
+                $('#nameLast').attr('placeholder', last_name)
+                $('#email').attr('placeholder', email)
+                $('#nameDisplay').attr('placeholder', display_name)
+                $('#description').attr('placeholder', description)
+                $('#userImage').attr('src', profile_picture_URL)
+            })
+
+            .catch((error) => {
+                console.log(error);
+            })
     })
 
     $('#submitSecurity').click((e) => {
@@ -94,17 +95,17 @@ $(document).ready(function () {
                 answer,
             }
         })
-        .then((res) => {
-            if (typeof res.data == 'object') {
-                console.log(res.data)
-                user_answer = res.data
-                $('#securityPage').hide()
-                $('#resetPwdPage').show()
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
+            .then((res) => {
+                if (typeof res.data == 'object') {
+                    console.log(res.data)
+                    user_answer = res.data
+                    $('#securityPage').hide()
+                    $('#resetPwdPage').show()
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     })
 
     $('#submitNewPwd').click((e) => {
@@ -114,7 +115,7 @@ $(document).ready(function () {
 
         console.log(user_answer)
 
-        if (password_01 === password_02 && password_01 !== null){
+        if (password_01 === password_02 && password_01 !== null) {
             axios({
                 url: `/user/lost`,
                 method: 'put',
@@ -124,32 +125,32 @@ $(document).ready(function () {
                     password: password_01,
                 }
             })
-            .then((res) => {
-                console.log(res)
-                axios({
-                    url: `/auth/login`,
-                    method: 'post',
-                    data: {
-                        username: user_answer.email,
-                        password: password_01,
-                    }
-                })
                 .then((res) => {
                     console.log(res)
-                    location.reload();
+                    axios({
+                        url: `/auth/login`,
+                        method: 'post',
+                        data: {
+                            username: user_answer.email,
+                            password: password_01,
+                        }
+                    })
+                        .then((res) => {
+                            console.log(res)
+                            location.reload();
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
                 })
                 .catch((error) => {
                     console.log(error);
                 })
-            })
-            .catch((error) => {
-                console.log(error);
-            })
         }
-        else if (password_01 !== password_02){
+        else if (password_01 !== password_02) {
             $('#resetPwdPage').append('<p>The passwords do not match.</p>')
         }
-        else if (password_01 === null && password_02 === null){
+        else if (password_01 === null && password_02 === null) {
             $('#resetPwdPage').append('<p>You need to put entries in both fields.</p>')
         }
     })

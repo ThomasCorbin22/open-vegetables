@@ -1,11 +1,13 @@
 const express = require('express');
+const getDate = require('../modules/getDate.js');
 
 class UserRouter {
-    constructor(userService, reviewService, restaurantService, blogService) {
+    constructor(userService, blogService, locationService, restaurantService, reviewService) {
         this.userService = userService
-        this.reviewService = reviewService
-        this.restaurantService = restaurantService
         this.blogService = blogService
+        this.locationService = locationService
+        this.restaurantService = restaurantService
+        this.reviewService = reviewService
         this.router = express.Router()
     }
 
@@ -42,8 +44,8 @@ class UserRouter {
         // Deals with user favourite blog posts
         this.router.get('/info/:id', this.displayInfo.bind(this));
         this.router.get('/reviews/:id', this.displayReviews.bind(this));
-        this.router.post('/blogs/:id', this.displayBlogs.bind(this));
-        this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
+        this.router.get('/blogs/:id', this.displayBlogs.bind(this));
+        this.router.get('/restaurants/:id', this.displayRestaurants.bind(this));
 
         // Deals with passwords
         this.router.put('/security', this.checkSecurity.bind(this));
@@ -55,7 +57,6 @@ class UserRouter {
 
     // Searches all the users
     searchUsers(req, res) {
-        console.log(req.query)
         return this.userService.searchUsers(req.query)
             .then((user) => {
                 res.send(user)
@@ -125,8 +126,6 @@ class UserRouter {
             email: req.body.email,
             description: req.body.description,
             date_modified: new Date(),
-            security_question: req.body.security_question,
-            security_answer: req.body.security_answer,
             profile_picture_URL: req.body.profile_picture_URL
         }
 
@@ -380,7 +379,31 @@ class UserRouter {
     // Display's user information
     async displayInfo(req, res) {
         let user = await this.userService.getUser(req.params.id)
-        res.render('user_information', { title: 'userInformation', user: user[0] })
+        let restaurants = await this.userService.listRestaurants(req.params.id)
+        let blogs = await this.userService.listBlogs(req.params.id)
+
+        let restaurant_list = []
+        let blog_list = []
+
+        for (let item of restaurants){
+            let restaurant = await this.restaurantService.getRestaurant(item.restaurant_id)
+            restaurant_list.push(restaurant[0])
+        }
+
+        for (let item of blogs){
+            let blog = await this.blogService.getBlog(item.blog_id)
+            let publisher = await this.userService.getUser(blog[0].user_id)
+            
+            blog[0].publisher = publisher[0].display_name
+            blog_list.push(blog[0])
+        }
+
+        res.render('user_information', { 
+            title: 'userInformation', 
+            user: user[0], 
+            restaurants: restaurant_list,
+            blogs: blog_list
+        })
     }
 
     // Display's user reviews
@@ -399,11 +422,18 @@ class UserRouter {
     async displayBlogs(req, res) {
         let user = await this.userService.getUser(req.params.id)
         let userOwnBlogs = user[0].blog_access
+        console.log(userOwnBlogs)
         let blogImg
+        let blogCate
         for (let blog of userOwnBlogs) {
-            blogImg = await this.blogService.getPicture(blog.id)
-            blog.blogImg = blogImg[0]
+            blogImg = await this.blogService.listPictures(blog.id)
+            blogCate = await this.blogService.listCategories(blog.id)
+            blog.blogImg = blogImg
+            blog.blogCate = blogCate
+            blog.date_created = getDate(blog.date_created)
+            blog.date_modified = getDate(blog.date_modified)
         }
+        console.log(blogImg)
         console.log(userOwnBlogs)
     
         res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
@@ -412,8 +442,17 @@ class UserRouter {
     // Display's user favourite restaurants
     async displayRestaurants(req, res) {
         let user = await this.userService.getUser(req.params.id)
-        console.log(user[0].restaurant_access)
-        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
+        let ownRestas = user[0].restaurant_access
+        for(let resta of ownRestas){
+            let district = await this.locationService.getDistrict(resta.district_id)
+            let restaPic = await this.restaurantService.listPictures(resta.id)
+            let restaCate = await this.restaurantService.listCategories(resta.id)
+            resta.district = district[0]
+            resta.restaPic = restaPic
+            resta.restaCate = restaCate
+        }
+        console.log(ownRestas)
+        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: ownRestas, user: user[0] })
     }
 
     // Checks the security question
@@ -459,6 +498,8 @@ class UserRouter {
                 console.log(err)
             })
     }
+
+
 }
 
 module.exports = UserRouter

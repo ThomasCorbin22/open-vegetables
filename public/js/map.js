@@ -1,40 +1,28 @@
 let districts = {
+    // hk island coords
     central: { lat: 22.28, lng: 114.1588 },
-    wanchai: { lat: 22.276, lng: 114.1751 },
+    'wan-chai': { lat: 22.276, lng: 114.1751 },
+    'causeway-bay': { lat: 22.2860, lng: 114.1915 },
+    'north-point': { lat: 22.2885, lng: 114.1928 },
+    // kowloon coords
+    'tsim-sha-tsui': { lat: 22.2988, lng: 114.1722 },
+    'mong-kok': { lat: 22.3204, lng: 114.1698 },
+    'kwun-tong': { lat: 22.3104, lng: 114.2227 },
+    'tsuen-wan': { lat: 22.3699, lng: 114.1144 },
+    // new territories coords
+    'sha-tin': { lat: 22.3771, lng: 114.1974 },
+    'tai-po': { lat: 22.4423, lng: 114.1655 },
+    'tuen-mun': { lat: 22.3908, lng: 113.9725 },
+    'yuen-long': { lat: 22.4445, lng: 114.0222 },
+    // outlying island coords
+    'lantau-island': { lat: 22.2665, lng: 113.9418 },
+    'lamma-island': { lat: 22.2000, lng: 114.1350 },
+    'cheung-chau': { lat: 22.2016, lng: 114.0265 },
 }
 
-function extractsDistrict() {
-    let url = window.location.href
-    let spliturl = url.split('/')[6]
-    return spliturl
-}
-
-function extractsLatLng() {
-    let url = window.location.href
-    let spliturl = url.split('/')[6]
-    return districts[spliturl]
-}
-
-async function initMap() {
-    let latlng
-
-    if ($('title').text().match('restaurant-detail')) {
-        latlng = await getRestaurantLatLng()
-    }
-
-    console.log(latlng)
-    // Map options
-    var options = {
-        zoom: 15,
-        center: extractsLatLng() || latlng || { lat: 22.3193, lng: 114.1694 }
-    }
-    // New map
-    var map = new google.maps.Map(document.getElementById('map'), options);
-
-    if (latlng) {
-        var marker = new google.maps.Marker({ position: latlng, map: map });
-    }
-}
+let hongkong = { lat: 22.3193, lng: 114.1694 }
+let map
+let markers = []
 
 $(document).ready(function () {
     if ($('title').text().match(/^Map/)) {
@@ -43,30 +31,135 @@ $(document).ready(function () {
 
     if ($('title').text().match('map')) {
         initMap()
-
-        // Search all restaurants
-        axios({
-            url: '/restaurant/search?district=' + extractsDistrict(),
-            method: 'get'
-        })
-            .then((res) => {
-                // res.data will have all of the corresponding restaurants that have correct area and district
-                // console.log(res.data)
-
-                for (let restaurant in res.data) {
-                    let lat = restaurant.latitude
-                    let lng = restaurant.longitude
-
-                    // Add a marker to the google map
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
     }
 
+    $('.map-link').click((e) => {
+        e.preventDefault()
+
+        let location = $(e.target).html().toLowerCase().replace(' ', '-')
+        let latlng = districts[location]
+
+        // Moves center of map to new location
+        map.setCenter(latlng)
+
+        // Clears the markers
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers = []
+
+        putRestaurantMarkers(map, latlng, 1)
+    })
 })
 
+// Extracts district from URL
+function extractsDistrict() {
+    let url = window.location.href
+    let spliturl = url.split('/')[6].replace('-', ' ')
+    return spliturl
+}
+
+// Extracts LatLng from hard-coded object and URL
+function extractsLatLng() {
+    let url = window.location.href
+    let spliturl = url.split('/')[6]
+    return districts[spliturl]
+}
+
+// Initialise google maps
+async function initMap() {
+    let restaurant
+    let district = extractsLatLng()
+
+    if ($('title').text().match('restaurant-detail')) {
+        restaurant = await getRestaurantLatLng()
+    }
+
+    // Map options
+    let options = {
+        zoom: 15,
+        center: district || restaurant || hongkong
+    }
+    // New map
+    map = new google.maps.Map(document.getElementById('map'), options);
+
+    if (restaurant) {
+        let marker = new google.maps.Marker({ position: latlng, map: map });
+        markers.push(marker)
+    }
+    else if (district) {
+        putRestaurantMarkers(map, district, 1)
+    }
+    else {
+        putRestaurantMarkers(map, hongkong, 20)
+    }
+}
+
+// Put restaurant markers down on the map
+function putRestaurantMarkers(map, latlng, range) {
+    // Search all restaurants
+    axios({
+        url: `/restaurant/search?longitude=${latlng.lng}&latitude=${latlng.lat}&range=${range}`,
+        method: 'get'
+    })
+        .then((res) => {
+            // res.data will have all of the corresponding restaurants that have correct area and district
+            console.log(res.data)
+
+            for (let restaurant of res.data) {
+                console.log(restaurant)
+                let lat = restaurant.latitude
+                let lng = restaurant.longitude
+
+                console.log(lat, lng)
+                // Add a marker to the google map
+                console.log(restaurant)
+
+                let name = restaurant.name
+                let street_address = restaurant.street_address
+                let district = restaurant.district
+                let area = restaurant.area
+                let description = restaurant.description
+                let price = restaurant.price
+                let telephone_number = restaurant.telephone_number
+                let website_URL = restaurant.website_URL
+
+                console.log(name, street_address, district, area, description, price, telephone_number, website_URL)
+
+                const contentString =
+                    '<h5>' + name + '</h5>' +
+                    '<div id="bodyContent">' +
+                    '<p>' + description + '</p>' +
+                    '<h6>Address</h6>' +
+                    '<p>' + street_address + ', ' + district + ', ' + area + '</p>' +
+                    '<h6>Telephone</h6>' +
+                    '<p>' + telephone_number + '</p>' +
+                    '<h6>Website</h6>' +
+                    '</p>' + '<a href="' + website_URL + '">' + website_URL + '</a>' + '</p>'
+                '</div>';
+
+                let infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                let marker = new google.maps.Marker({
+                    position: { lat, lng },
+                    map: map
+                });
+
+                markers.push(marker)
+
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                })
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
+
+// Get a restaurant's latitude and longitude
 function getRestaurantLatLng() {
     let url = window.location.href
     let restaurant_id = url.split('/').splice(-1)[0]

@@ -1,31 +1,44 @@
-<form  action='/user/blog{{id}}/{{blogs.user_id}}' method='POST' style='display:none' class='updateExisting'>
+<form action='/user/restaurant/{{id}}' method='POST' style='display:none' class='updateExisting'>
     <div class="form-group">
-        <label >Restaurant Name</label>
+        <label>Restaurant Name</label>
         <input type="text" class="form-control restaName" name='name' value='{{name}}'>
     </div>
     <div class="form-group">
-        <label >Restaurant Address</label>
+        <label>Restaurant Address</label>
         <input type="text" class="form-control restaAddress" name='street_address' value={{street_address}}>
     </div>
     <div class="form-group">
-        <label >Contact Number</label>
+        <label>Contact Number</label>
         <input type="text" class="form-control restaTele" name='telephone_number' value={{telephone_number}}>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col">
-                <label >Opening Hour</label>
+                <label>Opening Hour</label>
                 <input name='opening_time' type="text" class="form-control restaOp" value="{{opening_time}}">
             </div>
             <div class="col">
-                <label >Closing Hour</label>
+                <label>Closing Hour</label>
                 <input name='closing_time' type="text" class="form-control restaCl" value="{{closing_time}}">
             </div>
         </div>
     </div>
     <div class="form-group">
-        <label >Price Ranges (per each)</label>
+        <label>Categories</label>
+        <select class="form-control restaCate" >
+            <option selected hidden>{{main_category}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>District</label>
+        <select class="form-control restaDist">
+            <option value='{{district.id}}' selected hidden>{{district.district}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Price Ranges (per each)</label>
         <select class="form-control restaPrice">
+            <option value={{price}} selected hidden>{{price}}</option>
             <option>$50-100</option>
             <option>$101-150</option>
             <option>$151-200</option>
@@ -34,30 +47,43 @@
         </select>
     </div>
     <div class="form-group">
-        <label >Web Address</label>
+        <label>Web Address</label>
         <input type="text" class="form-control restaWeb" name='website_URL' value="{{website_URL}}">
     </div>
     <div class="form-group">
-        <label >Social Media</label>
-        <input type="text" class="form-control restaSocial" name='social_media_URL'
-            value="{{social_media_URL}}">
+        <label>Social Media</label>
+        <input type="text" class="form-control restaSocial" name='social_media_URL' value="{{social_media_URL}}">
     </div>
     <div class='form-group'>
-        <label >Description</label>
+        <label>Description</label>
         <textarea name='body' class='form-control restaDescri' rows='3'>{{description}}</textarea>
     </div>
     <div class="form-group">
         <div class='row'>
-            <div class='mx-3 col'>
-                <label class="custom-file-label" > Logo</label>
-                <input type="file"  class='custom-file-input uploadImg' name='logo'>
+            <div class='mx-3 col-sm-4'>
+                <label class="custom-file-label"> Logo</label>
+                <input type="file" class='custom-file-input uploadImg' name='logo'>
                 <img class='my-2 custom-area-sm min-area restaLogo' src='{{logo}}'>
             </div>
-            <div class='mx-3 col'>
-                <label class="custom-file-label" > Main Picture</label>
-                <input type="file"  class='custom-file-input uploadImg' name='main_picture_URL'>
-                <img class='my-2  custom-area-sm min-area restaPic' src='{{main_picture_URL}}'>
+            <div class='mx-3 col-sm-4'>
+                <label class="custom-file-label"> Main Picture</label>
+                <input type="file" class='custom-file-input uploadImg' name='main_picture_URL'>
+                <img class='my-2  custom-area-sm min-area restaMainPic' src='{{main_picture_URL}}'>
             </div>
+            
+            {{#each restaPic}}
+            <div class='mx-3 col-sm-4'>
+                <label class="custom-file-label"> More Picture</label>
+                <input type="file" class='custom-file-input uploadImg' name='picture_URL'>
+                <img class='my-2  custom-area-sm min-area restaPic' title={{id}} src={{picture_URL}}>
+            </div>
+            {{/each}}
+            <div class='mx-3 col-sm-4'>
+                <label class="custom-file-label" > More Pictures</label>
+                <input type="file" class='custom-file-input uploadImgMore'  name='picture_URL'>
+                <div class='newPic'></div>
+            </div>
+
 
         </div>
 

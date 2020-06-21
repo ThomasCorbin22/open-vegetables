@@ -10,9 +10,9 @@ exports.up = function (knex, Promise) {
         table.text("description");
         table.string("telephone_number");
         table.string("price");
-        table.string("social_media_URL");
-        table.string("main_picture_URL");
-        table.string("website_URL");
+        table.text("social_media_URL");
+        table.text("main_picture_URL");
+        table.text("website_URL");
         table.string("main_category");
         table.float("latitude");
         table.float("longitude");

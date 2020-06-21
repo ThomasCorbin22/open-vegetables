@@ -6,7 +6,7 @@ exports.up = function (knex, Promise) {
         table.string("street_address");
         table.integer("district_id").unsigned();
         table.foreign('district_id').references('districts.id');
-        table.string("logo");
+        table.text("logo");
         table.text("description");
         table.string("telephone_number");
         table.string("price");

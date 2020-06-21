@@ -128,8 +128,6 @@ class CommentService {
 
     // Checks if a user has liked the comments on a blog
     async getUserLike(user_id, comment_id){
-        console.log(user_id)
-        console.log(comment_id)
 
         let results = await knex
             .select('*')
@@ -137,8 +135,6 @@ class CommentService {
             .where("user_id", user_id)
             .where("comment_id", comment_id)
             .catch((err) => console.log(err))
-
-        console.log(results)
         
         this.like = results
 

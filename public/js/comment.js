@@ -1,27 +1,38 @@
 $(document).ready(function () {
 
-  // show edit button to update comment
+  //user update comment (edit button available)
   if ($('#blogLink').text()) {
     axios({
-      url: '/comment/list/' + parseInt($('#blogLink').attr('href').match(/\d+/)),
+      url: '/auth/login',
       method: 'get'
     })
-      .then((res) => {
-        if (user_id) {
-          console.log(res.data)
-          $('#createNewBtn').show()
-          for (let comment of res.data) {
-            console.log(comment)
-            if (comment.user_id == user_id) {
-              $(`.userID${user_id}Edit`).show()
-              $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+    .then((res) => {
+      if (res.data !== 'Not Logged In') user_id = res.data.id
+
+      axios({
+        url: '/comment/list/' + parseInt($('#blogLink').attr('href').match(/\d+/)),
+        method: 'get'
+      })
+        .then((res) => {
+          if (user_id) {
+            console.log(res.data)
+            $('#createNewBtn').show()
+            for (let comment of res.data) {
+              console.log(comment)
+              if (comment.user_id == user_id) {
+                $(`.userID${user_id}Edit`).show()
+                $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+              }
             }
           }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    })
+    .catch((error) => {
+      console.log(error);
+    })
   }
 
 
@@ -184,6 +195,8 @@ $(document).ready(function () {
             $(e.target).attr('fill', 'blue')
 
             let number = Number($(`#number-likes-${comment_id}`).html()) + 1
+            console.log($(`#number-likes-${comment_id}`))
+            console.log(number)
             $(`#number-likes-${comment_id}`).html(number)
           })
           .catch((error) => {
@@ -193,7 +206,7 @@ $(document).ready(function () {
       // If the comment is disliked then we update it to be liked
       if (liked === false && disliked === true){
         axios({
-          url: '/comment/user/' + user_id + '/' + comment_id,
+          url: '/comment/like/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {
@@ -298,7 +311,7 @@ $(document).ready(function () {
       // If the comment is liked then we update it to be disliked
       if (liked === true && disliked === false){
         axios({
-          url: '/comment/user/' + user_id + '/' + comment_id,
+          url: '/comment/like/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {
@@ -332,9 +345,9 @@ $(document).ready(function () {
           })
       }
       // If the comment is already disliked then we unlike it
-      else if (liked === true){
+      else if (disliked === true){
         axios({
-          url: '/comment/user/' + user_id + '/' + comment_id,
+          url: '/comment/like/user/' + user_id + '/' + comment_id,
           method: 'get',
         })
           .then((res) => {

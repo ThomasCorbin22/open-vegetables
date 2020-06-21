@@ -57,7 +57,6 @@ class UserRouter {
 
     // Searches all the users
     searchUsers(req, res) {
-        console.log(req.query)
         return this.userService.searchUsers(req.query)
             .then((user) => {
                 res.send(user)
@@ -127,8 +126,6 @@ class UserRouter {
             email: req.body.email,
             description: req.body.description,
             date_modified: new Date(),
-            security_question: req.body.security_question,
-            security_answer: req.body.security_answer,
             profile_picture_URL: req.body.profile_picture_URL
         }
 
@@ -382,7 +379,31 @@ class UserRouter {
     // Display's user information
     async displayInfo(req, res) {
         let user = await this.userService.getUser(req.params.id)
-        res.render('user_information', { title: 'userInformation', user: user[0] })
+        let restaurants = await this.userService.listRestaurants(req.params.id)
+        let blogs = await this.userService.listBlogs(req.params.id)
+
+        let restaurant_list = []
+        let blog_list = []
+
+        for (let item of restaurants){
+            let restaurant = await this.restaurantService.getRestaurant(item.restaurant_id)
+            restaurant_list.push(restaurant[0])
+        }
+
+        for (let item of blogs){
+            let blog = await this.blogService.getBlog(item.blog_id)
+            let publisher = await this.userService.getUser(blog[0].user_id)
+            
+            blog[0].publisher = publisher[0].display_name
+            blog_list.push(blog[0])
+        }
+
+        res.render('user_information', { 
+            title: 'userInformation', 
+            user: user[0], 
+            restaurants: restaurant_list,
+            blogs: blog_list
+        })
     }
 
     // Display's user reviews

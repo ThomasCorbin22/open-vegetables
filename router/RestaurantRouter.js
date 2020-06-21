@@ -440,7 +440,7 @@ class RestaurantRouter {
         let user
         for (let review of reviews) {
             user = await this.userService.getUser(review.user_id)
-            review.userName = user[0].first_name
+            review.userName = user[0].display_name
             review.userImage = user[0].profile_picture_URL
         }
         

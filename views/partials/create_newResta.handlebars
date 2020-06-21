@@ -1,0 +1,69 @@
+<form id='createNew'  style="display:none">
+    <div class="form-group">
+        <label for="newRestaName">Restaurant Name</label>
+        <input type="text" class="form-control" id="newRestaName" name='name' placeholder="Enter name">
+    </div>
+    <div class="form-group">
+        <label for="newRestaAddress">Restaurant Address</label>
+        <input type="text" class="form-control" id="newRestaAddress" name='street_address' placeholder="Enter address">
+    </div>
+    <div class="form-group">
+        <label for="newRestaPhone">Contact Number</label>
+        <input type="text" class="form-control" id="newRestaPhone" name='telephone_number' placeholder="XXXX XXXX">
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                <label for="newRestaOp">Opening Hour</label>
+                <input name='opening_time' type="text" id='newRestaOp'class="form-control" placeholder="">
+            </div>
+            <div class="col">
+                <label for="newRestaCl">Closing Hour</label>
+                <input name='closing_time' type="text" id='newRestaCl' class="form-control" placeholder="">
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="newRestaPrice">Price Ranges (per each)</label>
+        <select class="form-control" id="newRestaPrice">
+            <option>$50-100</option>
+            <option>$101-150</option>
+            <option>$151-200</option>
+            <option>$201-250</option>
+            <option>>$250</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="newRestaURL">Web Address</label>
+        <input type="text" class="form-control" id="newRestaURL" name='website_URL' placeholder="url">
+    </div>
+    <div class="form-group">
+        <label for="newRestaSocial">Social Media</label>
+        <input type="text" class="form-control" id="newRestaSocial" name='social_media_URL' placeholder="url">
+    </div>
+    <div class='form-group'>
+        <label for='newRestaDescri'>Description</label>
+        <textarea name='body' class='form-control ' rows='3' id='newRestaDescri'></textarea>
+    </div>
+    <div class="form-group">
+        <div class='row'>
+            <div class='mx-3 col'>
+                <label class="custom-file-label" for="newLogo"> Logo</label>
+                <input type="file" class='custom-file-input uploadImg' id="newLogo" name='logo'>
+                <img class='custom-area-sm my-2' src='/pictures/images.png'>
+
+            </div>
+            <div class=' mx-3 col'>
+                <label class="custom-file-label" for="newImg"> Main Picture</label>
+                <input type="file" class='custom-file-input uploadImg' id="newImg" name='main_picture_URL'>
+                <img class='custom-area-sm my-2 ' src='/pictures/image.png'>
+
+            </div>
+
+        </div>
+    </div>
+    <div class='form-group'>
+        <button type="submit" id='newRestaSubmitBtn' class="btn btn-primary">Submit</button>
+
+    </div>
+</form>

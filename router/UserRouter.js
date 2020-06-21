@@ -1,40 +1,68 @@
 const express = require('express');
 
 class UserRouter {
-    constructor(userService) {
+    constructor(userService, reviewService, restaurantService, blogService) {
         this.userService = userService
+        this.reviewService = reviewService
+        this.restaurantService = restaurantService
+        this.blogService = blogService
         this.router = express.Router()
     }
 
-    route() {
-        // Gets all users
-        this.router.get('/', this.listUsers.bind(this));
-
+    route() {        
         // Deals with individual users
-        this.router.get('/:id', this.getUser.bind(this));
-        this.router.post('/', this.postUser.bind(this));
-        this.router.put('/:id', this.putUser.bind(this));
-        this.router.delete('/:id', this.deleteUser.bind(this));
+        this.router.get('/list', this.listUsers.bind(this));
+        this.router.get('/search', this.searchUsers.bind(this));
+        this.router.get('/individual/:id', this.getUser.bind(this));
+        this.router.post('/individual/', this.postUser.bind(this));
+        this.router.put('/individual/:id', this.putUser.bind(this));
+        this.router.delete('/individual/:id', this.deleteUser.bind(this));
 
         // Deals with user access
-        this.router.get('/:id', this.getAccess.bind(this));
-        this.router.post('/', this.postAccess.bind(this));
-        this.router.put('/:id', this.putAccess.bind(this));
-        this.router.delete('/:id', this.deleteAccess.bind(this));
+        this.router.get('/access/list/:id', this.listAccess.bind(this));
+        this.router.get('/access/:id', this.getAccess.bind(this));
+        this.router.post('/access/', this.postAccess.bind(this));
+        this.router.put('/access/:id', this.putAccess.bind(this));
+        this.router.delete('/access/:id', this.deleteAccess.bind(this));
 
         // Deals with user favourite restaurants
-        this.router.get('/:id', this.getFavRest.bind(this));
-        this.router.post('/', this.postFavRest.bind(this));
-        this.router.put('/:id', this.putFavRest.bind(this));
-        this.router.delete('/:id', this.deleteFavRest.bind(this));
+        this.router.get('/favourite/restaurant/list/:id', this.listRestaurants.bind(this));
+        this.router.get('/favourite/restaurant/:id', this.getRestaurant.bind(this));
+        this.router.post('/favourite/restaurant/', this.postRestaurant.bind(this));
+        this.router.put('/favourite/restaurant/:id', this.putRestaurant.bind(this));
+        this.router.delete('/favourite/restaurant/:id', this.deleteRestaurant.bind(this));
 
         // Deals with user favourite blog posts
-        this.router.get('/:id', this.getFavBlog.bind(this));
-        this.router.post('/', this.postFavBlog.bind(this));
-        this.router.put('/:id', this.putFavBlog.bind(this));
-        this.router.delete('/:id', this.deleteFavBlog.bind(this));
+        this.router.get('/favourite/blog/list/:id', this.listBlogs.bind(this));
+        this.router.get('/favourite/blog/:id', this.getBlog.bind(this));
+        this.router.post('/favourite/blog/', this.postBlog.bind(this));
+        this.router.put('/favourite/blog/:id', this.putBlog.bind(this));
+        this.router.delete('/favourite/blog/:id', this.deleteBlog.bind(this));
+
+        // Deals with user favourite blog posts
+        this.router.get('/info/:id', this.displayInfo.bind(this));
+        this.router.get('/reviews/:id', this.displayReviews.bind(this));
+        this.router.post('/blogs/:id', this.displayBlogs.bind(this));
+        this.router.put('/restaurants/:id', this.displayRestaurants.bind(this));
+
+        // Deals with passwords
+        this.router.put('/security', this.checkSecurity.bind(this));
+        this.router.put('/lost', this.lostPassword.bind(this));
+        this.router.put('/password/:id', this.updatePassword.bind(this));
 
         return this.router
+    }
+
+    // Searches all the users
+    searchUsers(req, res) {
+        console.log(req.query)
+        return this.userService.searchUsers(req.query)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     // Gets all the users
@@ -71,7 +99,10 @@ class UserRouter {
             last_name: req.body.last_name,
             email: req.body.email,
             password: req.body.password,
-            description: req.body.description
+            description: req.body.description,
+            security_question: req.body.security_question,
+            security_answer: req.body.security_answer,
+            profile_picture_URL: req.body.profile_picture_URL
         }
 
         return this.userService.addUser(user)
@@ -88,12 +119,15 @@ class UserRouter {
         let id = req.params.id
 
         let user = {
+            display_name: req.body.display_name,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
-            password: req.body.password,
             description: req.body.description,
-            date_modified: new Date()
+            date_modified: new Date(),
+            security_question: req.body.security_question,
+            security_answer: req.body.security_answer,
+            profile_picture_URL: req.body.profile_picture_URL
         }
 
         return this.userService.updateUser(user, id)
@@ -121,10 +155,23 @@ class UserRouter {
     // Deals with user access
 
     // Gets a user's access
-    getAccess(req, res) {
+    listAccess(req, res) {
         let user_id = req.params.id
 
-        return this.userService.getAccess(user_id)
+        return this.userService.listAccess(user_id)
+            .then((access) => {
+                res.send(access)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets an access
+    getAccess(req, res) {
+        let id = req.params.id
+
+        return this.userService.getAccess(id)
             .then((access) => {
                 res.send(access)
             })
@@ -183,10 +230,23 @@ class UserRouter {
     // Deals with user favourite restaurants
 
     // Gets a user's favourite restaurants
-    getFavRest(req, res) {
+    listRestaurants(req, res) {
         let user_id = req.params.id
 
-        return this.userService.getFavRest(user_id)
+        return this.userService.listRestaurants(user_id)
+            .then((restaurant) => {
+                res.send(restaurant)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a favourite restaurant
+    getRestaurant(req, res) {
+        let id = req.params.id
+
+        return this.userService.getRestaurant(id)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -196,13 +256,13 @@ class UserRouter {
     }
 
     // Adds a new favourite restaurant
-    postFavRest(req, res) {
+    postRestaurant(req, res) {
         let restaurant = {
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id
         }
 
-        return this.userService.addFavRest(restaurant)
+        return this.userService.addRestaurant(restaurant)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -212,7 +272,7 @@ class UserRouter {
     }
 
     // Updates a favourite restaurant
-    putFavRest(req, res) {
+    putRestaurant(req, res) {
         let id = req.params.id
 
         let restaurant = {
@@ -220,7 +280,7 @@ class UserRouter {
             restaurant_id: req.body.restaurant_id
         }
 
-        return this.userService.updateFavRest(restaurant, id)
+        return this.userService.updateRestaurant(restaurant, id)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -230,10 +290,10 @@ class UserRouter {
     }
 
     // Deletes a favourite restaurant
-    deleteFavRest(req, res) {
+    deleteRestaurant(req, res) {
         let id = req.params.id
 
-        return this.userService.deleteFavRest(id)
+        return this.userService.deleteRestaurant(id)
             .then((restaurant) => {
                 res.send(restaurant)
             })
@@ -245,10 +305,23 @@ class UserRouter {
     // Deals with user favourite blog posts
 
     // Gets a user's favourite blog posts
-    getFavBlog(req, res) {
+    listBlogs(req, res) {
         let user_id = req.params.id
 
-        return this.userService.getFavBlog(user_id)
+        return this.userService.listBlogs(user_id)
+            .then((blog) => {
+                res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Gets a favourite blog posts
+    getBlog(req, res) {
+        let id = req.params.id
+
+        return this.userService.getBlog(id)
             .then((blog) => {
                 res.send(blog)
             })
@@ -258,13 +331,13 @@ class UserRouter {
     }
 
     // Adds a new favourite blog post
-    postFavBlog(req, res) {
+    postBlog(req, res) {
         let blog = {
             user_id: req.body.user_id,
             blog_id: req.body.blog_id
         }
 
-        return this.userService.addFavBlog(blog)
+        return this.userService.addBlog(blog)
             .then((blog) => {
                 res.send(blog)
             })
@@ -274,7 +347,7 @@ class UserRouter {
     }
 
     // Updates a favourite blog post
-    putFavBlog(req, res) {
+    putBlog(req, res) {
         let id = req.params.id
 
         let blog = {
@@ -282,7 +355,7 @@ class UserRouter {
             blog_id: req.body.blog_id
         }
 
-        return this.userService.updateFavBlog(blog, id)
+        return this.userService.updateBlog(blog, id)
             .then((blog) => {
                 res.send(blog)
             })
@@ -292,12 +365,95 @@ class UserRouter {
     }
 
     // Deletes a favourite blog post
-    deleteFavBlog(req, res) {
+    deleteBlog(req, res) {
         let id = req.params.id
 
-        return this.userService.deleteFavBlog(id)
+        return this.userService.deleteBlog(id)
             .then((blog) => {
                 res.send(blog)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Display's user information
+    async displayInfo(req, res) {
+        let user = await this.userService.getUser(req.params.id)
+        res.render('user_information', { title: 'userInformation', user: user[0] })
+    }
+
+    // Display's user reviews
+    async displayReviews(req, res) {
+        let user = await this.userService.getUser(req.params.id)
+
+        let reviews = await this.reviewService.getReview(req.params.id)
+        for (let review of reviews) {
+            let restaurant = await this.restaurantService.getRestaurant(review.restaurant_id)
+            review.restaurant = restaurant[0]
+        }
+        res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
+    }
+
+    // Display's user blogs
+    async displayBlogs(req, res) {
+        let user = await this.userService.getUser(req.params.id)
+        let userOwnBlogs = user[0].blog_access
+        let blogImg
+        for (let blog of userOwnBlogs) {
+            blogImg = await this.blogService.getPicture(blog.id)
+            blog.blogImg = blogImg[0]
+        }
+        console.log(userOwnBlogs)
+    
+        res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
+    }
+
+    // Display's user favourite restaurants
+    async displayRestaurants(req, res) {
+        let user = await this.userService.getUser(req.params.id)
+        console.log(user[0].restaurant_access)
+        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: user[0].restaurant_access, user: user[0] })
+    }
+
+    // Checks the security question
+    checkSecurity(req, res) {
+        let email = req.body.email
+        let answer = req.body.answer
+
+        return this.userService.checkSecurity(email, answer)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Updates lost password
+    lostPassword(req, res) {
+        let id = req.body.id
+        let answer = req.body.answer
+        let password = req.body.password
+
+        return this.userService.lostPassword(id, answer, password)
+            .then((user) => {
+                res.send(user)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Updates  password
+    updatePassword(req, res) {
+        let id = req.params.id
+        let original_password = req.body.original_password
+        let new_password = req.body.new_password
+
+        return this.userService.updatePassword(id, original_password, new_password)
+            .then((user) => {
+                res.send(user)
             })
             .catch((err) => {
                 console.log(err)

@@ -1,0 +1,36 @@
+<div class='container-fluid'>
+    {{> filter_nav}}
+    <div class="row">
+        <div class="col">
+            {{#each blogs}}
+            <div class='card mt-0 mb-3 p-0'>
+                <h5 class='card-header'><a href='/blog/details/{{id}}'> {{title}}</a></h5>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class='card-body'>
+                            {{#if main_picture_URL}}
+                            <img class='w-100 mb-2 rounded' src='{{main_picture_URL}}'>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class='card-body'>
+                            <h7 class='card-subtitle text-muted'>{{date_created}}</h7>
+                            <br>
+                            {{#if modified}}
+                            <h7 class='card-subtitle text-muted'>Edited: {{date_modified}}</h7>
+                            {{/if}}
+                            <p class='card-text'>{{body}}</p>
+                            <br>
+                            <h7 class='card-subtitle'>{{categories}}</h7>
+                            <br>
+                            <h7 class='card-subtitle text-muted'>{{publisher}}</h7>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{> pagination_controls}}
+</div>

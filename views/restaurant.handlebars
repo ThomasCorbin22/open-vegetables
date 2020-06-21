@@ -1,0 +1,49 @@
+<div class='container-fluid'>
+    {{> restaurant_search}}
+    {{> filter_nav}}
+    <div class='row'>
+        <div class="col">
+            {{#each restaurants}}
+            <div class='card mb-3 mt-0 p-0'>
+                <h5 class='card-header'><a href='/restaurant/details/{{id}}'>{{name}}</a></h5>
+                <div class='row'>
+                    <div class='col-sm-4'>
+                        <div class='card-body'>
+                            {{#if main_picture_URL}}
+                            <img class='w-100 custom-area-md mb-2 rounded' src='{{main_picture_URL}}'>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class='col-sm-8'>
+                        <table class='table card-body'>
+                            <tbody>
+                                <tr>
+                                    <th class='table-headers' >Categories: </th>
+                                    <th> {{categories}}</th>
+                                </tr>
+                                <tr>
+                                    <th class='table-headers'  scope='row'> Price: </th>
+                                    <td>{{price}}</th>
+                                </tr>
+                                <tr>
+                                    <th class='table-headers' >Contact Number: </th>
+                                    <th> {{telephone_number}}</th>
+                                </tr>
+                                <tr>
+                                    <th class='table-headers' >Address: </th>
+                                    <th> {{street_address}}<br>{{district}}<br>{{area}}</th>
+                                </tr>
+                                <tr>
+                                    <th class='table-headers' >Opening Hours :</th>
+                                    <th> {{opening_hours}}</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{> pagination_controls}}
+</div>

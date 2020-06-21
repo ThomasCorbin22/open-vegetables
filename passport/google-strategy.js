@@ -1,4 +1,4 @@
-const GoogleStrategy = require('passport-google-oauth').Strategy;
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 require('dotenv').config();
 
@@ -15,18 +15,19 @@ module.exports = (passport) => {
     passport.use('google', new GoogleStrategy({
         clientID: process.env.GOOGLE_ID,
         clientSecret: process.env.GOOGLE_SECRET,
-        callbackURL: "auth/google/callback",
+        callbackURL: "/auth/google/callback",
         profileFields: ['id', 'email', 'name', 'gender', 'displayName', 'profileUrl']
     }, async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
-
         let userResult = await knex('users').where({ google_ID: profile.id });
         if (userResult == 0) {
             let user = {
                 google_ID: profile.id,
-                email: profile.displayName,
-                display_name: profile.name.givenName,
-                google_token: accessToken
+                email: profile.emails[0].value,
+                display_name: profile.displayName,
+                google_token: accessToken,
+                first_name: profile.name.givenName,
+                last_name: profile.name.familyName,
+                profile_picture_URL: profile.photos[0].value
             }
             let query = await knex('users').insert(user).returning('id');
             user.id = query[0];

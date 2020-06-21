@@ -12,10 +12,57 @@ const knex = require('knex')({
 
 class BlogService {
     constructor() {
-        this.blogList = []
         this.blog = []
         this.pictures = []
         this.categories = []
+    }
+
+    // Search all of the current blogs
+    async searchBlogs(query) {
+        let results = await knex
+            .select('*')
+            .from("blogs")
+            .modify(function(queryBuilder) {
+                for (let key in query){
+                    if (typeof query[key] === 'string'){
+                        queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
+                    }
+                    else {
+                        queryBuilder.where(key, query[key])
+                    }
+                }
+            })
+            .catch((err) => console.log(err))
+
+        await this.compilePicturesCategories(results)
+
+        return this.blog
+    }
+
+    // Add pictures and categories to a blog
+    async compilePicturesCategories(results){
+        this.blog = []
+            
+        for (let item of results){
+            let pictures = await this.listPictures(item.id)
+            let categories = await this.listCategories(item.id)
+
+            let blog_pictures = []
+            let category_pictures = []
+
+            for (let picture of pictures){
+                blog_pictures.push(picture.picture_URL)
+            }
+
+            for (let category of categories){
+                category_pictures.push(category.category)
+            }
+
+            item["pictures"] = blog_pictures
+            item["categories"] = category_pictures
+
+            this.blog.push(item)
+        }
     }
 
     // Lists all of the current blogs
@@ -25,9 +72,9 @@ class BlogService {
             .from("blogs")
             .catch((err) => console.log(err))
 
-        this.blogList = results
+        await this.compilePicturesCategories(results)
 
-        return this.blogList
+        return this.blog
     }
 
     // Individual Blog Posts
@@ -40,7 +87,7 @@ class BlogService {
             .where("id", id)
             .catch((err) => console.log(err))
 
-        this.blog = results
+        await this.compilePicturesCategories(results)
 
         return this.blog
     }
@@ -51,13 +98,13 @@ class BlogService {
             .insert(post)
             .catch((err) => console.log(err))
 
-        let id = await knex
+        let results = await knex
             .select('id')
             .from("blogs")
             .where("title", post.title)
             .catch((err) => console.log(err))
-            
-        await this.getBlog(id)
+
+        await this.getBlog(results[0].id)
 
         return this.blog
     }
@@ -76,6 +123,38 @@ class BlogService {
 
     // Deletes a blog post
     async deleteBlog(id) {
+        let results = await knex('comments')
+            .select('*')
+            .where('blog_id', id)
+            .catch((err) => console.log(err))
+
+        for (let result of results){
+            await knex('likes_dislikes')
+                .del()
+                .where('comment_id', result.id)
+                .catch((err) => console.log(err))
+        }
+
+        await knex('comments')
+            .del()
+            .where('blog_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('blog_pictures')
+            .del()
+            .where('blog_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('blog_favourites')
+            .del()
+            .where('blog_id', id)
+            .catch((err) => console.log(err))
+
+        await knex('blog_categories')
+            .del()
+            .where('blog_id', id)
+            .catch((err) => console.log(err))
+
         await knex('blogs')
             .del()
             .where('id', id)
@@ -86,7 +165,20 @@ class BlogService {
 
     // Blog Pictures
 
-    // Gets the pictures from a specific blog post
+    // Gets the pictures from a blog post
+    async listPictures(id) {
+        let results = await knex
+            .select('*')
+            .from("blog_pictures")
+            .where("blog_id", id)
+            .catch((err) => console.log(err))
+
+        this.pictures = results
+
+        return this.pictures
+    }
+
+    // Gets a picture
     async getPicture(id) {
         let results = await knex
             .select('*')
@@ -104,8 +196,15 @@ class BlogService {
         await knex('blog_pictures')
             .insert(image)
             .catch((err) => console.log(err))
+
+        let results = await knex
+            .select('id')
+            .from("blog_pictures")
+            .where("picture_URL", image.picture_URL)
+            .andWhere("blog_id", image.blog_id)
+            .catch((err) => console.log(err))
             
-        await this.getPicture(blog_ID)
+        await this.getPicture(results[0].id)
 
         return this.pictures
     }
@@ -117,7 +216,7 @@ class BlogService {
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.getPicture(blog_ID)
+        await this.getPicture(id)
 
         return this.pictures
     }
@@ -134,7 +233,20 @@ class BlogService {
 
     // Blog Categories
 
-    // Gets the categories from a specific blog post
+    // Gets the categories for a particular blog post
+    async listCategories(id) {
+        let results = await knex
+            .select('*')
+            .from("blog_categories")
+            .where("blog_id", id)
+            .catch((err) => console.log(err))
+
+        this.categories = results
+
+        return this.categories
+    }
+
+    // Gets a blog category
     async getCategory(id) {
         let results = await knex
             .select('*')
@@ -153,7 +265,14 @@ class BlogService {
             .insert(category)
             .catch((err) => console.log(err))
             
-        await this.getCategory(blog_ID)
+        let results = await knex
+            .select('id')
+            .from("blog_categories")
+            .where("category", category.category)
+            .andWhere("blog_id", category.blog_id)
+            .catch((err) => console.log(err))
+            
+        await this.getCategory(results[0].id)
 
         return this.categories
     }
@@ -165,7 +284,7 @@ class BlogService {
             .where('id', id)
             .catch((err) => console.log(err))
 
-        await this.getCategory(blog_ID)
+        await this.getCategory(id)
 
         return this.categories
     }

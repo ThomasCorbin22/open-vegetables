@@ -1,7 +1,10 @@
 
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex('user_access').del()
+  return knex('likes_dislikes').del()
+    .then(function () {
+      return knex('user_access').del()
+    })
     .then(function () {
       return knex('comments').del()
     })
@@ -37,5 +40,11 @@ exports.seed = function (knex) {
     })
     .then(function () {
       return knex('users').del()
+    })
+    .then(function () {
+      return knex('districts').del()
+    })
+    .then(function () {
+      return knex('areas').del()
     })
 };

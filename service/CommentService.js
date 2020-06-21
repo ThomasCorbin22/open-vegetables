@@ -126,6 +126,25 @@ class CommentService {
         return this.like
     }
 
+    // Checks if a user has liked the comments on a blog
+    async getUserLike(user_id, comment_id){
+        console.log(user_id)
+        console.log(comment_id)
+
+        let results = await knex
+            .select('*')
+            .from("likes_dislikes")
+            .where("user_id", user_id)
+            .where("comment_id", comment_id)
+            .catch((err) => console.log(err))
+
+        console.log(results)
+        
+        this.like = results
+
+        return this.like
+    }
+
     // Gets a specific like
     async getLike(id){
         let results = await knex

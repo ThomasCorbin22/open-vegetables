@@ -85,7 +85,7 @@ app.get('/', async (req, res) => {
 initPassport(app);
 
 // Set up routers
-app.use('/user', new UserRouter(userService).route());
+app.use('/user', new UserRouter(userService, reviewService, restaurantService,blogService).route());
 app.use('/restaurant', new RestaurantRouter(restaurantService, reviewService, userService, locationService).route());
 app.use('/blog', new BlogRouter(blogService, commentService, userService).route());
 app.use('/comment', new CommentRouter(commentService).route());

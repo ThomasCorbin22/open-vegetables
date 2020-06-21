@@ -63,20 +63,18 @@ class UserService {
             .catch((err) => console.log(err))
 
         if (results[0].security_answer == answer) {
-            await this.getUser(id)
-
             let hash = await bcrypt.hashPassword(password)
 
             let user = {
-                display_name: this.user.display_name,
-                first_name: this.user.first_name,
-                last_name: this.user.last_name,
-                email: this.user.email,
-                description: this.user.description,
+                display_name: results[0].display_name,
+                first_name: results[0].first_name,
+                last_name: results[0].last_name,
+                email: results[0].email,
+                description: results[0].description,
                 date_modified: new Date(),
-                security_question: this.user.security_question,
-                security_answer: this.user.security_answer,
-                profile_picture_URL: this.user.profile_picture_URL,
+                security_question: results[0].security_question,
+                security_answer: results[0].security_answer,
+                profile_picture_URL: results[0].profile_picture_URL,
                 password: hash
             }
 
@@ -100,10 +98,9 @@ class UserService {
             .where("id", id)
             .catch((err) => console.log(err))
 
-        let old_hash = await bcrypt.hashPassword(original_password)
-        let database_hash = await bcrypt.hashPassword(results[0].password)
+        let comparison = await bcrypt.checkPassword(original_password, results[0].password);
 
-        if (old_hash == database_hash) {
+        if (comparison) {
             await this.getUser(id)
 
             let hash = await bcrypt.hashPassword(new_password)
@@ -188,6 +185,9 @@ class UserService {
             item["blog_access"] = user_blog_access
             item["date_created"] = updateDate(item["date_created"])
             item["date_modified"] = updateDate(item["date_modified"])
+
+            delete item["password"]
+            delete item["security_answer"]
 
             this.user.push(item)
         }

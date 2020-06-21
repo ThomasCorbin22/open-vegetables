@@ -97,6 +97,53 @@ describe('UserService testing with userservice', () => {
             })
     })
 
+    test('userService should call checkSecurity', () => {
+        expect.assertions(4);
+
+        let email = 'thomas@thomas.com'
+        let answer = '3'
+        
+        return userService.checkSecurity(email, answer)
+            .then((results) => {
+                expect(typeof results).toBe('object')
+                expect(results.id).toBe(1)
+                expect(results.email).toBe(email)
+                expect(results.answer).toBe(answer)
+            })
+    })
+
+    test('userService should call lostPassword', () => {
+        expect.assertions(4);
+
+        let id = 1
+        let answer = '3'
+        let password = 'password123'
+        
+        return userService.lostPassword(id, answer, password)
+            .then((results) => {
+                expect(typeof results).toBe('object')
+                expect(results[0].id).toBe(1)
+                expect(results[0].first_name).toBe('Thomas')
+                expect(results[0].password).not.toBe('$2b$10$TeDLJ.CehjeNyXD8ZQnfh.xa6rsFd4x1H.cwdLexoPFuu3r7Q/4ii')
+            })
+    })
+
+    test('userService should call updatePassword', () => {
+        expect.assertions(4);
+
+        let id = 1
+        let original_password = 'password'
+        let new_password = 'password123'
+        
+        return userService.updatePassword(id, original_password, new_password)
+            .then((results) => {
+                expect(typeof results).toBe('object')
+                expect(results[0].id).toBe(1)
+                expect(results[0].first_name).toBe('Thomas')
+                expect(results[0].password).not.toBe('$2b$10$TeDLJ.CehjeNyXD8ZQnfh.xa6rsFd4x1H.cwdLexoPFuu3r7Q/4ii')
+            })
+    })
+
     test('userService should call listUsers', () => {
         expect.assertions(7);
         

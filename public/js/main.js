@@ -4,10 +4,6 @@ let direction = 'ascending'
 let area = 'all'
 let user_answer
 
-// Initially hide the logged in links
-$('#profile').hide()
-$('#logout').hide()
-
 $(document).ready(function () {
 
   // Change active navbar link

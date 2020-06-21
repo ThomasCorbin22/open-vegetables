@@ -15,6 +15,7 @@ class CommentRouter {
         this.router.delete('/:id', this.deleteComment.bind(this));
 
         // Deals with user liked comments
+        this.router.get('/like/user/:id/:comment', this.getUserLike.bind(this));
         this.router.get('/like/list/:id', this.listLikes.bind(this));
         this.router.get('/like/:id', this.getLike.bind(this));
         this.router.post('/like/', this.postLike.bind(this));
@@ -111,6 +112,23 @@ class CommentRouter {
         let comment_id = req.params.id
 
         return this.commentService.listLikes(comment_id)
+            .then((like) => {
+                res.send(like)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Checks if a user has liked a comment
+    getUserLike(req,res){
+        let user_id = req.params.id
+        let comment_id = req.params.comment
+
+        console.log(user_id)
+        console.log(comment_id)
+
+        return this.commentService.getUserLike(user_id, comment_id)
             .then((like) => {
                 res.send(like)
             })

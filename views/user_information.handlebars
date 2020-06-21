@@ -14,7 +14,7 @@
                 </form>
             </div>
 
-            <form class='m-3' action="/users/info/">
+            <form class='m-3'>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">First Name:</span>
@@ -50,6 +50,23 @@
                 <button type="submit" id='updateuserbtn' class="btn btn-danger my-3">Update</button>
             </form>
 
+            <form id='form-change-password' class='m-3'>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Previous Password:</span>
+                    </div>
+                    <input type="password" class="form-control" value="" id="oldPassword"
+                        name="oldPassword">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">New Password:</span>
+                    </div>
+                    <input type="password" class="form-control" value="" id="newPassword"
+                        name="newPassword">
+                </div>
+                <button type="submit" id='updatePasswordbtn' class="btn btn-danger my-3">Update</button>
+            </form>
 
             <ul class="nav nav-tabs mb-3">
                 <li class="nav-item">

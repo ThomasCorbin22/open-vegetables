@@ -75,6 +75,7 @@ describe('RestaurantRouter testing with restaurantservice', () => {
     beforeAll(async () => {
         response = {
             send : jest.fn().mockResolvedValue(true),
+            render : jest.fn().mockResolvedValue(true),
         }
 
         restaurantService = {

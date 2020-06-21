@@ -1,35 +1,9 @@
 <div class='container-fluid'>
-    <div class='card'>
-        <div class='row'>
-            <div class='col-sm-4'>
-                <h4 class='card-header'><a id='restaLink'
-                        href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
-                </h4>
-                <div class='card-body'>
-                    {{#if restaurant.main_picture_URL}}
-                    <img class='mb-2 custom-area-sm' src={{restaurant.main_picture_URL}}>
-                    {{/if}}
-                    {{#if restaurant.logo}}
-                    <img class='custom-area-sm' src={{restaurant.logo}}>
-                    {{/if}}
-                    <hr>
-                    {{#if restaurant.price}}
-                    <p class='card-title'>{{restaurant.price}}</p>
-                    {{/if}}
-                    <p class='card-title'></p><i class="fa fa-thumbs-up"></i>{{restaurant.rating}}</p>
-                    {{#if user_id}}
-                    {{#if restaurant.favourite}}
-                    <p id='favourite-{{restaurant.favourite}}' class='card-title add-favourite'>★ Favourite Restaurant
-                    </p>
-                    {{else}}
-                    <p class='card-title add-favourite'>☆ Add to favourite</p>
-                    {{/if}}
-                    {{/if}}
-                </div>
-            </div>
-            <div class='col-sm-4'>
-                <h4 class='card-header'>Restaurant Details</h4>
-
+    <div class='card p-0'>
+        <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
+        </h4>
+        <div class='row p-3'>
+            <div class='col-sm-8'>
                 <ul class='list-group list-group-flush mt-3'>
                     <h6 class=" mt-1 text-muted">Description</h6>
                     <li class='list-group-item'>{{restaurant.description}}</li>
@@ -40,7 +14,7 @@
                     <h6 class=" mt-1 text-muted">Telephone Number</h6>
                     <li class='list-group-item'>{{restaurant.telephone_number}}</li>
                     <h6 class=" mt-1 text-muted">Address</h6>
-                    <li class='list-group-item'>{{restaurant.street_address}}</li>
+                    <li class='list-group-item'>{{restaurant.street_address}}<br>{{restaurant.district}}<br>{{restaurant.area}}</li>
                     {{#if restaurant.website_URL}}
                     <h6 class=" mt-1 text-muted">Website</h6>
                     <li class='list-group-item'><a href='{{restaurant.website_URL}}'>{{restaurant.website_URL}}</a></li>
@@ -53,15 +27,50 @@
                 </ul>
             </div>
             <div class='col-sm-4'>
-                <h4 class='card-header'>GeoLocation</h4>
-                <div id="app" class="container">
-                    <div class="row">
-                        <div class="col">
-                            <div id="map" class="embed-responsive embed-responsive-16by9 h-100"></div>
-                        </div>
+                <div class='card-body'>
+                    {{#if restaurant.main_picture_URL}}
+                    <img class='mb-2 w-100 custom-area-sm rounded' src={{restaurant.main_picture_URL}}>
+                    {{/if}}
+                    {{#if restaurant.price}}
+                    <p class='card-title'>{{restaurant.price}}</p>
+                    {{/if}}
+                    <p class='card-title'></p><i class="fa fa-thumbs-up"></i>{{restaurant.rating}}</p>
+                    {{#if user_id}}
+                    {{#if restaurant.favourite}}
+                    <p id='favourite-{{restaurant.favourite}}' class='card-title add-favourite'>★ Favourite
+                        Restaurant
+                    </p>
+                    {{else}}
+                    <p class='card-title add-favourite'>☆ Add to favourite</p>
+                    {{/if}}
+                    {{/if}}
+                    <hr>
+                    <div id="app">
+                        <div id="map" class="embed-responsive embed-responsive-16by9 h-100 rounded"></div>
                     </div>
                 </div>
             </div>
+        </div>
+        {{#if restaurant.pictures.[4]}}
+        <div class="row p-3 d-flex justify-content-between m-0">
+        {{else}}
+        <div class="row p-3 m-0">
+        {{/if}}
+            {{#if restaurant.pictures.[0]}}
+            <img class='custom-area-sm rounded m-2' src={{restaurant.pictures.[0]}}>
+            {{/if}}
+            {{#if restaurant.pictures.[1]}}
+            <img class='custom-area-sm rounded m-2' src={{restaurant.pictures.[1]}}>
+            {{/if}}
+            {{#if restaurant.pictures.[2]}}
+            <img class='custom-area-sm rounded m-2' src={{restaurant.pictures.[2]}}>
+            {{/if}}
+            {{#if restaurant.pictures.[3]}}
+            <img class='custom-area-sm rounded m-2' src={{restaurant.pictures.[3]}}>
+            {{/if}}
+            {{#if restaurant.pictures.[4]}}
+            <img class='custom-area-sm rounded m-2' src={{restaurant.pictures.[4]}}>
+            {{/if}}
         </div>
     </div>
     <div class='row mb-3'>
@@ -102,11 +111,14 @@
                             <div class='col-sm-9'>
                                 <div class='card-body'>
                                     <h5 class='card-title'>{{title}}</h5>
-                                    <h7 class='card-subtitle text-muted'>Date Created: {{date_created}} </h7>
+                                    <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
                                     <br>
                                     {{#if modified}}
-                                    <h7 class='card-subtitle text-muted'>Date Modified: {{date_modified}}</h7>
+                                    <h7 class='card-subtitle text-muted'>Edited: {{date_modified}}</h7>
                                     {{/if}}
+                                    <br>
+                                    <h7 class='card-subtitle text-muted'>Rating: {{rating}}/5 </h7>
+                                    <br>
                                     <p class='card-text'>{{body}}</p>
                                     {{#if pictures}}
                                     <img class='card-img w-50 custom-area-sm' src={{pictures}}>

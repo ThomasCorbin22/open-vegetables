@@ -24,13 +24,13 @@ class RestaurantService {
             .from("restaurants")
             .join('districts', 'restaurants.district_id', '=', 'districts.id')
             .join('areas', 'districts.area_id', '=', 'areas.id')
-            .modify(function(queryBuilder) {
-                for (let key in query){
-                    if (key === 'latitude' || key === 'longitude'){
+            .modify(function (queryBuilder) {
+                for (let key in query) {
+                    if (key === 'latitude' || key === 'longitude') {
                         queryBuilder.where(key, '<', parseFloat(query[key]) + range / 110.574)
                         queryBuilder.andWhere(key, '>', parseFloat(query[key]) - range / (111.320 * Math.cos(20.3 / Math.PI / 180)))
                     }
-                    else if (typeof query[key] === 'string'){
+                    else if (typeof query[key] === 'string') {
                         queryBuilder.where(key, 'ilike', "%" + query[key] + "%")
                     }
                     else {
@@ -46,21 +46,21 @@ class RestaurantService {
     }
 
     // Add pictures and categories to a restaurant
-    async compilePicturesCategoriesRating(results){
+    async compilePicturesCategoriesRating(results) {
         this.restaurant = []
-            
-        for (let item of results){
+
+        for (let item of results) {
             let pictures = await this.listPictures(item.id)
             let categories = await this.listCategories(item.id)
 
             let restaurant_pictures = []
             let category_pictures = []
 
-            for (let picture of pictures){
+            for (let picture of pictures) {
                 restaurant_pictures.push(picture.picture_URL)
             }
 
-            for (let category of categories){
+            for (let category of categories) {
                 category_pictures.push(category.category)
             }
 
@@ -88,12 +88,15 @@ class RestaurantService {
 
     // Gets a specific restaurant
     async getRestaurant(id) {
+        console.log(id)
         let results = await knex
-            .select('*')
+            .select('*', 'restaurants.id')
             .from("restaurants")
-            .where("id", id)
+            .join('districts', 'restaurants.district_id', '=', 'districts.id')
+            .join('areas', 'districts.area_id', '=', 'areas.id')
+            .where("restaurants.id", id)
             .catch((err) => console.log(err))
-
+        
         await this.compilePicturesCategoriesRating(results)
 
         return this.restaurant
@@ -136,7 +139,7 @@ class RestaurantService {
             .where('restaurant_id', id)
             .catch((err) => console.log(err))
 
-        for (let result of results){
+        for (let result of results) {
             await knex('review_pictures')
                 .del()
                 .where('review_id', result.id)
@@ -322,8 +325,8 @@ class RestaurantService {
             .catch((err) => console.log(err))
 
         return true
-    }    
-    
+    }
+
     // Restaurant rating
 
     // Gets a specific restaurant's rating
@@ -338,11 +341,11 @@ class RestaurantService {
         let count = 0
 
         if (results.length > 0) {
-            for (let item of results){
+            for (let item of results) {
                 total_rating += item.rating
                 count++
             }
-            
+
             this.rating = total_rating / count
         }
         else {

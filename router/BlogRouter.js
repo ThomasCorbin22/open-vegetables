@@ -1,7 +1,7 @@
 const express = require('express');
 const filterResults = require('../modules/filterResults.js');
 const getPagination = require('../modules/getPagination.js');
-const getDate = require('../modules/getDate.js');
+const updateDate = require('../modules/getDate.js');
 
 class BlogRouter {
     constructor(blogService, commentService, userService) {
@@ -287,12 +287,22 @@ class BlogRouter {
     async displayAll(req, res) {
         let query = req.query
         let page
+        let category
+        let favourites
+        let user_id
 
         // Delete any page queries before passing to search blogs
         if (query.page){
             page = query.page
             delete query['page'];
         }
+
+        // If categories exist, save them in a separate variable
+        if (query.categories) {
+            category = query.categories
+            delete query.categories
+        }
+        else if (query.categories == '') delete query.categories
     
         // Search the blogs according to the query
         let results = await this.blogService.searchBlogs(req.query)
@@ -300,25 +310,50 @@ class BlogRouter {
         // Filter the results based on the url filter
         results = filterResults('blog', req.params.filter, req.params.direction, results)
         
+        // Check for category match
+        if (category) {
+            results = results.filter((result) => result.categories.includes(category))
+        }
+
         // Add pagination
-        let pages = getPagination('blog', Number(page) || 1, results.length || 1)
+        let pages = getPagination('blog', req.params.filter, Number(page) || 1, results.length || 1)
 
         // Add specified parameters to reflect in the html / hrefs
         pages['filter'] = req.params.filter
-        pages['direction'] = req.params.direction
+        if (req.params.direction) {
+            if (req.params.direction == 'descending') pages['direction'] = true
+            if (req.params.direction == 'ascending') pages['direction'] = false
+        }
 
-        // Allow users to switch the direction of the filters
-        if (pages['direction'] === 'ascending') pages['opposite_direction'] = 'descending'
-        else if (pages['direction'] === 'descending') pages['opposite_direction'] = 'ascending'
+        // Check for user
+        if (req.user) user_id = req.user.id
 
         // Get just the specified results for that page
         let index = (pages.current.value - 1) * 10
         results = results.slice(index, index + 10)
 
+        // Get users favourite blogs
+        if (user_id) {
+            favourites = await this.userService.listBlogs(user_id)
+        }
+
         // Change blog dates to be legible
         for (let result of results){
-            result.date_modified = getDate(result.date_modified)
-            result.date_created = getDate(result.date_created)
+            result.date_modified = updateDate(result.date_modified).split(' ').splice(-1)[0]
+            result.date_created = updateDate(result.date_created).split(' ').splice(-1)[0]
+
+            if (favourites) {
+                for (let item of favourites) {
+                    if (user_id == item.user_id && result.id == item.blog_id) {
+                        result.favourite = item.id
+                    }
+                }
+            }
+            if (result.body.length > 250){
+                result.body = result.body.substring(0, 250) + '...'
+            }
+            result.publisher = await this.userService.getUser(result.user_id)
+            result.publisher = result.publisher[0].display_name
         }
     
         res.render('blog', {
@@ -330,22 +365,25 @@ class BlogRouter {
 
     // Displays single blog
     async displaySingle(req, res) {
-        let blogs = await blogService.listBlogs();
-        for (let blog of blogs) {
-            if (blog.id == req.params.id) {
-                let publisher = await userService.getUser(blog.user_id)
-                let commentsBlog = await commentService.getComment(blog.id)
-                for (let comment of commentsBlog) {
-                    let commentUser = await userService.getUser(comment.user_id)
-                    comment.userName = commentUser[0].first_name
-                    comment.userImage = commentUser[0].profile_picture_URL
-                }
-                blog.comments = commentsBlog
-                blog.userName = publisher[0].first_name
-                blog.userImage = publisher[0].profile_picture_URL
-                res.render('blog_details', { title: `blog-details/${blog.title}`, blog: blog, comments: blog.comments })
-            }
+        // Get the correct blog
+        let blog = await blogService.getBlog(req.params.id);
+
+        // Get the publisher
+        let publisher = await userService.getUser(blog.user_id)
+
+        // List the comments for the blog
+        let comments = await commentService.listComments(blog.id)
+        for (let comment of commentsBlog) {
+            let commentUser = await userService.getUser(comment.user_id)
+            comment.userName = commentUser[0].first_name
+            comment.userImage = commentUser[0].profile_picture_URL
         }
+
+        // Get the publisher information
+        blog.userName = publisher[0].display_name
+        blog.userImage = publisher[0].profile_picture_URL
+
+        res.render('blog_details', { title: `blog-details/${blog.title}`, blog, comments})
     }
 }
 

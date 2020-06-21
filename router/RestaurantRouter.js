@@ -2,7 +2,6 @@ const express = require('express');
 const filterResults = require('../modules/filterResults.js');
 const getPagination = require('../modules/getPagination.js');
 const getOpeningHours = require('../modules/getOpeningHours.js');
-const getDate = require('../modules/getDate.js');
 const getPrice = require('../modules/getPrice.js');
 
 class RestaurantRouter {
@@ -351,6 +350,8 @@ class RestaurantRouter {
             delete query['page'];
         }
         if (req.params.area != 'all') query['area'] = req.params.area
+
+        // If categories exist, save them in a separate variable
         if (query.categories) {
             category = query.categories
             delete query.categories
@@ -407,6 +408,8 @@ class RestaurantRouter {
             }
         }
 
+        console.log(results)
+
         res.render('restaurant', {
             title: 'restaurants-' + req.params.area + '-' + req.params.filter,
             restaurants: results,
@@ -443,6 +446,11 @@ class RestaurantRouter {
         if (restaurant.website_URL == 'Not available') delete restaurant.website_URL
         if (restaurant.social_media_URL == 'Not available') delete restaurant.social_media_URL
 
+        // Check for empty pictures
+        for (let picture of restaurant.pictures){
+            if (picture = 'Not available') restaurant.pictures = []
+        }
+
         // Get the reviews for a restaurant
         let reviews = await this.reviewService.listReviews(restaurant.id)
         let user
@@ -460,6 +468,8 @@ class RestaurantRouter {
                 }
             }
         }
+
+        console.log(restaurant)
 
         res.render(`restaurant_details_reviews`, {
             title: `restaurant-details/${restaurant.name}`,

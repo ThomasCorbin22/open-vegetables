@@ -12,7 +12,8 @@
                     </div>
                     <div class='col-sm-9'>
 
-                        <h4 class='card-header' ><a id='blogLink' href='/blogs/details/{{blog.id}}'>{{blog.title}}</a></h4>
+                        <h4 class='card-header'><a id='blogLink' href='/blogs/details/{{blog.id}}'>{{blog.title}}</a>
+                        </h4>
                         <div class='card-body'>
                             <h7 class='card-subtitle'>
                                 {{#each blog.categories}}
@@ -27,6 +28,15 @@
                             {{#each blog.pictures}}
                             <img class='custom-area-sm p-1' src={{this}}>
                             {{/each}}
+                            {{#if pictures.[0]}}
+                            <img class='card-img custom-area-sm p-1' src={{pictures.[0]}}>
+                            {{/if}}
+                            {{#if pictures.[1]}}
+                            <img class='card-img custom-area-sm p-1' src={{pictures.[1]}}>
+                            {{/if}}
+                            {{#if pictures.[2]}}
+                            <img class='card-img custom-area-sm p-1' src={{pictures.[2]}}>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -42,7 +52,8 @@
 
                 <div class='row'>
                     <div class='col-sm-12'>
-                        <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3" style='display:none'>
+                        <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3"
+                            style='display:none'>
                             <span>Create a new comment</span>
                         </button>
                         {{>create_newComment}}

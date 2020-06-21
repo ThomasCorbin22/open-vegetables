@@ -1,3 +1,6 @@
+// Note that when running this script that it needs to be run TWICE. Please ensure that the first run has completely finished before Ctl+C and starting the second run. The first run through there will be errors for approximately 10% of the total restaurants, these will be added successfully on the second run of the script. This is due to an error where existing districts aren't being properly recognised in the database. 
+
+
 const Fs = require('fs');
 const CsvReadableStream = require('csv-reader');
 

@@ -1,6 +1,6 @@
 // Get the current day in DD/MM/YY format
-let getDate = function(date) {
-    let dd = date.getDay();
+let updateDate = function(date) {
+    let dd = date.getDate();
     let mm = date.getMonth() + 1;
     let yyyy = date.getFullYear();
 
@@ -22,4 +22,4 @@ let getDate = function(date) {
     return HH + ':' + MM + ' ' + dd + '/' + mm + '/' + yyyy;
 }
 
-module.exports = getDate;
+module.exports = updateDate;

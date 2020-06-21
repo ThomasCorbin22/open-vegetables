@@ -75,10 +75,13 @@ class ReviewRouter {
     putReview(req, res) {
         let id = req.params.id
 
+        console.log(req.params)
+
         let review = {
             title: req.body.title,
             body: req.body.body,
             rating: req.body.rating,
+            modified: req.body.modified,
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id,
             date_modified: new Date()

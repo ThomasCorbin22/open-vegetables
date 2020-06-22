@@ -107,7 +107,7 @@ class BlogRouter {
             body: req.body.body,
             main_picture_URL: req.body.main_picture_URL,
             user_id: req.body.user_id,
-            modified: req.body.modified,
+            modified: true,
             date_modified: new Date()
         }
 

@@ -127,7 +127,7 @@ class RestaurantRouter {
     // Updates a restaurant
     putRestaurant(req, res) {
         let id = req.params.id
-
+        
         let restaurant = {
             name: req.body.name,
             street_address: req.body.street_address,
@@ -149,7 +149,7 @@ class RestaurantRouter {
             friday: req.body.friday,
             saturday: req.body.saturday,
             sunday: req.body.sunday,
-            modified: req.body.modified,
+            modified: true,
             date_modified: new Date()
         }
 
@@ -457,7 +457,8 @@ class RestaurantRouter {
             title: `restaurant-details/${restaurant.name}`,
             restaurant,
             reviews,
-            user_id
+            user_id,
+            map: true
         })
     }
 }

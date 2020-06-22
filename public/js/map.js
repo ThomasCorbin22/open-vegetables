@@ -29,10 +29,6 @@ $(document).ready(function () {
         $('.navbar-nav > li:eq(3)').addClass('active')
     }
 
-    if ($('title').text().match('map')) {
-        initMap()
-    }
-
     $('.map-link').click((e) => {
         e.preventDefault()
 
@@ -84,7 +80,7 @@ async function initMap() {
     map = new google.maps.Map(document.getElementById('map'), options);
 
     if (restaurant) {
-        let marker = new google.maps.Marker({ position: latlng, map: map });
+        let marker = new google.maps.Marker({ position: restaurant, map: map });
         markers.push(marker)
     }
     else if (district) {

@@ -77,7 +77,7 @@ class CommentRouter {
             title: req.body.title,
             body: req.body.body,
             user_id: req.body.user_id,
-            modified: req.body.modified,
+            modified: true,
             blog_id: req.body.blog_id,
             date_modified: new Date()
         }

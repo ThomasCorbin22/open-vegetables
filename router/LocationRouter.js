@@ -188,12 +188,12 @@ class LocationRouter {
 
     // Displays the map
     displayMap(req, res) {
-        res.render('map', { title: 'map' })
+        res.render('map', { title: 'map', map: true })
     }
 
     // Displays the location
     displayLocation(req, res) {
-        res.render('map', { title: 'map-' + req.params.district })
+        res.render('map', { title: 'map-' + req.params.district, map: true })
     }
 }
 

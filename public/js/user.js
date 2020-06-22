@@ -127,7 +127,7 @@ $(document).ready(function () {
             })
                 .then((res) => {
                     console.log(res)
-                    axios({
+                    return axios({
                         url: `/auth/login`,
                         method: 'post',
                         data: {
@@ -135,13 +135,10 @@ $(document).ready(function () {
                             password: password_01,
                         }
                     })
-                        .then((res) => {
-                            console.log(res)
-                            location.reload();
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                })
+                .then((res) => {
+                    console.log(res)
+                    location.reload();
                 })
                 .catch((error) => {
                     console.log(error);

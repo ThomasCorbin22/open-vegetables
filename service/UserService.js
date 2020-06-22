@@ -65,21 +65,8 @@ class UserService {
         if (results[0].security_answer == answer) {
             let hash = await bcrypt.hashPassword(password)
 
-            let user = {
-                display_name: results[0].display_name,
-                first_name: results[0].first_name,
-                last_name: results[0].last_name,
-                email: results[0].email,
-                description: results[0].description,
-                date_modified: new Date(),
-                security_question: results[0].security_question,
-                security_answer: results[0].security_answer,
-                profile_picture_URL: results[0].profile_picture_URL,
-                password: hash
-            }
-
             await knex('users')
-                .update(user)
+                .update({password: hash})
                 .where('id', id)
                 .catch((err) => console.log(err))
 
@@ -105,21 +92,8 @@ class UserService {
 
             let hash = await bcrypt.hashPassword(new_password)
 
-            let user = {
-                display_name: this.user.display_name,
-                first_name: this.user.first_name,
-                last_name: this.user.last_name,
-                email: this.user.email,
-                description: this.user.description,
-                date_modified: new Date(),
-                security_question: this.user.security_question,
-                security_answer: this.user.security_answer,
-                profile_picture_URL: this.user.profile_picture_URL,
-                password: hash
-            }
-
             await knex('users')
-                .update(user)
+                .update({password: hash})
                 .where('id', id)
                 .catch((err) => console.log(err))
 
@@ -187,6 +161,7 @@ class UserService {
             item["date_modified"] = updateDate(item["date_modified"])
 
             delete item["password"]
+            delete item["security_question"]
             delete item["security_answer"]
 
             this.user.push(item)
@@ -222,14 +197,9 @@ class UserService {
 
     // Adds a new user
     async addUser(user) {
-        await knex('users')
+        let results = await knex('users')
             .insert(user)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("users")
-            .where("email", user.email)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getUser(results[0].id)
@@ -380,15 +350,9 @@ class UserService {
 
     // Adds new access to a user
     async addAccess(access) {
-        await knex('user_access')
+        let results = await knex('user_access')
             .insert(access)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("user_access")
-            .where("user_id", access.user_id)
-            .andWhere("restaurant_id", access.restaurant_id)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getAccess(results[0].id)
@@ -448,15 +412,9 @@ class UserService {
 
     // Adds new favourite restaurant to a user
     async addRestaurant(restaurant) {
-        await knex('restaurant_favourites')
+        let results = await knex('restaurant_favourites')
             .insert(restaurant)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("restaurant_favourites")
-            .where("user_id", restaurant.user_id)
-            .andWhere("restaurant_id", restaurant.restaurant_id)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getRestaurant(results[0].id)
@@ -516,15 +474,9 @@ class UserService {
 
     // Adds new favourite blog post to a user
     async addBlog(blog) {
-        await knex('blog_favourites')
+        let results = await knex('blog_favourites')
             .insert(blog)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("blog_favourites")
-            .where("user_id", blog.user_id)
-            .andWhere("blog_id", blog.blog_id)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getBlog(results[0].id)

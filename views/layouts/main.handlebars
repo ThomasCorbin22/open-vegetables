@@ -131,9 +131,11 @@
     <script src="/js/user.js"></script>
     <script src="/js/comment.js"></script>
     <script src="/js/review.js"></script>
+    {{#if map}}
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQHc3vxhObyJ3Oancsb7ZoXGPesEMMd2g&callback=initMap">
         </script>
+    {{/if}}
 </body>
 
 </html>

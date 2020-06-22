@@ -100,9 +100,9 @@ $(document).ready(function () {
                 })
         }
         else if (e.currentTarget.innerHTML.match('★')) {
-            let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
+            let favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
             axios({
-                url: `/user/favourite/restaurant/${resta_favourite}`,
+                url: `/user/favourite/restaurant/${favourite}`,
                 method: 'delete',
             })
                 .then((res) => {
@@ -118,74 +118,76 @@ $(document).ready(function () {
     // update existing restaurant 
     $('.btnRestaGroup button:first-child').click(function (e) {
         e.preventDefault()
-        let restaName = $(this).closest('form').find('.restaName').val()
-        let restaAddress = $(this).closest('form').find('.restaAddress').val()
-        let restaDistID = $(this).closest('form').find('.restaDist').val()
-        let restaDescri = $(this).closest('form').find('.restaDescri').val()
-        let restaLogo = $(this).closest('form').find('.restaLogo').attr('src')
-        let restaPrice = $(this).closest('form').find('.restaPrice').val()
-        let restaPhone = $(this).closest('form').find('.restaTele').val()
-        let restaSocial = $(this).closest('form').find('.restaSocial').val()
-        let restaURL = $(this).closest('form').find('.restaWeb').val()
-        let restaImg = $(this).closest('form').find('.restaPic').attr('src')
-        let restaID = parseInt($(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/))
-        let restaCate = $(this).closest('form').find('.restaCate').val()
-        console.log(restaCate)
-        let restaPic = []
+        let name = $(this).closest('form').find('.restaName').val()
+        let street_address = $(this).closest('form').find('.restaAddress').val()
+        let district_id = parseInt($(this).closest('form').find('.restaDist').val().match(/\d+/)) + 1
+        let description = $(this).closest('form').find('.restaDescri').val()
+        let logo = $(this).closest('form').find('.restaLogo').attr('src')
+        let price = $(this).closest('form').find('.restaPrice').val()
+        let telephone_number = $(this).closest('form').find('.restaTele').val()
+        let social_media_URL = $(this).closest('form').find('.restaSocial').val()
+        let website_URL = $(this).closest('form').find('.restaWeb').val()
+        let main_picture_URL = $(this).closest('form').find('.restaPic').attr('src')
+        let restaurant_id = parseInt($(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/))
+        let main_category = $(this).closest('form').find('.restaCate').val()
+        let latitude = parseFloat($(this).closest('form').find('.restaLat').val())
+        let longitude = parseFloat($(this).closest('form').find('.restaLng').val())
+        let opening_hours = $(this).closest('form').find('.restaOp').val()
+        let closing_hours = $(this).closest('form').find('.restaCl').val()
+
+        let existing_pictures = []
         $.each($(this).closest('form').find('.restaPic'), function () {
-            restaPic.push({ id: $(this).attr('title'), url: $(this).attr('src') })
+            existing_pictures.push({ id: $(this).attr('title'), url: $(this).attr('src') })
         })
-        console.log(restaPic)
-        let restaNewPic = []
+
+        let new_pictures = []
         $.each($(this).closest('form').find('.newPic').children(), function () {
-            restaNewPic.push($(this).attr('src'))
+            new_pictures.push($(this).attr('src'))
         })
-        console.log(restaNewPic)
-        let restaOp = $(this).closest('form').find('.restaOp').val()
-        let restaCl = $(this).closest('form').find('.restaCl').val()
+
+        if (price == '$50-100' || price == '$101-150') price = 1
+        else if (price == '$151-200' || price == '$201-250') price = 2
+        else if (price == '$250') price = 3
+
         axios({
-            url: '/restaurant/individual/' + restaID,
+            url: '/restaurant/individual/' + restaurant_id,
             method: 'put',
             data: {
-                "name": restaName,
-                "street_address": restaAddress,
-                "district_id": restaDistID,
-                "description": restaDescri,
-                "logo": restaLogo,
-                "price": restaPrice,
-                "main_category": restaCate,
-                "telephone_number": restaPhone,
-                "social_media_URL": restaSocial,
-                "main_picture_URL": restaImg,
-                "website_URL": restaURL,
-                "latitude": 23.0,
-                "longitude": 113.6,
-                "monday": `${restaOp}-${restaCl}`,
-                "tuesday": `${restaOp}-${restaCl}`,
-                "wednesday": `${restaOp}-${restaCl}`,
-                "thursday": `${restaOp}-${restaCl}`,
-                "friday": `${restaOp}-${restaCl}`,
-                "saturday": `${restaOp}-${restaCl}`,
-                "sunday": `${restaOp}-${restaCl}`,
+                name,
+                street_address,
+                district_id,
+                description,
+                logo,
+                price,
+                main_category,
+                telephone_number,
+                social_media_URL,
+                main_picture_URL,
+                website_URL,
+                latitude,
+                longitude,
+                monday: `${opening_hours}-${closing_hours}`,
+                tuesday: `${opening_hours}-${closing_hours}`,
+                wednesday: `${opening_hours}-${closing_hours}`,
+                thursday: `${opening_hours}-${closing_hours}`,
+                friday: `${opening_hours}-${closing_hours}`,
+                saturday: `${opening_hours}-${closing_hours}`,
+                sunday: `${opening_hours}-${closing_hours}`,
             }
         })
             .then((res) => {
                 console.log(res.data)
+                //delete every category when update
+                return axios({
+                    url: '/restaurant/category/list/' + restaurant_id,
+                    method: 'get'
+                })
             })
-            .catch((error) => {
-                console.log(error);
-            })
-
-        //delete every category when update
-        axios({
-            url: '/restaurant/category/list/' + restaID,
-            method: 'get'
-        })
             .then((res) => {
                 console.log(res.data)
-                for (let cate of res.data) {
+                for (let category of res.data) {
                     axios({
-                        url: '/restaurant/category/' + cate.id,
+                        url: '/restaurant/category/' + category.id,
                         method: 'delete'
                     })
                         .then((res) => {
@@ -196,43 +198,35 @@ $(document).ready(function () {
                         })
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .then(() => {
+                //update category
+                return axios({
+                    url: '/restaurant/category',
+                    method: 'post',
+                    data: {
+                        category: main_category,
+                        restaurant_id
+                    }
+                })
             })
-
-        //update category
-        axios({
-            url: '/restaurant/category',
-            method: 'post',
-            data: {
-                "category": restaCate,
-                "restaurant_id": restaID
-            }
-        })
+            .then(() => {
+                //update old pictures
+                return axios({
+                    url: '/restaurant/picture/list/' + restaurant_id,
+                    method: 'get'
+                })
+            })
             .then((res) => {
                 console.log(res.data)
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-
-        //update old pictures
-        axios({
-            url: '/restaurant/picture/list/' + restaID,
-            method: 'get'
-        })
-            .then((res) => {
-                console.log(res.data)
-
-                for (let pic of res.data) {
-                    for (let picURL of restaPic) {
-                        if (picURL.id == pic.id) {
+                for (let original of res.data) {
+                    for (let update of existing_pictures) {
+                        if (update.id == original.id) {
                             axios({
-                                url: '/restaurant/picture/' + pic.id,
+                                url: '/restaurant/picture/' + original.id,
                                 method: 'put',
                                 data: {
-                                    "picture_URL": picURL.url,
-                                    "restaurant_id": restaID
+                                    picture_URL: update.url,
+                                    restaurant_id
                                 }
                             })
                                 .then((res) => {
@@ -245,106 +239,15 @@ $(document).ready(function () {
                     }
                 }
             })
-            .catch((error) => {
-                console.log(error);
-            })
-
-        //add new Pictures
-        for (let newPic of restaNewPic) {
-            axios({
-                url: '/restaurant/picture',
-                method: 'post',
-                data: {
-                    "picture_URL": newPic,
-                    "restaurant_id": restaID
-                }
-            })
-                .then((res) => {
-                    console.log(res.data)
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
-
-        location.reload()
-    })
-
-    // Add new restaurant + corresponding user can access it=
-    $('#newRestaSubmitBtn').click(function (e) {
-        e.preventDefault()
-        let restaName = $('#newRestaName').val()
-        let restaAddress = $('#newRestaAddress').val()
-        let restaDistID = parseInt($('#newRestaDist').val().match(/\d+/)) + 1
-        let restaDescri = $('#newRestaDescri').val()
-        let newLogo = $('#newLogo').next().attr('src')
-        let restaPrice = $('#newRestaPrice').val()
-        let restaPhone = $('#newRestaPhone').val()
-        let restaSocial = $('#newRestaSocial').val()
-        let restaURL = $('#newRestaURL').val()
-        let newImg = $('#newMainImg').next().attr('src')
-        let restaCate = $('#newRestaCate').val()
-        let restaPic = []
-        $('#newPic').children('img').each(function () {
-            restaPic.push(this.src)
-        })
-        console.log(restaPic)
-
-        let restaOp = $('#newRestaOp').val()
-        let restaCl = $('#newRestaCl').val()
-        //post new restaurant
-        axios({
-            url: '/restaurant/individual',
-            method: 'post',
-            data: {
-                "name": restaName,
-                "street_address": restaAddress,
-                "district_id": restaDistID,
-                "description": restaDescri,
-                "logo": newLogo,
-                "price": restaPrice,
-                "telephone_number": restaPhone,
-                "social_media_URL": restaSocial,
-                "main_picture_URL": newImg,
-                "main_category": restaCate,
-                "website_URL": restaURL,
-                "latitude": 19.3,
-                "longitude": 105.2,
-                "monday": `${restaOp}-${restaCl}`,
-                "tuesday": `${restaOp}-${restaCl}`,
-                "wednesday": `${restaOp}-${restaCl}`,
-                "thursday": `${restaOp}-${restaCl}`,
-                "friday": `${restaOp}-${restaCl}`,
-                "saturday": `${restaOp}-${restaCl}`,
-                "sunday": `${restaOp}-${restaCl}`,
-            }
-        })
-            .then((res) => {
-                console.log(res.data[0])
-                // allowing user access the new restaurant
-                axios({
-                    url: '/user/access',
-                    method: 'post',
-                    data: {
-                        "user_id": user_id,
-                        "restaurant_id": res.data[0].id
-                    }
-                })
-                    .then((res) => {
-                        console.log(res.data)
-                        location.reload();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
-                // post new pictures
-                for (let newPic of restaPic) {
+            .then(() => {
+                //add new Pictures
+                for (let picture_URL of new_pictures) {
                     axios({
                         url: '/restaurant/picture',
                         method: 'post',
                         data: {
-                            "picture_URL": newPic,
-                            "restaurant_id": res.data[0].id
+                            picture_URL,
+                            restaurant_id
                         }
                     })
                         .then((res) => {
@@ -354,21 +257,121 @@ $(document).ready(function () {
                             console.log(error);
                         })
                 }
+            })
+            .then(() => {
+                location.reload()
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    })
+
+    // Add new restaurant + corresponding user can access it=
+    $('#newRestaSubmitBtn').click(function (e) {
+        e.preventDefault()
+
+        let restaurant_id
+
+        let name = $('#newRestaName').val()
+        let street_address = $('#newRestaAddress').val()
+        let district_id = parseInt($('#newRestaDist').val().match(/\d+/)) + 1
+        let description = $('#newRestaDescri').val()
+        let logo = $('#newLogo').next().attr('src')
+        let price = $('#newRestaPrice').val()
+        let telephone_number = $('#newRestaPhone').val()
+        let social_media_URL = $('#newRestaSocial').val()
+        let website_URL = $('#newRestaURL').val()
+        let main_picture_URL = $('#newMainImg').next().attr('src')
+        let category = $('#newRestaCate').val()
+        let pictures = []
+        let latitude = parseFloat($('#newRestaLat').val())
+        let longitude = parseFloat($('#newRestaLng').val())
+        let opening_hours = $('#newRestaOp').val()
+        let closing_hours = $('#newRestaCl').val()
+
+        $('#newPic').children('img').each(function () {
+            pictures.push(this.src)
+        })
+        
+        if (price == '$50-100' || price == '$101-150') price = 1
+        else if (price == '$151-200' || price == '$201-250') price = 2
+        else if (price == '$250') price = 3
+
+        //post new restaurant
+        axios({
+            url: '/restaurant/individual',
+            method: 'post',
+            data: {
+                name,
+                street_address,
+                district_id,
+                description,
+                logo,
+                price,
+                telephone_number,
+                social_media_URL,
+                main_picture_URL,
+                website_URL,
+                latitude,
+                longitude,
+                monday: `${opening_hours}-${closing_hours}`,
+                tuesday: `${opening_hours}-${closing_hours}`,
+                wednesday: `${opening_hours}-${closing_hours}`,
+                thursday: `${opening_hours}-${closing_hours}`,
+                friday: `${opening_hours}-${closing_hours}`,
+                saturday: `${opening_hours}-${closing_hours}`,
+                sunday: `${opening_hours}-${closing_hours}`,
+            }
+        })
+            .then((res) => {
+                console.log(res.data[0])
+
+                restaurant_id = res.data[0].id
+
+                // allowing user access the new restaurant
+                return axios({
+                    url: '/user/access',
+                    method: 'post',
+                    data: {
+                        user_id,
+                        restaurant_id
+                    }
+                })
+            })
+            .then((res) => {
+                console.log(res.data)
+
+                // post new pictures
+                for (let picture_URL of pictures) {
+                    axios({
+                        url: '/restaurant/picture',
+                        method: 'post',
+                        data: {
+                            picture_URL,
+                            restaurant_id
+                        }
+                    })
+                        .then((res) => {
+                            console.log(res.data)
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+            })
+            .then(() => {
                 // post new category
-                axios({
+                return axios({
                     url: '/restaurant/category',
                     method: 'post',
                     data: {
-                        "category": restaCate,
-                        "restaurant_id": res.data[0].id
+                        category,
+                        restaurant_id
                     }
                 })
-                    .then((res) => {
-                        console.log(res.data)
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
+            })
+            .then((res) => {
+                console.log(res.data)
             })
             .catch((error) => {
                 console.log(error);
@@ -379,10 +382,10 @@ $(document).ready(function () {
     //Delete restaurant
     $('.btnRestaGroup button:last-child').click(function (e) {
         e.preventDefault()
-        let resta_id = parseInt($(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/))
-        console.log(resta_id)
+        let restaurant_id = parseInt($(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/))
+        console.log(restaurant_id)
         axios({
-            url: '/restaurant/individual/' + resta_id,
+            url: '/restaurant/individual/' + restaurant_id,
             method: 'delete'
         })
             .then((res) => {

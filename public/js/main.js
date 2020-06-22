@@ -90,7 +90,6 @@ $(document).ready(function () {
       method: 'get'
     })
       .then((res) => {
-        console.log('Got here')
         let categories = []
 
         for (let item of res.data) {
@@ -116,7 +115,6 @@ $(document).ready(function () {
       method: 'get'
     })
       .then((res) => {
-        console.log('Got here too')
         let districts = []
 
         for (let item of res.data) {

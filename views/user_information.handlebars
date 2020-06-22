@@ -110,12 +110,14 @@
                         </thead>
                         <tbody>
                             {{#each blogs}}
-                            <th scope="row">{{inc @index}}</th>
+                            <tr>
+                            <td scope="row">{{inc @index}}</td>
                             <td><a href='/blog/details/{{id}}'>{{title}}</a></td>
                             <td>{{categories}}</td>
                             <td>{{publisher}}</td>
                             <td><img class="img-responsive custom-area-xs" src={{main_picture_URL}} />
                             </td>
+                            </tr>
                             {{/each}}
                         </tbody>
                     </table>

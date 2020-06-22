@@ -4,7 +4,6 @@ $(document).ready(function () {
         $('.navbar-nav > li:eq(2)').addClass('active')
     }
 
-
     //delete exist blog
     $('.btnBlogGroup button:last-child').click(function (e) {
         e.preventDefault()
@@ -58,43 +57,41 @@ $(document).ready(function () {
                     }
                 }
             })
-            .catch((error) => {
-                console.log(error);
-            })
+            .then(() => {
+                // for each checked category item append them to db
+                $.each($('input[name="category"]:checked'), function (e) {
+                    axios({
+                        url: '/blog/category',
+                        method: 'post',
+                        data: {
+                            "category": $(this).val(),
+                            "blog_id": blog_ID
+                        }
+                    })
+                        .then((res) => {
+                            console.log(res.data)
 
-        // for each checked category item append them to db
-        $.each($('input[name="category"]:checked'), function (e) {
-            axios({
-                url: '/blog/category',
-                method: 'post',
-                data: {
-                    "category": $(this).val(),
-                    "blog_id": blog_ID
-                }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                })
             })
-                .then((res) => {
-                    console.log(res.data)
-
+            .then(() => {
+                //update blog details
+                return axios({
+                    url: '/blog/individual/' + blog_ID,
+                    method: 'put',
+                    data: {
+                        "title": title,
+                        "body": body,
+                        "user_id": user_id,
+                        "main_picture_URL": mainPic
+                    }
                 })
-                .catch((error) => {
-                    console.log(error);
-                })
-        })
-        //update blog details
-        axios({
-            url: '/blog/individual/' + blog_ID,
-            method: 'put',
-            data: {
-                "title": title,
-                "body": body,
-                "user_id": user_id,
-                "main_picture_URL": mainPic
-            }
-        })
+            })
             .then((res) => {
                 //for each pictures update their url
-                location.reload()
-
                 $.each($('.blogImgs'), function (e) {
                     let picID = parseInt($(this).find('.blogPic').attr('alt').match(/\d+/))
                     $(this).find('.blogPic').prev().change(function (e) {
@@ -116,6 +113,9 @@ $(document).ready(function () {
                             })
                     })
                 })
+            })
+            .then(() => {
+                location.reload()
             })
             .catch((error) => {
                 console.log(error);
@@ -163,6 +163,8 @@ $(document).ready(function () {
                             console.log(error);
                         })
                 })
+            })
+            .then(() => {
                 //post every new pictures
                 for (let pic of newPic) {
                     axios({
@@ -181,17 +183,10 @@ $(document).ready(function () {
                             console.log(error);
                         })
                 }
-
-
             })
             .catch((error) => {
                 console.log(error);
             })
-    })
-
-
-    $('#existBlogDeleteBtn').click(function (e) {
-        e.preventDefault()
     })
 
     //control add blog favourite button
@@ -199,8 +194,6 @@ $(document).ready(function () {
         let blog_id = window.location.href.split('/').splice(-1)[0]
 
         if (e.currentTarget.innerHTML.match('☆')) {
-            console.log(user_id)
-            console.log(blog_id)
             axios({
                 url: '/user/favourite/blog',
                 method: 'post',

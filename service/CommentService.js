@@ -60,15 +60,9 @@ class CommentService {
 
     // Adds a new comment
     async addComment(comment) {
-        await knex('comments')
+        let results = await knex('comments')
             .insert(comment)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("comments")
-            .where("title", comment.title)
-            .andWhere("body", comment.body)
+            .returning('*')
             .catch((err) => console.log(err))
             
         await this.getComment(results[0].id)
@@ -156,15 +150,9 @@ class CommentService {
 
     // Adds new like
     async addLike(like){
-        await knex('likes_dislikes')
+        let results = await knex('likes_dislikes')
             .insert(like)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("likes_dislikes")
-            .where("user_id", like.user_id)
-            .andWhere("comment_id", like.comment_id)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getLike(results[0].id)

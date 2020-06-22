@@ -68,14 +68,9 @@ class ReviewService {
 
     // Posts a review
     async addReview(review) {
-        await knex('reviews')
+        let results = await knex('reviews')
             .insert(review)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("reviews")
-            .where("title", review.title)
+            .returning('*')
             .catch((err) => console.log(err))
             
         await this.getReview(results[0].id)
@@ -140,15 +135,9 @@ class ReviewService {
 
     // Posts a picture
     async addPicture(picture) {
-        await knex('review_pictures')
+        let results = await knex('review_pictures')
             .insert(picture)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("review_pictures")
-            .where("picture_URL", picture.picture_URL)
-            .andWhere("review_id", picture.review_id)
+            .returning('*')
             .catch((err) => console.log(err))
             
         await this.getPicture(results[0].id)

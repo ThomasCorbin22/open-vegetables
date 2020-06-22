@@ -149,7 +149,7 @@ class RestaurantRouter {
             friday: req.body.friday,
             saturday: req.body.saturday,
             sunday: req.body.sunday,
-            modified: req.body.modified,
+            modified: true,
             date_modified: new Date()
         }
 

@@ -94,14 +94,9 @@ class BlogService {
 
     // Adds a specific blog post
     async addBlog(post) {
-        await knex('blogs')
+        let results = await knex('blogs')
             .insert(post)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("blogs")
-            .where("title", post.title)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getBlog(results[0].id)
@@ -193,15 +188,9 @@ class BlogService {
 
     // Adds a blog picture
     async addPicture(image) {
-        await knex('blog_pictures')
+        let results = await knex('blog_pictures')
             .insert(image)
-            .catch((err) => console.log(err))
-
-        let results = await knex
-            .select('id')
-            .from("blog_pictures")
-            .where("picture_URL", image.picture_URL)
-            .andWhere("blog_id", image.blog_id)
+            .returning('*')
             .catch((err) => console.log(err))
             
         await this.getPicture(results[0].id)
@@ -261,15 +250,9 @@ class BlogService {
 
     // Adds a blog category
     async addCategory(category) {
-        await knex('blog_categories')
+        let results = await knex('blog_categories')
             .insert(category)
-            .catch((err) => console.log(err))
-            
-        let results = await knex
-            .select('id')
-            .from("blog_categories")
-            .where("category", category.category)
-            .andWhere("blog_id", category.blog_id)
+            .returning('*')
             .catch((err) => console.log(err))
             
         await this.getCategory(results[0].id)

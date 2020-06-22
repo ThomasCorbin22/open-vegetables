@@ -39,14 +39,9 @@ class LocationService {
 
     // Adds a new area
     async addArea(area) {
-        await knex('areas')
+        this.area = await knex('areas')
             .insert(area)
-            .catch((err) => console.log(err))
-
-        this.area = await knex
-            .select('id')
-            .from("areas")
-            .where("area", area.area)
+            .returning('*')
             .catch((err) => console.log(err))
             
         await this.getArea(id)
@@ -114,14 +109,9 @@ class LocationService {
 
     // Adds new district
     async addDistrict(district){
-        await knex('districts')
+        this.district = await knex('districts')
             .insert(district)
-            .catch((err) => console.log(err))
-
-        this.district = await knex
-            .select('id')
-            .from("districts")
-            .where("district", district.district)
+            .returning('*')
             .catch((err) => console.log(err))
 
         await this.getDistrict(id)

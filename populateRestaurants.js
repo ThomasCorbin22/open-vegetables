@@ -25,7 +25,7 @@ function processData(input) {
     .on('data', async function (row) {
         // For each row, try the following operation
         // console.log('A row arrived: ', row);
-        knex.transaction(async (trx) => {
+        await knex.transaction(async (trx) => {
             try {
                 // Empty district_id variable
                 let district_id
@@ -48,27 +48,17 @@ function processData(input) {
                     let results_district = await trx
                         .select('id')
                         .from("districts")
-                        .where("district", row.district)
+                        .where("district", 'ilike', row.district)
                         .catch((err) => console.log(err))
 
-                    // console.log('row.district')
-                    // console.log(row.district)
-                    // console.log('results_district')
-                    // console.log(results_district)
-
-                    if (results_district.length == 1){
+                    if (results_district.length === 1){
                         district_id = results_district[0].id
                     }
                     // Insert district if it does not exist
-                    else if (results_district.length == 0){
-                        await trx('districts')
+                    else if (results_district.length === 0){
+                        results_district = await trx('districts')
                             .insert(district)
-                            .catch((err) => console.log(err))
-                                
-                        results_district = await trx
-                            .select('id')
-                            .from("districts")
-                            .where("district", row.district)
+                            .returning('*')
                             .catch((err) => console.log(err))
 
                         district_id = results_district[0].id
@@ -107,14 +97,9 @@ function processData(input) {
 
                     // Insert restaurant if it does not exist
                     if (results_restaurant.length == 0){
-                        await trx('restaurants')
+                        results_restaurant = await trx('restaurants')
                             .insert(restaurant)
-                            .catch((err) => console.log(err))
-        
-                        results_restaurant = await trx
-                            .select('id')
-                            .from("restaurants")
-                            .where("name", row.name)
+                            .returning('*')
                             .catch((err) => console.log(err))
         
                         let restaurant_id = results_restaurant[0].id

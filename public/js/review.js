@@ -10,26 +10,23 @@ $(document).ready(function () {
       .then((res) => {
         if (res.data !== 'Not Logged In') user_id = res.data.id
 
-        axios({
+        return axios({
           url: '/review/list/' + parseInt($('#restaLink').attr('href').match(/\d+/)),
           method: 'get'
         })
-          .then((res) => {
-            if (user_id) {
-              console.log(res.data)
-              console.log(user_id)
-              $('#createNewBtn').show()
-              for (let review of res.data) {
-                if (review.user_id == user_id) {
-                  $(`.userID${user_id}Edit`).show()
-                  $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
-                }
-              }
+      })
+      .then((res) => {
+        if (user_id) {
+          console.log(res.data)
+          console.log(user_id)
+          $('#createNewBtn').show()
+          for (let review of res.data) {
+            if (review.user_id == user_id) {
+              $(`.userID${user_id}Edit`).show()
+              $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
             }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
+          }
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -142,7 +139,7 @@ $(document).ready(function () {
               let picture_id = res.data[0].id
 
               // Update new review picture
-              axios({
+              return axios({
                 url: '/review/picture/' + picture_id,
                 method: 'put',
                 data: {
@@ -150,12 +147,9 @@ $(document).ready(function () {
                   "review_id": review_id
                 }
               })
-                .then((res) => {
-                  location.reload();
-                })
-                .catch((error) => {
-                  console.log(error);
-                })
+            })
+            .then(() => {
+              location.reload();
             })
             .catch((error) => {
               console.log(error);

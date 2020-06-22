@@ -11,7 +11,7 @@ class UserRouter {
         this.router = express.Router()
     }
 
-    route() {        
+    route() {
         // Deals with individual users
         this.router.get('/list', this.listUsers.bind(this));
         this.router.get('/search', this.searchUsers.bind(this));
@@ -126,6 +126,7 @@ class UserRouter {
             email: req.body.email,
             description: req.body.description,
             date_modified: new Date(),
+            modified: true,
             profile_picture_URL: req.body.profile_picture_URL
         }
 
@@ -378,86 +379,97 @@ class UserRouter {
 
     // Display's user information
     async displayInfo(req, res) {
-        let user = await this.userService.getUser(req.params.id)
-        let restaurants = await this.userService.listRestaurants(req.params.id)
-        let blogs = await this.userService.listBlogs(req.params.id)
-
-        let restaurant_list = []
-        let blog_list = []
-
-        for (let item of restaurants){
-            let restaurant = await this.restaurantService.getRestaurant(item.restaurant_id)
-            restaurant_list.push(restaurant[0])
+        if (req.isAuthenticated() && req.user.id == req.params.id) {
+            let user = await this.userService.getUser(req.params.id)
+            let restaurants = await this.userService.listRestaurants(req.params.id)
+            let blogs = await this.userService.listBlogs(req.params.id)
+    
+            let restaurant_list = []
+            let blog_list = []
+    
+            for (let item of restaurants) {
+                let restaurant = await this.restaurantService.getRestaurant(item.restaurant_id)
+                restaurant_list.push(restaurant[0])
+            }
+    
+            for (let item of blogs) {
+                let blog = await this.blogService.getBlog(item.blog_id)
+                let publisher = await this.userService.getUser(blog[0].user_id)
+    
+                blog[0].publisher = publisher[0].display_name
+                blog_list.push(blog[0])
+            }
+    
+            res.render('user_information', {
+                title: 'userInformation',
+                user: user[0],
+                restaurants: restaurant_list,
+                blogs: blog_list
+            })
         }
-
-        for (let item of blogs){
-            let blog = await this.blogService.getBlog(item.blog_id)
-            let publisher = await this.userService.getUser(blog[0].user_id)
-            
-            blog[0].publisher = publisher[0].display_name
-            blog_list.push(blog[0])
-        }
-
-        res.render('user_information', { 
-            title: 'userInformation', 
-            user: user[0], 
-            restaurants: restaurant_list,
-            blogs: blog_list
-        })
+        else res.send('You are not authorised')
     }
 
     // Display's user reviews
     async displayReviews(req, res) {
-        let user = await this.userService.getUser(req.params.id)
-
-        let reviews = await this.reviewService.getReview(req.params.id)
-        for (let review of reviews) {
-            let restaurant = await this.restaurantService.getRestaurant(review.restaurant_id)
-            review.restaurant = restaurant[0]
+        if (req.isAuthenticated() && req.user.id == req.params.id) {
+            let user = await this.userService.getUser(req.params.id)
+    
+            let reviews = await this.reviewService.getReview(req.params.id)
+            for (let review of reviews) {
+                let restaurant = await this.restaurantService.getRestaurant(review.restaurant_id)
+                review.restaurant = restaurant[0]
+            }
+            res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
         }
-        res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
+        else res.send('You are not authorised')
     }
 
     // Display's user blogs
     async displayBlogs(req, res) {
-        let user = await this.userService.getUser(req.params.id)
-        let userOwnBlogs = user[0].blog_access
-        console.log(userOwnBlogs)
-        let blogImg
-        let blogCate
-        for (let blog of userOwnBlogs) {
-            blogImg = await this.blogService.listPictures(blog.id)
-            blogCate = await this.blogService.listCategories(blog.id)
-            blog.blogImg = blogImg
-            blog.blogCate = blogCate
-            blog.date_created = getDate(blog.date_created)
-            blog.date_modified = getDate(blog.date_modified)
-        }
-        console.log(blogImg)
-        console.log(userOwnBlogs)
+        if (req.isAuthenticated() && req.user.id == req.params.id) {
+            let user = await this.userService.getUser(req.params.id)
+            let blogs = user[0].blog_access
+            let images
+            let categories
     
-        res.render('user_blogs', { title: 'userBlogs', blogs: userOwnBlogs, user: user[0] })
+            for (let blog of blogs) {
+                images = await this.blogService.listPictures(blog.id)
+                categories = await this.blogService.listCategories(blog.id)
+                blog.images = images
+                blog.categories = categories
+                blog.date_created = getDate(blog.date_created)
+                blog.date_modified = getDate(blog.date_modified)
+            }
+    
+            res.render('user_blogs', { title: 'userBlogs', blogs: blogs, user: user[0] })
+        }
+        else res.send('You are not authorised')
     }
 
     // Display's user favourite restaurants
     async displayRestaurants(req, res) {
-        let user = await this.userService.getUser(req.params.id)
-        let ownRestas = user[0].restaurant_access
-        for(let resta of ownRestas){
-            let district = await this.locationService.getDistrict(resta.district_id)
-            let restaPic = await this.restaurantService.listPictures(resta.id)
-            let restaCate = await this.restaurantService.listCategories(resta.id)
-            resta.district = district[0].district
-            resta.restaPic = restaPic[0].picture_URL
-            resta.restaCate = []
-            for (let item of restaCate){
-                resta.restaCate.push(item.category)
+        if (req.isAuthenticated() && req.user.id == req.params.id) {
+
+            let user = await this.userService.getUser(req.params.id)
+
+            let restaurants = user[0].restaurant_access
+            for (let restaurant of restaurants) {
+                let district = await this.locationService.getDistrict(restaurant.district_id)
+                let pictures = await this.restaurantService.listPictures(restaurant.id)
+                let categories = await this.restaurantService.listCategories(restaurant.id)
+
+                restaurant.district = district[0].district
+                restaurant.pictures = pictures[0].picture_URL
+                restaurant.categories = []
+
+                for (let item of categories) {
+                    restaurant.categories.push(item.category)
+                }
             }
-            
-            console.log(resta.restaCate)
+            res.render('user_restaurants', { title: 'userRestaurants', restaurants: restaurants, user: user[0] })
         }
-        console.log(ownRestas)
-        res.render('user_restaurants', { title: 'userRestaurants', ownRestas: ownRestas, user: user[0] })
+        else res.send('You are not authorised')
     }
 
     // Checks the security question
@@ -491,17 +503,20 @@ class UserRouter {
 
     // Updates  password
     updatePassword(req, res) {
-        let id = req.params.id
-        let original_password = req.body.original_password
-        let new_password = req.body.new_password
+        if (req.isAuthenticated()) {
+            let id = req.params.id
+            let original_password = req.body.original_password
+            let new_password = req.body.new_password
 
-        return this.userService.updatePassword(id, original_password, new_password)
-            .then((user) => {
-                res.send(user)
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            return this.userService.updatePassword(id, original_password, new_password)
+                .then((user) => {
+                    res.send(user)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        }
+        else res.send('You are not authorised')
     }
 
 

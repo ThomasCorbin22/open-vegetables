@@ -10,7 +10,7 @@
                     {{> create_newResta}}
 
                 </div>
-                {{#each ownRestas}}
+                {{#each restaurants}}
                 <div class='col-sm-2 my-2 mt-4'>
                     <button type="button" class=" btn btn-light h-100 btn-lg btn-block editBtn">
                         <span>Edit</span>
@@ -42,7 +42,7 @@
                                         </tr>
                                         <tr>
                                             <th>Categories: </th>
-                                            <th> {{restaCate}}</th>
+                                            <th> {{categories}}</th>
                                         </tr>
                                         <tr>
                                             <th>Contact Number: </th>
@@ -86,7 +86,7 @@
                                         </tr>
                                         <tr>
                                             <th>Pictures </th>
-                                            {{#each restaPic}}
+                                            {{#each pictures}}
                                             <th>
                                                 <img class=' mb-2 custom-area-xs' alt='restaPic{{id}}'
                                                     src={{picture_URL}}>

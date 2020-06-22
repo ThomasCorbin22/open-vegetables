@@ -79,7 +79,7 @@ class ReviewRouter {
             title: req.body.title,
             body: req.body.body,
             rating: req.body.rating,
-            modified: req.body.modified,
+            modified: true,
             user_id: req.body.user_id,
             restaurant_id: req.body.restaurant_id,
             date_modified: new Date()

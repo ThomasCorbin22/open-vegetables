@@ -171,16 +171,12 @@ $(document).ready(function () {
         })
             .then((res) => {
                 console.log(res.data)
+                //delete every category when update
+                return axios({
+                    url: '/restaurant/category/list/' + restaID,
+                    method: 'get'
+                })
             })
-            .catch((error) => {
-                console.log(error);
-            })
-
-        //delete every category when update
-        axios({
-            url: '/restaurant/category/list/' + restaID,
-            method: 'get'
-        })
             .then((res) => {
                 console.log(res.data)
                 for (let cate of res.data) {
@@ -196,31 +192,24 @@ $(document).ready(function () {
                         })
                 }
             })
-            .catch((error) => {
-                console.log(error);
+            .then(() => {
+                //update category
+                return axios({
+                    url: '/restaurant/category',
+                    method: 'post',
+                    data: {
+                        "category": restaCate,
+                        "restaurant_id": restaID
+                    }
+                })
             })
-
-        //update category
-        axios({
-            url: '/restaurant/category',
-            method: 'post',
-            data: {
-                "category": restaCate,
-                "restaurant_id": restaID
-            }
-        })
-            .then((res) => {
-                console.log(res.data)
+            .then(() => {
+                //update old pictures
+                return axios({
+                    url: '/restaurant/picture/list/' + restaID,
+                    method: 'get'
+                })
             })
-            .catch((error) => {
-                console.log(error);
-            })
-
-        //update old pictures
-        axios({
-            url: '/restaurant/picture/list/' + restaID,
-            method: 'get'
-        })
             .then((res) => {
                 console.log(res.data)
 
@@ -245,34 +234,39 @@ $(document).ready(function () {
                     }
                 }
             })
+            .then(() => {
+                //add new Pictures
+                for (let newPic of restaNewPic) {
+                    axios({
+                        url: '/restaurant/picture',
+                        method: 'post',
+                        data: {
+                            "picture_URL": newPic,
+                            "restaurant_id": restaID
+                        }
+                    })
+                        .then((res) => {
+                            console.log(res.data)
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+            })
+            .then(() => {
+                location.reload()
+            })
             .catch((error) => {
                 console.log(error);
             })
-
-        //add new Pictures
-        for (let newPic of restaNewPic) {
-            axios({
-                url: '/restaurant/picture',
-                method: 'post',
-                data: {
-                    "picture_URL": newPic,
-                    "restaurant_id": restaID
-                }
-            })
-                .then((res) => {
-                    console.log(res.data)
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
-
-        location.reload()
     })
 
     // Add new restaurant + corresponding user can access it=
     $('#newRestaSubmitBtn').click(function (e) {
         e.preventDefault()
+
+        let restaurant_id
+
         let restaName = $('#newRestaName').val()
         let restaAddress = $('#newRestaAddress').val()
         let restaDistID = parseInt($('#newRestaDist').val().match(/\d+/)) + 1
@@ -321,22 +315,22 @@ $(document).ready(function () {
         })
             .then((res) => {
                 console.log(res.data[0])
+
+                restaurant_id = res.data[0].id
+
                 // allowing user access the new restaurant
-                axios({
+                return axios({
                     url: '/user/access',
                     method: 'post',
                     data: {
-                        "user_id": user_id,
-                        "restaurant_id": res.data[0].id
+                        user_id,
+                        restaurant_id
                     }
                 })
-                    .then((res) => {
-                        console.log(res.data)
-                        location.reload();
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
+            })
+            .then((res) => {
+                console.log(res.data)
+
                 // post new pictures
                 for (let newPic of restaPic) {
                     axios({
@@ -344,7 +338,7 @@ $(document).ready(function () {
                         method: 'post',
                         data: {
                             "picture_URL": newPic,
-                            "restaurant_id": res.data[0].id
+                            restaurant_id
                         }
                     })
                         .then((res) => {
@@ -354,21 +348,20 @@ $(document).ready(function () {
                             console.log(error);
                         })
                 }
+            })
+            .then(() => {
                 // post new category
-                axios({
+                return axios({
                     url: '/restaurant/category',
                     method: 'post',
                     data: {
                         "category": restaCate,
-                        "restaurant_id": res.data[0].id
+                        restaurant_id
                     }
                 })
-                    .then((res) => {
-                        console.log(res.data)
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
+            })
+            .then((res) => {
+                console.log(res.data)
             })
             .catch((error) => {
                 console.log(error);

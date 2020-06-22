@@ -86,11 +86,13 @@
                         </thead>
                         <tbody>
                             {{#each restaurants}}
-                            <td scope="row">{{inc @index}}</td>
-                            <td><a href='/restaurant/details/{{id}}'>{{name}}</a></td>
-                            <td>{{categories}}</td>
-                            <td>{{street_address}}<br>{{district}}<br>{{area}}</td>
-                            <td><img class="img-responsive custom-area-xs" src={{main_picture_URL}} /></td>
+                            <tr>
+                                <td scope="row">{{inc @index}}</td>
+                                <td><a href='/restaurant/details/{{id}}'>{{name}}</a></td>
+                                <td>{{categories}}</td>
+                                <td>{{street_address}}<br>{{district}}<br>{{area}}</td>
+                                <td><img class="img-responsive custom-area-xs" src={{main_picture_URL}} /></td>
+                            </tr>
                             {{/each}}
                         </tbody>
                     </table>

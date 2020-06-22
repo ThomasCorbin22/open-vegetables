@@ -449,7 +449,7 @@ class UserRouter {
             let restaCate = await this.restaurantService.listCategories(resta.id)
             resta.district = district[0]
             resta.restaPic = restaPic
-            resta.restaCate = restaCate
+            resta.restaCate = restaCate[0]
         }
         console.log(ownRestas)
         res.render('user_restaurants', { title: 'userRestaurants', ownRestas: ownRestas, user: user[0] })

@@ -447,9 +447,14 @@ class UserRouter {
             let district = await this.locationService.getDistrict(resta.district_id)
             let restaPic = await this.restaurantService.listPictures(resta.id)
             let restaCate = await this.restaurantService.listCategories(resta.id)
-            resta.district = district[0]
-            resta.restaPic = restaPic
-            resta.restaCate = restaCate[0]
+            resta.district = district[0].district
+            resta.restaPic = restaPic[0].picture_URL
+            resta.restaCate = []
+            for (let item of restaCate){
+                resta.restaCate.push(item.category)
+            }
+            
+            console.log(resta.restaCate)
         }
         console.log(ownRestas)
         res.render('user_restaurants', { title: 'userRestaurants', ownRestas: ownRestas, user: user[0] })

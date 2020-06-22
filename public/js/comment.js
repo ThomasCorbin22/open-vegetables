@@ -108,52 +108,56 @@ $(document).ready(function () {
   })
 
   // Check for existing like
-  axios({
-    url: '/auth/login',
-    method: 'get'
-  })
-    .then((res) => {
-      if ($('title').text().match('blog-details') && user_id) {
-        let url = window.location.href
-        let blog_id = url.split('/').splice(-1)[0]
+  if ($('title').text().match('blog-details')) {
+    // Ensure that you have the user_id if the main axios request has not yet completed
+    axios({
+      url: '/auth/login',
+      method: 'get'
+    })
+      .then((res) => {
+        if (res.data.id) {
+          user_id = res.data.id
+          let url = window.location.href
+          let blog_id = url.split('/').splice(-1)[0]
 
-        // Get list of comments for blog
-        return axios({
-          url: '/comment/list/' + blog_id,
-          method: 'get',
-        })
-      }
-    })
-    .then((res) => {
-      console.log(res.data)
-      // Check the likes for every comment, if the user has liked something than change the color of the like
-      for (let comment of res.data) {
-        axios({
-          url: '/comment/like/user/' + user_id + '/' + comment.id,
-          method: 'get',
-        })
-          .then((res) => {
-            console.log(res.data)
-            // Update the color of the like buttons depending on if the user has liked them
-            if (res.data[0]) {
-              if (res.data[0].like === true) {
-                $(`#like-${res.data[0].comment_id}`).attr('fill', 'blue')
-                $(`#dislike-${res.data[0].comment_id}`).attr('fill', 'currentColor')
-              }
-              else if (res.data[0].like === false) {
-                $(`#dislike-${res.data[0].comment_id}`).attr('fill', 'red')
-                $(`#dlike-${res.data[0].comment_id}`).attr('fill', 'currentColor')
-              }
-            }
+          // Get list of comments for blog
+          return axios({
+            url: '/comment/list/' + blog_id,
+            method: 'get',
           })
-          .catch((error) => {
-            console.log(error);
+        }
+      })
+      .then((res) => {
+        console.log(res.data)
+        // Check the likes for every comment, if the user has liked something than change the color of the like
+        for (let comment of res.data) {
+          axios({
+            url: '/comment/like/user/' + user_id + '/' + comment.id,
+            method: 'get',
           })
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    })
+            .then((res) => {
+              console.log(res.data)
+              // Update the color of the like buttons depending on if the user has liked them
+              if (res.data[0]) {
+                if (res.data[0].like === true) {
+                  $(`#like-${res.data[0].comment_id}`).attr('fill', 'blue')
+                  $(`#dislike-${res.data[0].comment_id}`).attr('fill', 'currentColor')
+                }
+                else if (res.data[0].like === false) {
+                  $(`#dislike-${res.data[0].comment_id}`).attr('fill', 'red')
+                  $(`#dlike-${res.data[0].comment_id}`).attr('fill', 'currentColor')
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
 
   // Alter whether or not a comment has been liked by a user
   $('.like').click((e) => {

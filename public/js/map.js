@@ -29,10 +29,6 @@ $(document).ready(function () {
         $('.navbar-nav > li:eq(3)').addClass('active')
     }
 
-    if ($('title').text().match('map')) {
-        initMap()
-    }
-
     $('.map-link').click((e) => {
         e.preventDefault()
 

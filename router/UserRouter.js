@@ -454,13 +454,14 @@ class UserRouter {
             let user = await this.userService.getUser(req.params.id)
 
             let restaurants = user[0].restaurant_access
+
             for (let restaurant of restaurants) {
                 let district = await this.locationService.getDistrict(restaurant.district_id)
                 let pictures = await this.restaurantService.listPictures(restaurant.id)
                 let categories = await this.restaurantService.listCategories(restaurant.id)
 
                 restaurant.district = district[0].district
-                restaurant.pictures = pictures[0].picture_URL
+                if (pictures[0]) restaurant.pictures = pictures[0].picture_URL
                 restaurant.categories = []
 
                 for (let item of categories) {

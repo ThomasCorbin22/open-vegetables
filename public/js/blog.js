@@ -28,14 +28,12 @@ $(document).ready(function () {
         e.preventDefault()
         let title = $(this).closest('form').find('.blogTitle').val()
         let body = $(this).closest('form').find(".blogBody").val()
-        let mainPic = $(this).closest('form').find('.blogMainPic').attr('src')
-        let pic = $(this).closest('form').find('.blogPic').attr('src')
-        let blog_ID = parseInt($(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/))
-        console.log(title, body, pic, blog_ID)
+        let main_picture_URL = $(this).closest('form').find('.blogMainPic').attr('src')
+        let blog_id = parseInt($(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/))
 
         //list all cate belong to that blog
         axios({
-            url: '/blog/category/list/' + blog_ID,
+            url: '/blog/category/list/' + blog_id,
             method: 'get'
         })
             .then((res) => {
@@ -43,9 +41,9 @@ $(document).ready(function () {
 
                 //if checkbox is modified, delete the original cate in db
                 if ($('input[name="category"]:checked').val()) {
-                    for (let blogCate of res.data) {
+                    for (let category of res.data) {
                         axios({
-                            url: '/blog/category/' + blogCate.id,
+                            url: '/blog/category/' + category.id,
                             method: 'delete'
                         })
                             .then((res) => {
@@ -64,8 +62,8 @@ $(document).ready(function () {
                         url: '/blog/category',
                         method: 'post',
                         data: {
-                            "category": $(this).val(),
-                            "blog_id": blog_ID
+                            category: $(this).val(),
+                            blog_id
                         }
                     })
                         .then((res) => {
@@ -80,33 +78,32 @@ $(document).ready(function () {
             .then(() => {
                 //update blog details
                 return axios({
-                    url: '/blog/individual/' + blog_ID,
+                    url: '/blog/individual/' + blog_id,
                     method: 'put',
                     data: {
-                        "title": title,
-                        "body": body,
-                        "user_id": user_id,
-                        "main_picture_URL": mainPic
+                        title,
+                        body,
+                        user_id,
+                        main_picture_URL
                     }
                 })
             })
             .then((res) => {
                 //for each pictures update their url
                 $.each($('.blogImgs'), function (e) {
-                    let picID = parseInt($(this).find('.blogPic').attr('alt').match(/\d+/))
+                    let picture_id = parseInt($(this).find('.blogPic').attr('alt').match(/\d+/))
                     $(this).find('.blogPic').prev().change(function (e) {
 
                         axios({
-                            url: '/blog/picture/' + picID,
+                            url: '/blog/picture/' + picture_id,
                             method: 'put',
                             data: {
-                                "picture_URL": $(this).attr('src'),
-                                "blog_id": blog_ID
+                                picture_URL: $(this).attr('src'),
+                                blog_id
                             }
                         })
                             .then((res) => {
                                 console.log(res.data)
-                                location.reload()
                             })
                             .catch((error) => {
                                 console.log(error);
@@ -126,12 +123,13 @@ $(document).ready(function () {
     //add new blog + categories + images
     $('#newBlogSubmitBtn').click(function (e) {
         e.preventDefault()
+        let blog_id
         let title = $('#newBlogTitle').val()
         let body = $('#newBlogBody').val()
-        let mainPic = $('#newMainImg').next().attr('src')
-        let newPic = []
+        let main_picture_URL = $('#newMainImg').next().attr('src')
+        let new_pictures = []
         $('#newPic').children('img').each(function () {
-            newPic.push(this.src)
+            new_pictures.push(this.src)
         })
         axios({
             url: '/blog/individual',
@@ -140,19 +138,20 @@ $(document).ready(function () {
                 title,
                 body,
                 user_id,
-                "main_picture_URL": mainPic
+                main_picture_URL
             }
         })
             .then((res) => {
                 console.log(res.data)
+                blog_id = res.data[0].id
                 // post new category
                 $.each($("input[name='category']:checked"), function () {
                     axios({
                         url: '/blog/category',
                         method: 'post',
                         data: {
-                            "category": $(this).val(),
-                            "blog_id": res.data[0].id
+                            category: $(this).val(),
+                            blog_id
                         }
                     })
                         .then((res) => {
@@ -166,23 +165,25 @@ $(document).ready(function () {
             })
             .then(() => {
                 //post every new pictures
-                for (let pic of newPic) {
+                for (let picture_URL of new_pictures) {
                     axios({
                         url: '/blog/picture',
                         method: 'post',
                         data: {
-                            "picture_URL": pic,
-                            "blog_id": res.data[0].id
+                            picture_URL,
+                            blog_id
                         }
                     })
                         .then((res) => {
                             console.log(res.data)
-                            location.reload();
                         })
                         .catch((error) => {
                             console.log(error);
                         })
                 }
+            })
+            .then(() => {
+                location.reload();
             })
             .catch((error) => {
                 console.log(error);

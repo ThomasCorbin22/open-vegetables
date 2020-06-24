@@ -340,6 +340,7 @@ class BlogRouter {
                 result.body = result.body.substring(0, 250) + '...'
             }
             result.publisher = await this.userService.getUser(result.user_id)
+            console.log(result)
             result.publisher = result.publisher[0].display_name
         }
     

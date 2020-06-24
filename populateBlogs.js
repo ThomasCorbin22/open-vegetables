@@ -38,7 +38,7 @@ function processData(input) {
                     .where("email", email)
                     .catch((err) => console.log(err))
                 
-                if (results_user.length == 0) {
+                if (results_user.length === 0) {
                     // Specify user
                     let user = {
                         first_name,
@@ -54,7 +54,7 @@ function processData(input) {
                     // Insert user
                     results_user = await trx('users')
                         .insert(user)
-                        .returning('id')
+                        .returning('*')
                         .catch((err) => console.log(err))
                 }
 
@@ -68,7 +68,7 @@ function processData(input) {
                     .catch((err) => console.log(err))
 
                 // Insert blog if it does not exist
-                if (results_blog.length == 0){
+                if (results_blog.length === 0){
                     let body = row.body.split('\\n')
 
                     for (let i = 0; i < body.length; i++){

@@ -1,6 +1,6 @@
 <div class='container-fluid'>
     <div class='card p-0'>
-        <h4 class='card-header'><a id='restaLink' href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
+        <h4 class='card-header'><a id='restaurant-link' href='/restaurant/details/{{restaurant.id}}'>{{restaurant.name}}</a>
         </h4>
         <div class='row p-3'>
             <div class='col-sm-8'>
@@ -79,17 +79,17 @@
                 <div class='row'>
                     {{#if user_id}}
                     <div class='col-sm-12'>
-                        <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3">
+                        <button type="button" id='create-new-btn' class="btn btn-light btn-lg btn-block mb-3">
                             <span>Create a new review</span>
                         </button>
-                        {{>create_newReview}}
+                        {{>create_new_review}}
                     </div>
                     {{/if}}
                 </div>
                 {{#each reviews}}
                 <div class="row">
-                    <div class='col-sm-2 userID{{user_id}}Edit pt-4' style='display:none'>
-                        <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block">
+                    <div class='col-sm-2 user-id-{{user_id}}-edit pt-4' style='display:none'>
+                        <button type="button" class="edit-btn btn btn-light h-100 btn-lg btn-block">
                             <span>Edit</span>
                         </button>
                     </div>
@@ -97,10 +97,10 @@
                         <div class='card'>
                             <div class='row'>
                                 <div class='col-sm-12'>
-                                    {{>update_existReview}}
+                                    {{>update_exist_review}}
                                 </div>
                             </div>
-                            <div id='review-{{id}}' class='row existContent'>
+                            <div id='review-{{id}}' class='row exist-content'>
                                 <div class='col-sm-2'>
                                     <div class='card-body'>
                                         <h5 class='card-title'>{{userName}}</h5>

@@ -2,7 +2,6 @@ exports.up = function (knex, Promise) {
     return knex.schema.createTable('reviews', (table) => {
         table.increments();
         table.string("title").notNullable();
-        table.unique("title");
         table.float("rating").notNullable();
         table.text("body").notNullable();
         table.boolean("modified");

@@ -13,18 +13,18 @@ $(document).ready(function () {
         }
     }
 
-    $('#userImageUpload').on('change', function (e) {
-        renderImg(e, $('#userImage'))
+    $('#user-img-upload').on('change', function (e) {
+        renderImg(e, $('#user-img'))
     })
-    $('.uploadImg').on('change', function (e) {
+    $('.upload-img').on('change', function (e) {
         renderImg(e, $(this).next())
     })
 
     // Update password
-    $('#updatePasswordbtn').click((e) => {
+    $('#update-password-btn').click((e) => {
         e.preventDefault()
-        let original_password = $('#oldPassword').val()
-        let new_password = $('#newPassword').val()
+        let original_password = $('#old-password').val()
+        let new_password = $('#new-password').val()
 
         axios({
             url: `/user/password/${user_id}`,
@@ -45,14 +45,14 @@ $(document).ready(function () {
     })
 
     // Update users information via put request
-    $('#updateuserbtn').click((e) => {
+    $('#update-user-btn').click((e) => {
         e.preventDefault()
-        let firstName = $('#nameFirst').val()
-        let lastName = $('#nameLast').val()
+        let firstName = $('#name-first').val()
+        let lastName = $('#name-last').val()
         let email = $('#email').val()
-        let displayName = $('#nameDisplay').val()
+        let displayName = $('#name-display').val()
         let description = $('#description').val()
-        let profile_picture_URL = $('#userImage').attr('src')
+        let profile_picture_URL = $('#user-img').attr('src')
         console.log(user_id)
 
         axios({
@@ -69,12 +69,12 @@ $(document).ready(function () {
         })
             .then((res) => {
                 console.log(res)
-                $('#nameFirst').attr('placeholder', first_name)
-                $('#nameLast').attr('placeholder', last_name)
+                $('#name-first').attr('placeholder', first_name)
+                $('#name-last').attr('placeholder', last_name)
                 $('#email').attr('placeholder', email)
-                $('#nameDisplay').attr('placeholder', display_name)
+                $('#name-display').attr('placeholder', display_name)
                 $('#description').attr('placeholder', description)
-                $('#userImage').attr('src', profile_picture_URL)
+                $('#user-img').attr('src', profile_picture_URL)
             })
 
             .catch((error) => {
@@ -82,10 +82,10 @@ $(document).ready(function () {
             })
     })
 
-    $('#submitSecurity').click((e) => {
+    $('#submit-security').click((e) => {
         e.preventDefault()
-        let email = $('#securityEmail').val()
-        let answer = $('#securityAns').val()
+        let email = $('#security-email').val()
+        let answer = $('#security-answer').val()
 
         axios({
             url: `/user/security`,
@@ -99,8 +99,8 @@ $(document).ready(function () {
                 if (typeof res.data == 'object') {
                     console.log(res.data)
                     user_answer = res.data
-                    $('#securityPage').hide()
-                    $('#resetPwdPage').show()
+                    $('#security-page').hide()
+                    $('#reset-password-page').show()
                 }
             })
             .catch((error) => {
@@ -108,10 +108,10 @@ $(document).ready(function () {
             })
     })
 
-    $('#submitNewPwd').click((e) => {
+    $('#submit-new-password').click((e) => {
         e.preventDefault()
-        let password_01 = $('#resetPwd').val()
-        let password_02 = $('#resetPwd2').val()
+        let password_01 = $('#reset-password').val()
+        let password_02 = $('#reset-password-2').val()
 
         console.log(user_answer)
 
@@ -145,10 +145,10 @@ $(document).ready(function () {
                 })
         }
         else if (password_01 !== password_02) {
-            $('#resetPwdPage').append('<p>The passwords do not match.</p>')
+            $('#reset-password-page').append('<p>The passwords do not match.</p>')
         }
         else if (password_01 === null && password_02 === null) {
-            $('#resetPwdPage').append('<p>You need to put entries in both fields.</p>')
+            $('#reset-password-page').append('<p>You need to put entries in both fields.</p>')
         }
     })
 })

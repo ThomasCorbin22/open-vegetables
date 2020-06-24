@@ -1,11 +1,11 @@
 <div class='container-fluid'>
     <div class='card p-0'>
-        <h4 class='card-header'><a id='blogLink' href='/blogs/details/{{blog.id}}'>{{blog.title}}</a></h4>
+        <h4 class='card-header'><a id='blog-link' href='/blogs/details/{{blog.id}}'>{{blog.title}}</a></h4>
         <div class='row'>
             <div class='col-sm-2'>
                 <div class='card-body'>
-                    <h5 class='card-title'>{{blog.userName}}</h5>
-                    <img class='custom-area-xs mb-3 rounded' src={{blog.userImage}}>
+                    <h5 class='card-title'>{{blog.display_name}}</h5>
+                    <img class='custom-area-xs mb-3 rounded' src={{blog.user_image}}>
                     {{#if user_id}}
                     {{#if blog.favourite}}
                     <p id='favourite-{{blog.favourite}}' class='card-title add-favourite-blog'>★ Favourite Blog</p>
@@ -22,10 +22,16 @@
                     {{#if modified}}
                     <h7 class='card-subtitle text-muted'>Edited: {{blog.date_modified}}</h7>
                     {{/if}}
-                    <p class='card-text'>{{blog.body}} </p>
-                    {{#each blog.pictures}}
-                    <img class='custom-area-sm p-1' src={{this}}>
+                    {{#each blog.body}}
+                        {{#if @first}}
+                        <p class='card-text'><b>{{this}}</b></p>
+                        {{else}}
+                        <p class='card-text'>{{this}}</p>
+                        {{/if}}
                     {{/each}}
+                    {{#if main_picture_url}}
+                    <img class='card-img custom-area-sm p-1 rounded' src={{blog.main_picture_url}}>
+                    {{/if}}
                     {{#if pictures.[0]}}
                     <img class='card-img custom-area-sm p-1 rounded' src={{pictures.[0]}}>
                     {{/if}}
@@ -50,18 +56,18 @@
             <div class='row'>
                 {{#if user_id}}
                 <div class='col-sm-12'>
-                    <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3"
+                    <button type="button" id='create-new-btn' class="btn btn-light btn-lg btn-block mb-3"
                         style='display:none'>
                         <span>Create a new comment</span>
                     </button>
-                    {{>create_newComment}}
+                    {{>create_new_comment}}
                 </div>
                 {{/if}}
             </div>
             {{#each comments}}
             <div class='row'>
-                <div class='col-sm-2 userID{{user_id}}Edit pt-4' style='display:none'>
-                    <button type="button" class="editBtn btn btn-light h-100 btn-lg btn-block ">
+                <div class='col-sm-2 user-id-{{user_id}}-edit pt-4' style='display:none'>
+                    <button type="button" class="edit-btn btn btn-light h-100 btn-lg btn-block ">
                         <span>Edit</span>
                     </button>
                 </div>
@@ -69,14 +75,14 @@
                     <div class='card custom-height overflow-auto'>
                         <div class='row'>
                             <div class='col-sm-12'>
-                                {{>update_existComment}}
+                                {{>update_exist_comment}}
                             </div>
                         </div>
-                        <div id='comment-{{id}}' class='row existContent'>
+                        <div id='comment-{{id}}' class='row exist-content'>
                             <div class='col-sm-3 '>
                                 <div class='card-body'>
-                                    <h5 class='card-title'>{{userName}}</h5>
-                                    <img class='custom-area-xs rounded' src={{userImage}}>
+                                    <h5 class='card-title'>{{display_name}}</h5>
+                                    <img class='custom-area-xs rounded' src={{user_image}}>
                                 </div>
                             </div>
                             <div class='col-sm-9'>

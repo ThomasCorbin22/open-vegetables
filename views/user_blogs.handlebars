@@ -4,30 +4,30 @@
             {{> user_nav}}
             <div class='row'>
                 <div class='col-sm-12'>
-                    <button type="button" id='createNewBtn' class="btn btn-light btn-lg btn-block mb-3">
+                    <button type="button" id='create-new-btn' class="btn btn-light btn-lg btn-block mb-3">
                         <span>Create a new blog</span>
                     </button>
 
-                    {{> create_newBlog}}
+                    {{> create_new_blog}}
                 </div>
                 {{#each blogs}}
                 <div class='col-sm-2 my-2 mt-4'>
-                    <button type="button" class=" btn btn-light h-100 btn-lg btn-block editBtn">
+                    <button type="button" class=" btn btn-light h-100 btn-lg btn-block edit-btn">
                         <span>Edit</span>
                     </button>
                 </div>
                 <div class='col-sm-10'>
 
-                    {{> update_existBlog}}
+                    {{> update_exist_blog}}
 
-                    <div class='card p-0 existContent'>
-                        <a class='blogLink' href='/blog/details/{{id}}'>
+                    <div class='card p-0 exist-content'>
+                        <a class='blog-link' href='/blog/details/{{id}}'>
                             <h2 class='card-header'> {{title}}</h2>
                         </a>
                         <div class='card-body'>
                             {{#each categories}}
-                            <p class='blogCateID' style='display:none'>{{id}}</p>
-                            <h7 class='card-subtitle text-muted blogCate'>{{category}}</h7>
+                            <p class='blog-category-id' style='display:none'>{{id}}</p>
+                            <h7 class='card-subtitle text-muted blog-category'>{{category}}</h7>
                             {{/each}}
                             <br>
                             <h7 class='card-subtitle text-muted'>{{date_created}} </h7>
@@ -39,7 +39,7 @@
                             <p class='card-text'>{{body}}</p>
 
                             {{#each images}}
-                            <img class='card-img custom-area-sm blogImg m-2' src={{picture_URL}}>
+                            <img class='card-img custom-area-sm blog-img m-2' src={{picture_URL}}>
                             {{/each }}
                         </div>
                     </div>

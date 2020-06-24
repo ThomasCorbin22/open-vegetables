@@ -1,0 +1,44 @@
+<form id='create-new' style="display:none">
+    <div class="form-group">
+        <label for="new-blog-title">Title</label>
+        <input type="text" class="form-control" id="new-blog-title" name='title' placeholder="Enter Title">
+    </div>
+    <div class="form-group">
+        <label for="new-blog-categories">Categories</label>
+        <div class='form-control' id='new-categories'>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input blog-categories" type="checkbox" name='category' value="Sustainability">
+                <label class="form-check-label">Sustainability</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input blog-categories" type="checkbox" name='category' value="News">
+                <label class="form-check-label">News</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input blog-categories" type="checkbox" name='category' value="Opinion">
+                <label class="form-check-label">Opinion</label>
+            </div>
+        </div>
+    </div>
+    <div class='form-group'>
+        <label for='new-blog-body'>Body</label>
+        <textarea name='body' class='form-control ' rows='3' id='new-blog-body'></textarea>
+    </div>
+    <div class='form-group'>
+        <div class='row'>
+            <div class='mx-3 col-sm-4'>
+                <label class="custom-file-label" for="new-main-img">Main image </label>
+                <input type="file" class='custom-file-input uploadImg' id="new-main-img" name='picture_URL'>
+                <img class='custom-area-sm my-2' src='/pictures/image.png'>
+            </div>
+            <div class=' mx-3 col-sm-4'>
+            <label class="custom-file-label" for="new-picture"> More Pictures</label>
+            <input type="file" class='custom-file-input upload-img-more' name='picture_URL'>
+            <div id='new-picture'></div>
+        </div>
+        </div>
+    </div>
+    <div class='form-group'>
+        <button type="submit" id='new-blog-submit-btn' class="btn btn-primary">Submit</button>
+    </div>
+</form>

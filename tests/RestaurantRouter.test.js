@@ -1,5 +1,11 @@
 const RestaurantRouter = require('../router/RestaurantRouter')
 
+// Require router services
+const UserService = require('../service/UserService');
+const RestaurantService = require('../service/RestaurantService');
+const ReviewService = require('../service/ReviewService');
+const LocationService = require('../service/LocationService');
+
 // Update with your config settings.
 require('dotenv').config();
 
@@ -13,6 +19,10 @@ const knex = require('knex')({
 });
 
 let restaurantService
+let reviewService
+let userService
+let locationService
+
 let restaurantRouter
 
 let request
@@ -345,6 +355,74 @@ describe('RestaurantRouter testing with restaurantservice', () => {
         return restaurantRouter.deleteCategory(request, response)
             .then(() => {
                 expect(restaurantService.deleteCategory).toHaveBeenCalledWith(1);
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('restaurantRouter should call displaySingle in response to a GET request', () => {
+        expect.assertions(6);
+
+        request = {
+            params: {
+                id: 1
+            },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
+        }
+
+        userService = new UserService()
+        locationService = new LocationService()
+        restaurantService = new RestaurantService()
+        reviewService = new ReviewService()
+
+        const listRestaurantsCalled = jest.spyOn(userService, 'listRestaurants')
+        const getRestaurantCalled = jest.spyOn(restaurantService, 'getRestaurant')
+        const listReviewsCalled = jest.spyOn(reviewService, 'listReviews')
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+
+        restaurantRouter = new RestaurantRouter(restaurantService, reviewService, userService, locationService)
+
+        return restaurantRouter.displaySingle(request, response)
+            .then(() => {
+                expect(userService.listRestaurants).toHaveBeenCalledWith(request.params.id);
+                expect(listRestaurantsCalled).toHaveBeenCalled()
+                expect(getRestaurantCalled).toHaveBeenCalled()
+                expect(listReviewsCalled).toHaveBeenCalled()
+                expect(getUserCalled).toHaveBeenCalled()
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('restaurantRouter should call displayAll in response to a GET request', () => {
+        expect.assertions(2);
+
+        request = {
+            params: {
+                id: 1,
+                area: 'all',
+                filter: 'alpha',
+                direction: 'descending'
+            },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true),
+            query: {
+                page: 1
+            }
+        }
+
+        restaurantService = new RestaurantService()
+
+        const searchRestaurantsCalled = jest.spyOn(restaurantService, 'searchRestaurants')
+
+        restaurantRouter = new RestaurantRouter(restaurantService, reviewService, userService, locationService)
+
+        return restaurantRouter.displayAll(request, response)
+            .then(() => {
+                expect(searchRestaurantsCalled).toHaveBeenCalled()
                 expect(response.send).toHaveBeenCalled()
             })
     })

@@ -41,7 +41,7 @@ class UserRouter {
         this.router.put('/favourite/blog/:id', this.putBlog.bind(this));
         this.router.delete('/favourite/blog/:id', this.deleteBlog.bind(this));
 
-        // Deals with user favourite blog posts
+        // Deals with user posted information
         this.router.get('/info/:id', this.displayInfo.bind(this));
         this.router.get('/reviews/:id', this.displayReviews.bind(this));
         this.router.get('/blogs/:id', this.displayBlogs.bind(this));
@@ -401,7 +401,7 @@ class UserRouter {
             }
     
             res.render('user_information', {
-                title: 'userInformation',
+                title: 'user-information',
                 user: user[0],
                 restaurants: restaurant_list,
                 blogs: blog_list
@@ -415,12 +415,12 @@ class UserRouter {
         if (req.isAuthenticated() && req.user.id == req.params.id) {
             let user = await this.userService.getUser(req.params.id)
     
-            let reviews = await this.reviewService.getReview(req.params.id)
+            let reviews = await this.reviewService.listUserReviews(req.params.id)
             for (let review of reviews) {
                 let restaurant = await this.restaurantService.getRestaurant(review.restaurant_id)
                 review.restaurant = restaurant[0]
             }
-            res.render('user_reviews', { title: 'userReviews', reviews: reviews, user: user[0] })
+            res.render('user_reviews', { title: 'user-reviews', reviews: reviews, user: user[0] })
         }
         else res.send('You are not authorised')
     }
@@ -442,7 +442,7 @@ class UserRouter {
                 blog.date_modified = getDate(blog.date_modified)
             }
     
-            res.render('user_blogs', { title: 'userBlogs', blogs: blogs, user: user[0] })
+            res.render('user_blogs', { title: 'user-blogs', blogs: blogs, user: user[0] })
         }
         else res.send('You are not authorised')
     }
@@ -464,11 +464,16 @@ class UserRouter {
                 if (pictures[0]) restaurant.pictures = pictures[0].picture_URL
                 restaurant.categories = []
 
+                if (restaurant.price == 1) restaurant.price_range = '$50-100'
+                else if (restaurant.price == 2) restaurant.price_range = '$151-200'
+                else if (restaurant.price == 3) restaurant.price_range = '>$250'
+
                 for (let item of categories) {
                     restaurant.categories.push(item.category)
                 }
             }
-            res.render('user_restaurants', { title: 'userRestaurants', restaurants: restaurants, user: user[0] })
+
+            res.render('user_restaurants', { title: 'user-restaurants', restaurants: restaurants, user: user[0] })
         }
         else res.send('You are not authorised')
     }

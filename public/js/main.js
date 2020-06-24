@@ -61,12 +61,12 @@ $(document).ready(function () {
   })
 
   //control button - create new Blog, new resta, new comment, new review
-  $('#createNewBtn').click(function (e) {
+  $('#create-new-btn').click(function (e) {
     if ($(this).text().match('Create')) {
-      $('#createNew').show()
+      $('#create-new').show()
       $(this).text('Cancel Creation')
     } else {
-      $('#createNew').hide()
+      $('#create-new').hide()
       if ($(this).next().children().find('label').text().match('Title')) {
         $(this).text('Create a new blog')
       }
@@ -83,7 +83,7 @@ $(document).ready(function () {
   })
 
   // render the category list & district list to front end
-  if ($('.restaLink')) {
+  if ($('.restaurant-link')) {
 
     axios({
       url: '/restaurant/category/list/all',
@@ -127,7 +127,7 @@ $(document).ready(function () {
 
         districts.sort()
         for (let [i, item] of districts.entries()) {
-          $('.restaDist').append(`<option value=${i} ${item}>${item}</option>`)
+          $('.restaurant-district').append(`<option value=${i} ${item}>${item}</option>`)
         }
       })
       .catch((error) => {
@@ -137,34 +137,34 @@ $(document).ready(function () {
 
   //control button - edit existing Blog, existing resta, existing comment, existing review
 
-  $('.editBtn').click(function (e) {
+  $('.edit-btn').click(function (e) {
     if ($(this).children().text().match('Edit')) {
-      $(this).parent().next().find('.updateExisting').show()
+      $(this).parent().next().find('.update-existing').show()
       $(this).children().text('X')
-      $(this).parent().next().find('.existContent').hide()
+      $(this).parent().next().find('.exist-content').hide()
     } else {
       $(this).children().text('Edit')
-      $(this).parent().next().find('.updateExisting').hide()
-      $(this).parent().next().find('.existContent').show()
+      $(this).parent().next().find('.update-existing').hide()
+      $(this).parent().next().find('.exist-content').show()
     }
   })
 
-  $('#existBlogDeleteBtn').click(function (e) {
+  $('#exist-blog-delete-btn').click(function (e) {
     e.preventDefault()
   })
 
   //control add to favourite button
   $('.add-favourite').on('click', function (e) {
-    let resta_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
+    let restaurant_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
     if (e.currentTarget.innerHTML.match('☆')) {
       console.log(user_id)
-      console.log(resta_id)
+      console.log(restaurant_id)
       axios({
         url: '/user/favourite/restaurant',
         method: 'post',
         data: {
-          "user_id": user_id,
-          "restaurant_id": resta_id
+          user_id,
+          restaurant_id
         }
       })
         .then((res) => {
@@ -177,9 +177,9 @@ $(document).ready(function () {
         })
     }
     else if (e.currentTarget.innerHTML.match('★')) {
-      let resta_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
+      let restaurant_favourite = e.currentTarget.getAttribute("id").split('-').splice(-1)[0]
       axios({
-        url: `/user/favourite/restaurant/${resta_favourite}`,
+        url: `/user/favourite/restaurant/${restaurant_favourite}`,
         method: 'delete',
       })
         .then((res) => {
@@ -218,7 +218,6 @@ $(document).ready(function () {
 // control image upload, decode image buffer to render 
 function renderImg(e, targetDOM) {
   let file = e.target.files[0]
-  console.log(file)
 
   let reader = new FileReader()
 

@@ -1,25 +1,25 @@
-<form action='/user/restaurant/{{id}}' method='POST' style='display:none' class='updateExisting'>
+<form style='display:none' class='update-existing'>
     <div class="form-group">
         <label>Restaurant Name</label>
-        <input type="text" class="form-control restaName" name='name' value='{{name}}'>
+        <input type="text" class="form-control restaurant-name" name='name' value='{{name}}'>
     </div>
     <div class="form-group">
         <label>Restaurant Address</label>
-        <input type="text" class="form-control restaAddress" name='street_address' value="{{street_address}}">
+        <input type="text" class="form-control restaurant-address" name='street_address' value="{{street_address}}">
     </div>
     <div class="form-group">
         <label>Contact Number</label>
-        <input type="text" class="form-control restaTele" name='telephone_number' value={{telephone_number}}>
+        <input type="text" class="form-control restaurant-phone" name='telephone_number' value={{telephone_number}}>
     </div>
     <div class="form-group">
         <div class="row">
             <div class="col">
                 <label>Opening Hours</label>
-                <input name='opening_time' type="text" class="form-control restaOp" value="{{opening_time}}">
+                <input name='opening_time' type="text" class="form-control restaurant-opening-hours" value="{{opening_time}}">
             </div>
             <div class="col">
                 <label>Closing Hours</label>
-                <input name='closing_time' type="text" class="form-control restaCl" value="{{closing_time}}">
+                <input name='closing_time' type="text" class="form-control restaurant-closing-hours" value="{{closing_time}}">
             </div>
         </div>
     </div>
@@ -27,30 +27,30 @@
         <div class="row">
             <div class="col">
                 <label>Latitude</label>
-                <input name='latitude' type="text" class="form-control restaLat" value="{{latitude}}">
+                <input name='latitude' type="text" class="form-control restaurant-latitude" value="{{latitude}}">
             </div>
             <div class="col">
                 <label>Longitude</label>
-                <input name='longitude' type="text" class="form-control restaLng" value="{{longitude}}">
+                <input name='longitude' type="text" class="form-control restaurant-longitude" value="{{longitude}}">
             </div>
         </div>
     </div>
     <div class="form-group">
         <label>Categories</label>
-        <select class="form-control restaCate" >
+        <select class="form-control restaurant-categories" >
             <option selected hidden>{{main_category}}</option>
         </select>
     </div>
     <div class="form-group">
         <label>District</label>
-        <select class="form-control restaDist">
+        <select class="form-control restaurant-district">
             <option value='{{district.id}}' selected hidden>{{district.district}}</option>
         </select>
     </div>
     <div class="form-group">
         <label>Price Ranges (per each)</label>
-        <select class="form-control restaPrice">
-            <option value={{price}} selected hidden>{{price}}</option>
+        <select class="form-control restaurant-price">
+            <option value={{price_range}} selected hidden>{{price_range}}</option>
             <option>$50-100</option>
             <option>$101-150</option>
             <option>$151-200</option>
@@ -60,50 +60,48 @@
     </div>
     <div class="form-group">
         <label>Web Address</label>
-        <input type="text" class="form-control restaWeb" name='website_URL' value="{{website_URL}}">
+        <input type="text" class="form-control restaurant-url" name='website_URL' value="{{website_URL}}">
     </div>
     <div class="form-group">
         <label>Social Media</label>
-        <input type="text" class="form-control restaSocial" name='social_media_URL' value="{{social_media_URL}}">
+        <input type="text" class="form-control restaurant-social" name='social_media_URL' value="{{social_media_URL}}">
     </div>
     <div class='form-group'>
         <label>Description</label>
-        <textarea name='body' class='form-control restaDescri' rows='3'>{{description}}</textarea>
+        <textarea name='body' class='form-control restaurant-description' rows='3'>{{description}}</textarea>
     </div>
     <div class="form-group">
         <div class='row'>
             <div class='mx-3 col-sm-4'>
                 <label class="custom-file-label"> Logo</label>
-                <input type="file" class='custom-file-input uploadImg' name='logo'>
-                <img class='my-2 custom-area-sm min-area restaLogo' src='{{logo}}'>
+                <input type="file" class='custom-file-input upload-img' name='logo'>
+                <img class='my-2 custom-area-sm min-area resta-logo' src='{{logo}}'>
             </div>
             <div class='mx-3 col-sm-4'>
                 <label class="custom-file-label"> Main Picture</label>
-                <input type="file" class='custom-file-input uploadImg' name='main_picture_URL'>
-                <img class='my-2  custom-area-sm min-area restaMainPic' src='{{main_picture_URL}}'>
+                <input type="file" class='custom-file-input upload-img' name='main_picture_URL'>
+                <img class='my-2  custom-area-sm min-area restaurant-main-picture' src='{{main_picture_URL}}'>
             </div>
             
             {{#each restaPic}}
             <div class='mx-3 col-sm-4'>
                 <label class="custom-file-label"> More Picture</label>
-                <input type="file" class='custom-file-input uploadImg' name='picture_URL'>
-                <img class='my-2  custom-area-sm min-area restaPic' title={{id}} src={{picture_URL}}>
+                <input type="file" class='custom-file-input upload-img' name='picture_URL'>
+                <img class='my-2  custom-area-sm min-area restaurant-picture' title={{id}} src={{picture_URL}}>
             </div>
             {{/each}}
             <div class='mx-3 col-sm-4'>
                 <label class="custom-file-label" > More Pictures</label>
-                <input type="file" class='custom-file-input uploadImgMore'  name='picture_URL'>
-                <div class='newPic'></div>
+                <input type="file" class='custom-file-input upload-imgmore'  name='picture_URL'>
+                <div class='new-picture'></div>
             </div>
 
 
         </div>
 
     </div>
-    <div class='form-group btnRestaGroup'>
+    <div class='form-group btn-restaurant-group'>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-primary">Reset </button>
-        <button type="submit" class="ml-auto btn btn-danger">Delete this restaurant
-            !!</button>
+        <button type="submit" class="ml-auto btn btn-danger">Delete</button>
     </div>
 </form>

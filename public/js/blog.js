@@ -5,9 +5,9 @@ $(document).ready(function () {
     }
 
     //delete exist blog
-    $('.btnBlogGroup button:last-child').click(function (e) {
+    $('.btn-blog-group button:last-child').click(function (e) {
         e.preventDefault()
-        let blogId = $(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/)
+        let blogId = $(this).closest('form').next().find('.blog-link').attr('href').match(/\d+/)
         console.log(blogId)
         axios({
             url: '/blog/individual/' + parseInt(blogId),
@@ -16,7 +16,6 @@ $(document).ready(function () {
             .then((res) => {
                 console.log(res.data)
                 location.reload();
-
             })
             .catch((error) => {
                 console.log(error);
@@ -24,12 +23,12 @@ $(document).ready(function () {
     })
 
     //update exist blog + categories + images
-    $('.btnBlogGroup button:first-child').click(function (e) {
+    $('.btn-blog-group button:first-child').click(function (e) {
         e.preventDefault()
-        let title = $(this).closest('form').find('.blogTitle').val()
-        let body = $(this).closest('form').find(".blogBody").val()
-        let main_picture_URL = $(this).closest('form').find('.blogMainPic').attr('src')
-        let blog_id = parseInt($(this).closest('form').next().find('.blogLink').attr('href').match(/\d+/))
+        let title = $(this).closest('form').find('.blog-title').val()
+        let body = $(this).closest('form').find(".blog-body").val()
+        let main_picture_URL = $(this).closest('form').find('.blog-main-pic').attr('src')
+        let blog_id = parseInt($(this).closest('form').next().find('.blog-link').attr('href').match(/\d+/))
 
         //list all cate belong to that blog
         axios({
@@ -90,9 +89,9 @@ $(document).ready(function () {
             })
             .then((res) => {
                 //for each pictures update their url
-                $.each($('.blogImgs'), function (e) {
-                    let picture_id = parseInt($(this).find('.blogPic').attr('alt').match(/\d+/))
-                    $(this).find('.blogPic').prev().change(function (e) {
+                $.each($('.blog-imgs'), function (e) {
+                    let picture_id = parseInt($(this).find('.blog-picture').attr('alt').match(/\d+/))
+                    $(this).find('.blog-picture').prev().change(function (e) {
 
                         axios({
                             url: '/blog/picture/' + picture_id,
@@ -121,14 +120,14 @@ $(document).ready(function () {
 
 
     //add new blog + categories + images
-    $('#newBlogSubmitBtn').click(function (e) {
+    $('#new-blog-submit-btn').click(function (e) {
         e.preventDefault()
         let blog_id
-        let title = $('#newBlogTitle').val()
-        let body = $('#newBlogBody').val()
-        let main_picture_URL = $('#newMainImg').next().attr('src')
+        let title = $('#new-blog-title').val()
+        let body = $('#new-blog-body').val()
+        let main_picture_URL = $('#new-main-img').next().attr('src')
         let new_pictures = []
-        $('#newPic').children('img').each(function () {
+        $('#new-picture').children('img').each(function () {
             new_pictures.push(this.src)
         })
         axios({

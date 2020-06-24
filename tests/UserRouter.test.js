@@ -1,5 +1,12 @@
 const UserRouter = require('../router/UserRouter')
 
+// Require router services
+const UserService = require('../service/UserService');
+const RestaurantService = require('../service/RestaurantService');
+const BlogService = require('../service/BlogService');
+const ReviewService = require('../service/ReviewService');
+const LocationService = require('../service/LocationService');
+
 // Update with your config settings.
 require('dotenv').config();
 
@@ -108,18 +115,6 @@ describe('UserRouter testing with userservice', () => {
             addBlog: jest.fn().mockResolvedValue(true),
             updateBlog: jest.fn().mockResolvedValue(true),
             deleteBlog: jest.fn().mockResolvedValue(true),
-        }
-
-        blogService = {
-            getPicture: jest.fn().mockResolvedValue(true)
-        }
-
-        restaurantService = {
-            getRestaurant: jest.fn().mockResolvedValue(true)
-        }
-
-        reviewService = {
-            getReview: jest.fn().mockResolvedValue({ restaurant_id: true })
         }
 
         userRouter = new UserRouter(userService, blogService, locationService, restaurantService, reviewService)
@@ -435,84 +430,142 @@ describe('UserRouter testing with userservice', () => {
             })
     })
 
-    xtest('userRouter should call displayInfo in response to a GET request', () => {
-        expect.assertions(2);
+    test('userRouter should call displayInfo in response to a GET request', () => {
+        expect.assertions(7);
 
         request = {
             params: {
                 id: 1
             },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
         }
+
+        userService = new UserService()
+        blogService = new BlogService()
+        restaurantService = new RestaurantService()
+
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+        const listRestaurantsCalled = jest.spyOn(userService, 'listRestaurants')
+        const listBlogsCalled = jest.spyOn(userService, 'listBlogs')
+        const getRestaurantCalled = jest.spyOn(restaurantService, 'getRestaurant')
+        const getBlogCalled = jest.spyOn(blogService, 'getBlog')
+
+        userRouter = new UserRouter(userService, blogService, locationService, restaurantService, reviewService)
 
         return userRouter.displayInfo(request, response)
             .then(() => {
                 expect(userService.getUser).toHaveBeenCalledWith(request.params.id);
+                expect(getUserCalled).toHaveBeenCalled()
+                expect(listRestaurantsCalled).toHaveBeenCalled()
+                expect(listBlogsCalled).toHaveBeenCalled()
+                expect(getRestaurantCalled).toHaveBeenCalled()
+                expect(getBlogCalled).toHaveBeenCalled()
                 expect(response.send).toHaveBeenCalled()
             })
     })
 
     // Last minute testing renders these tests WIP
-    xtest('userRouter should call displayReviews in response to a GET request', () => {
-        expect.assertions(4);
+    test('userRouter should call displayReviews in response to a GET request', () => {
+        expect.assertions(5);
 
         request = {
             params: {
                 id: 1
             },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
         }
 
-        reviewService = {
-            getReview: jest.fn().mockResolvedValue([{ restaurant_id: true }]),
-        }
+        userService = new UserService()
+        restaurantService = new RestaurantService()
+        reviewService = new ReviewService()
 
-        userRouter = new UserRouter(userService, reviewService, restaurantService, blogService)
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+        const getReviewCalled = jest.spyOn(reviewService, 'getReview')
+        const getRestaurantCalled = jest.spyOn(restaurantService, 'getRestaurant')
+
+        userRouter = new UserRouter(userService, blogService, locationService, restaurantService, reviewService)
 
         return userRouter.displayReviews(request, response)
             .then(() => {
                 expect(userService.getUser).toHaveBeenCalledWith(request.params.id);
-                expect(reviewService.getReview).toHaveBeenCalled();
-                expect(restaurantService.getRestaurant).toHaveBeenCalled();
+                expect(getUserCalled).toHaveBeenCalled()
+                expect(getReviewCalled).toHaveBeenCalled()
+                expect(getRestaurantCalled).toHaveBeenCalled()
                 expect(response.send).toHaveBeenCalled()
             })
     })
 
     // Last minute testing renders these tests WIP
-    xtest('userRouter should call displayBlogs in response to a GET request', () => {
-        expect.assertions(3);
+    test('userRouter should call displayBlogs in response to a GET request', () => {
+        expect.assertions(5);
 
         request = {
             params: {
                 id: 1
             },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
         }
 
-        userService = {
-            getUser: jest.fn().mockResolvedValue([{ blog_access: [{ id: true }] }]),
-        }
+        userService = new UserService()
+        blogService = new BlogService()
 
-        userRouter = new UserRouter(userService, reviewService, restaurantService, blogService)
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+        const listPicturesCalled = jest.spyOn(blogService, 'listPictures')
+        const listCategoriesCalled = jest.spyOn(blogService, 'listCategories')
+
+        userRouter = new UserRouter(userService, blogService, locationService, restaurantService, reviewService)
 
         return userRouter.displayBlogs(request, response)
             .then(() => {
                 expect(userService.getUser).toHaveBeenCalledWith(request.params.id);
-                expect(blogService.getPicture).toHaveBeenCalled();
+                expect(getUserCalled).toHaveBeenCalled()
+                expect(listPicturesCalled).toHaveBeenCalled()
+                expect(listCategoriesCalled).toHaveBeenCalled()
                 expect(response.send).toHaveBeenCalled()
             })
     })
 
     // Last minute testing renders these tests WIP
-    xtest('userRouter should call displayRestaurants in response to a GET request', () => {
-        expect.assertions(2);
+    test('userRouter should call displayRestaurants in response to a GET request', () => {
+        expect.assertions(6);
 
         request = {
             params: {
                 id: 1
             },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
         }
+
+        userService = new UserService()
+        locationService = new LocationService()
+        restaurantService = new RestaurantService()
+
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+        const getDistrictCalled = jest.spyOn(locationService, 'getDistrict')
+        const listPicturesCalled = jest.spyOn(restaurantService, 'listPictures')
+        const listCategoriesCalled = jest.spyOn(restaurantService, 'listCategories')
+
+        userRouter = new UserRouter(userService, blogService, locationService, restaurantService, reviewService)
 
         return userRouter.displayRestaurants(request, response)
             .then(() => {
                 expect(userService.getUser).toHaveBeenCalledWith(request.params.id);
+                expect(getUserCalled).toHaveBeenCalled()
+                expect(getDistrictCalled).toHaveBeenCalled()
+                expect(listPicturesCalled).toHaveBeenCalled()
+                expect(listCategoriesCalled).toHaveBeenCalled()
                 expect(response.send).toHaveBeenCalled()
             })
     })
@@ -575,6 +628,7 @@ describe('UserRouter testing with userservice', () => {
                 original_password: 'password',
                 new_password: 'password123',
             },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
         }
 
         // Bug fixing, for some reason I need to re-declare userService / userRouter here for the test to work

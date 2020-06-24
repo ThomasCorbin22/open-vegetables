@@ -374,17 +374,20 @@ class BlogRouter {
         let comments = await this.commentService.listComments(blog.id)
         for (let comment of comments) {
             let commentUser = await this.userService.getUser(comment.user_id)
-            comment.userName = commentUser[0].display_name
-            comment.userImage = commentUser[0].profile_picture_URL
+            comment.display_name = commentUser[0].display_name
+            comment.user_image = commentUser[0].profile_picture_URL
         }
 
         // Get the publisher information
-        blog.userName = publisher[0].display_name
-        blog.userImage = publisher[0].profile_picture_URL
+        blog.display_name = publisher[0].display_name
+        blog.user_image = publisher[0].profile_picture_URL
 
         // Update information to be people legible
         blog.date_modified = updateDate(blog.date_modified).split(' ').splice(-1)[0]
         blog.date_created = updateDate(blog.date_created).split(' ').splice(-1)[0]
+
+        // Split the body into paragraphs
+        blog.body = blog.body.split('||')
 
         // Check if the blog is a favourite of the user
         if (favourites) {
@@ -396,7 +399,7 @@ class BlogRouter {
         }
 
         res.render('blog_details', { 
-            title: `blog-details/${blog.title}`, 
+            title: `blog-details-${blog.title}`, 
             blog, 
             comments, 
             user_id

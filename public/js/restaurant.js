@@ -116,7 +116,7 @@ $(document).ready(function () {
     })
 
     // update existing restaurant 
-    $('.btnRestaGroup button:first-child').click(function (e) {
+    $('.btn-restaurant-group button:first-child').click(function (e) {
         e.preventDefault()
         let name = $(this).closest('form').find('.restaName').val()
         let street_address = $(this).closest('form').find('.restaAddress').val()
@@ -136,12 +136,12 @@ $(document).ready(function () {
         let closing_hours = $(this).closest('form').find('.restaCl').val()
 
         let existing_pictures = []
-        $.each($(this).closest('form').find('.restaPic'), function () {
+        $.each($(this).closest('form').find('.restaurant-picture'), function () {
             existing_pictures.push({ id: $(this).attr('title'), url: $(this).attr('src') })
         })
 
         let new_pictures = []
-        $.each($(this).closest('form').find('.newPic').children(), function () {
+        $.each($(this).closest('form').find('.new-picture').children(), function () {
             new_pictures.push($(this).attr('src'))
         })
 
@@ -267,29 +267,29 @@ $(document).ready(function () {
     })
 
     // Add new restaurant + corresponding user can access it=
-    $('#newRestaSubmitBtn').click(function (e) {
+    $('#new-restaurant-submit-btn').click(function (e) {
         e.preventDefault()
 
         let restaurant_id
 
-        let name = $('#newRestaName').val()
-        let street_address = $('#newRestaAddress').val()
-        let district_id = parseInt($('#newRestaDist').val().match(/\d+/)) + 1
-        let description = $('#newRestaDescri').val()
-        let logo = $('#newLogo').next().attr('src')
-        let price = $('#newRestaPrice').val()
-        let telephone_number = $('#newRestaPhone').val()
-        let social_media_URL = $('#newRestaSocial').val()
-        let website_URL = $('#newRestaURL').val()
-        let main_picture_URL = $('#newMainImg').next().attr('src')
-        let category = $('#newRestaCate').val()
+        let name = $('#new-restaurant-name').val()
+        let street_address = $('#new-restaurant-address').val()
+        let district_id = parseInt($('#new-restaurant-district').val().match(/\d+/)) + 1
+        let description = $('#new-restaurant-description').val()
+        let logo = $('#new-logo').next().attr('src')
+        let price = $('#new-restaurant-price').val()
+        let telephone_number = $('#new-restaurant-phone').val()
+        let social_media_URL = $('#new-restaurant-social').val()
+        let website_URL = $('#new-restaurant-url').val()
+        let main_picture_URL = $('#new-main-img').next().attr('src')
+        let category = $('#new-restaurant-categories').val()
         let pictures = []
-        let latitude = parseFloat($('#newRestaLat').val())
-        let longitude = parseFloat($('#newRestaLng').val())
-        let opening_hours = $('#newRestaOp').val()
-        let closing_hours = $('#newRestaCl').val()
+        let latitude = parseFloat($('#new-restaurant-latitude').val())
+        let longitude = parseFloat($('#new-restaurant-longitude').val())
+        let opening_hours = $('#new-restaurant-opening-hours').val()
+        let closing_hours = $('#new-restaurant-closing-hours').val()
 
-        $('#newPic').children('img').each(function () {
+        $('#new-pictures').children('img').each(function () {
             pictures.push(this.src)
         })
         
@@ -370,8 +370,8 @@ $(document).ready(function () {
                     }
                 })
             })
-            .then((res) => {
-                console.log(res.data)
+            .then(() => {
+                location.reload()
             })
             .catch((error) => {
                 console.log(error);
@@ -380,9 +380,9 @@ $(document).ready(function () {
 
 
     //Delete restaurant
-    $('.btnRestaGroup button:last-child').click(function (e) {
+    $('.btn-restaurant-group button:last-child').click(function (e) {
         e.preventDefault()
-        let restaurant_id = parseInt($(this).closest('form').next().find('.restaLink').attr('href').match(/\d+/))
+        let restaurant_id = parseInt($(this).closest('form').next().find('.restaurant-link').attr('href').match(/\d+/))
         console.log(restaurant_id)
         axios({
             url: '/restaurant/individual/' + restaurant_id,

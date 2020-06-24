@@ -454,7 +454,7 @@ class RestaurantRouter {
         }
 
         res.render(`restaurant_details_reviews`, {
-            title: `restaurant-details/${restaurant.name}`,
+            title: `restaurant-details-${restaurant.name}`,
             restaurant,
             reviews,
             user_id,

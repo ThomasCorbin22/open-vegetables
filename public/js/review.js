@@ -2,7 +2,7 @@ $(document).ready(function () {
 
 
   //user update reviews (edit button available)
-  if ($('#restaLink').text()) {
+  if ($('#restaurant-link').text()) {
     axios({
       url: '/auth/login',
       method: 'get'
@@ -11,7 +11,7 @@ $(document).ready(function () {
         if (res.data !== 'Not Logged In') user_id = res.data.id
 
         return axios({
-          url: '/review/list/' + parseInt($('#restaLink').attr('href').match(/\d+/)),
+          url: '/review/list/' + parseInt($('#restaurant-link').attr('href').match(/\d+/)),
           method: 'get'
         })
       })
@@ -19,11 +19,11 @@ $(document).ready(function () {
         if (user_id) {
           console.log(res.data)
           console.log(user_id)
-          $('#createNewBtn').show()
+          $('#create-new-btn').show()
           for (let review of res.data) {
             if (review.user_id == user_id) {
-              $(`.userID${user_id}Edit`).show()
-              $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+              $(`.user-id-${user_id}-edit`).show()
+              $(`.user-id-${user_id}-edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
             }
           }
         }
@@ -34,22 +34,22 @@ $(document).ready(function () {
   }
 
   // Add new review
-  $('#newReviewSubmitBtn').click(function (e) {
+  $('#new-review-submit-btn').click(function (e) {
     e.preventDefault()
-    let title = $('#newTitle').val()
-    let body = $('#newBody').val()
+    let title = $('#new-title').val()
+    let body = $('#new-body').val()
 
     // Check that there is an image
-    let image = $(`#newImg`).next().attr('src')
-    if (image == '/pictures/image.png') image = null
+    let picture_URL = $(`#new-img`).next().attr('src')
+    if (picture_URL == '/pictures/image.png') picture_URL = null
 
     let rating
 
-    if ($('#newRating-1').prop('checked')) rating = 1
-    if ($('#newRating-2').prop('checked')) rating = 2
-    if ($('#newRating-3').prop('checked')) rating = 3
-    if ($('#newRating-4').prop('checked')) rating = 3
-    if ($('#newRating-5').prop('checked')) rating = 5
+    if ($('#new-rating-1').prop('checked')) rating = 1
+    if ($('#new-rating-2').prop('checked')) rating = 2
+    if ($('#new-rating-3').prop('checked')) rating = 3
+    if ($('#new-rating-4').prop('checked')) rating = 3
+    if ($('#new-rating-5').prop('checked')) rating = 5
 
     let restaurant_id = window.location.href.split('/').splice(-1)[0]
 
@@ -67,12 +67,12 @@ $(document).ready(function () {
       .then((res) => {
         console.log(res.data)
         // Add new review picture
-        if (image) {
+        if (picture_URL) {
           axios({
             url: '/review/picture',
             method: 'post',
             data: {
-              "picture_URL": image,
+              picture_URL,
               "review_id": res.data[0].id
             }
           })
@@ -91,24 +91,24 @@ $(document).ready(function () {
   })
 
   // Update existing review
-  $('.existReviewSubmit').click(function (e) {
+  $('.exist-review-submit').click(function (e) {
     e.preventDefault()
 
     let id = $(e.target).attr('id').split('-').splice(-1)[0]
-    let title = $(`#existTitle-${id}`).val()
-    let body = $(`#existBody-${id}`).val()
+    let title = $(`#exist-title-${id}`).val()
+    let body = $(`#exist-body-${id}`).val()
 
     // Check that there is an image
-    let image = $(`#existImg-${id}`).next().attr('src')
+    let image = $(`#exist-img-${id}`).next().attr('src')
     if (image == '/pictures/image.png') image = null
 
     let rating
 
-    if ($(`#existRating-1-${id}`).prop('checked')) rating = 1
-    if ($(`#existRating-2-${id}`).prop('checked')) rating = 2
-    if ($(`#existRating-3-${id}`).prop('checked')) rating = 3
-    if ($(`#existRating-4-${id}`).prop('checked')) rating = 4
-    if ($(`#existRating-5-${id}`).prop('checked')) rating = 5
+    if ($(`#exist-rating-1-${id}`).prop('checked')) rating = 1
+    if ($(`#exist-rating-2-${id}`).prop('checked')) rating = 2
+    if ($(`#exist-rating-3-${id}`).prop('checked')) rating = 3
+    if ($(`#exist-rating-4-${id}`).prop('checked')) rating = 4
+    if ($(`#exist-rating-5-${id}`).prop('checked')) rating = 5
 
     let restaurant_id = window.location.href.split('/').splice(-1)[0].split('?')[0]
 
@@ -144,7 +144,7 @@ $(document).ready(function () {
                 method: 'put',
                 data: {
                   "picture_URL": image,
-                  "review_id": review_id
+                  review_id
                 }
               })
             })
@@ -163,7 +163,7 @@ $(document).ready(function () {
   })
 
   // Delete existing review
-  $('.existReviewDelete').click(function (e) {
+  $('.exist-review-delete').click(function (e) {
     e.preventDefault()
 
     let id = $(e.target).attr('id').split('-').splice(-1)[0]

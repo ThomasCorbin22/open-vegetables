@@ -38,6 +38,19 @@ class ReviewService {
         }
     }
 
+    // Lists all the reviews for a user
+    async listUserReviews(id) {
+        let results = await knex
+            .select('*')
+            .from("reviews")
+            .where("user_id", id)
+            .catch((err) => console.log(err))
+
+        await this.compilePictures(results)
+
+        return this.review
+    }
+
     // Lists all the reviews for a restaurant
     async listReviews(id) {
         let results = await knex

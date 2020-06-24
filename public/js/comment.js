@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
   //user update comment (edit button available)
-  if ($('#blogLink').text()) {
+  if ($('#blog-link').text()) {
     axios({
       url: '/auth/login',
       method: 'get'
@@ -10,17 +10,17 @@ $(document).ready(function () {
         if (res.data !== 'Not Logged In') user_id = res.data.id
 
         return axios({
-          url: '/comment/list/' + parseInt($('#blogLink').attr('href').match(/\d+/)),
+          url: '/comment/list/' + parseInt($('#blog-link').attr('href').match(/\d+/)),
           method: 'get'
         })
       })
       .then((res) => {
         if (user_id) {
-          $('#createNewBtn').show()
+          $('#create-new-btn').show()
           for (let comment of res.data) {
             if (comment.user_id == user_id) {
-              $(`.userID${user_id}Edit`).show()
-              $(`.userID${user_id}Edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
+              $(`.user-id-${user_id}-edit`).show()
+              $(`.user-id-${user_id}-edit`).next().addClass('col-sm-10').removeClass('col-sm-12')
             }
           }
         }
@@ -32,10 +32,10 @@ $(document).ready(function () {
 
 
   // Add new comment
-  $('#newCommentSubmitBtn').click(function (e) {
+  $('#new-comment-submit-btn').click(function (e) {
     e.preventDefault()
-    let title = $('#newTitle').val()
-    let body = $('#newBody').val()
+    let title = $('#new-title').val()
+    let body = $('#new-body').val()
 
     let blog_id = window.location.href.split('/').splice(-1)[0]
 
@@ -59,12 +59,12 @@ $(document).ready(function () {
   })
 
   // Update existing comment
-  $('.existCommentSubmit').click(function (e) {
+  $('.exist-comment-submit').click(function (e) {
     e.preventDefault()
 
     let id = $(e.target).attr('id').split('-').splice(-1)[0]
-    let title = $(`#existTitle-${id}`).val()
-    let body = $(`#existBody-${id}`).val()
+    let title = $(`#exist-title-${id}`).val()
+    let body = $(`#exist-body-${id}`).val()
 
     let blog_id = window.location.href.split('/').splice(-1)[0].split('?')[0]
 
@@ -89,7 +89,7 @@ $(document).ready(function () {
   })
 
   // Delete existing comment
-  $('.existCommentDelete').click(function (e) {
+  $('.exist-comment-delete').click(function (e) {
     e.preventDefault()
 
     let id = $(e.target).attr('id').split('-').splice(-1)[0]
@@ -323,7 +323,7 @@ $(document).ready(function () {
             console.log(res.data)
             $(e.target).attr('fill', 'red')
             $(`#like-${comment_id}`).attr('fill', 'currentColor')
-            $(`#dislike-${comment_id}`).attr('fill', 'currentColor')
+            $(`#dislike-${comment_id}`).attr('fill', 'red')
 
             let number_likes = Number($(`#number-likes-${comment_id}`).html()) - 1
             $(`#number-likes-${comment_id}`).html(number_likes)

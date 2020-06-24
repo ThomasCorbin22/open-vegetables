@@ -1,0 +1,47 @@
+<form id='existForm-{{id}}' style='display:none' class='card-body update-existing'>
+    <div class="form-group">
+        <label for="exist-title">Title</label>
+        <input type="text" class="form-control" id="exist-title-{{id}}" name='title' placeholder="Enter Title"
+            value='{{title}}'>
+    </div>
+    <div class='form-group'>
+        <label for='exist-body'>Body</label>
+        <textarea name='body' class='form-control ' rows='3' id='exist-body-{{id}}'>{{body}}</textarea>
+    </div>
+            <div class="form-group">
+            <label>Rating</label>
+            <div class='form-control'>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="exist-rating-1-{{id}}" value="1">
+                    <label class="form-check-label" for="rating-1">1</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="exist-rating-2-{{id}}" value="2">
+                    <label class="form-check-label" for="rating-2">2</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="exist-rating-3-{{id}}" value="3" checked>
+                    <label class="form-check-label" for="rating-3">3</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="exist-rating-4-{{id}}" value="4">
+                    <label class="form-check-label" for="rating-3">4</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="rating" id="exist-rating-5-{{id}}" value="5">
+                    <label class="form-check-label" for="rating-3">5</label>
+                </div>
+            </div>
+        </div>
+    <div class='row'>
+            <div class='mx-3 col-sm-4'>
+        <label class="custom-file-label" for="exist-img">Images </label>
+        <input type="file" class='custom-file-input upload-img' id="exist-img-{{id}}" name='picture_URL'>
+        <img class='my-2 custom-area-sm min-area ' src='{{pictures}}'>
+            </div>
+         </div>
+    <div class='form-group'>
+        <button type="submit" id='exist-review-submit-btn-{{id}}' class="exist-review-submit btn btn-primary">Submit</button>
+        <button type="submit" id='exist-review-delete-btn-{{id}}' class="exist-review-delete ml-auto btn btn-danger">Delete</button>
+    </div>
+</form>

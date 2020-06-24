@@ -1,5 +1,10 @@
 const BlogRouter = require('../router/BlogRouter')
 
+// Require router services
+const UserService = require('../service/UserService');
+const BlogService = require('../service/BlogService');
+const CommentService = require('../service/CommentService');
+
 // Update with your config settings.
 require('dotenv').config();
 
@@ -12,7 +17,10 @@ const knex = require('knex')({
     }
 });
 
+let commentService
+let userService
 let blogService
+
 let blogRouter
 
 let request
@@ -55,6 +63,7 @@ describe('BlogRouter testing with blogservice', () => {
     beforeAll(async () => {
         response = {
             send : jest.fn().mockResolvedValue(true),
+            render : jest.fn().mockResolvedValue(true),
         }
 
         blogService = {
@@ -324,6 +333,75 @@ describe('BlogRouter testing with blogservice', () => {
         return blogRouter.deleteCategory(request, response)
             .then(() => {
                 expect(blogService.deleteCategory).toHaveBeenCalledWith(1);
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+    
+    test('blogRouter should call displaySingle in response to a GET request', () => {
+        expect.assertions(6);
+
+        request = {
+            params: {
+                id: 1
+            },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true)
+        }
+
+        userService = new UserService()
+        blogService = new BlogService()
+        commentService = new CommentService()
+
+        const listBlogsCalled = jest.spyOn(userService, 'listBlogs')
+        const getBlogCalled = jest.spyOn(blogService, 'getBlog')
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+        const listCommentsCalled = jest.spyOn(commentService, 'listComments')
+
+        blogRouter = new BlogRouter(blogService, commentService, userService)
+
+        return blogRouter.displaySingle(request, response)
+            .then(() => {
+                expect(userService.listBlogs).toHaveBeenCalledWith(request.params.id);
+                expect(listBlogsCalled).toHaveBeenCalled()
+                expect(getBlogCalled).toHaveBeenCalled()
+                expect(listCommentsCalled).toHaveBeenCalled()
+                expect(getUserCalled).toHaveBeenCalled()
+                expect(response.send).toHaveBeenCalled()
+            })
+    })
+
+    test('blogRouter should call displayAll in response to a GET request', () => {
+        expect.assertions(3);
+
+        request = {
+            params: {
+                id: 1,
+                filter: 'alpha',
+                direction: 'descending'
+            },
+            user: {
+                id: 1
+            },
+            isAuthenticated: jest.fn().mockResolvedValue(true),
+            query: {
+                page: 1
+            }
+        }
+
+        userService = new UserService()
+        blogService = new BlogService()
+
+        const searchBlogsCalled = jest.spyOn(blogService, 'searchBlogs')
+        const getUserCalled = jest.spyOn(userService, 'getUser')
+
+        blogRouter = new BlogRouter(blogService, commentService, userService)
+
+        return blogRouter.displayAll(request, response)
+            .then(() => {
+                expect(searchBlogsCalled).toHaveBeenCalled()
+                expect(getUserCalled).toHaveBeenCalled()
                 expect(response.send).toHaveBeenCalled()
             })
     })

@@ -1,7 +1,7 @@
-<form action='/user/blog{{id}}/userNumber{{blogs.user_id}}' method='POST' style='display:none' class='updateExisting'>
+<form style='display:none' class='update-existing'>
     <div class="form-group">
         <label>Title</label>
-        <input type="text" class="form-control blogTitle" name='title' placeholder="Enter Title" value='{{title}}'>
+        <input type="text" class="form-control blog-title" name='title' placeholder="Enter Title" value='{{title}}'>
     </div>
     <div class="form-group">
         <label>Categories</label>
@@ -22,34 +22,32 @@
     </div>
     <div class='form-group'>
         <label>Body</label>
-        <textarea name='body' class='form-control  blogBody' rows='3'>{{body}}</textarea>
+        <textarea name='body' class='form-control  blog-body' rows='3'>{{body}}</textarea>
     </div>
 
 
     <div class='row '>
         <div class='mx-3 col-sm-4 blogMainImg'>
             <label class="custom-file-label">Main Picture </label>
-            <input type="file" class='custom-file-input uploadImg' name='picture_URL'>
-            <img class='my-2 custom-area-sm min-area blogMainPic' alt='blogImg' src='{{main_picture_URL}}'>
+            <input type="file" class='custom-file-input upload-img' name='picture_URL'>
+            <img class='my-2 custom-area-sm min-area blog-main-picture' alt='blog-img' src='{{main_picture_URL}}'>
         </div>
         {{#each blogImg}}
-        <div class='mx-3 col-sm-4 blogImgs'>
+        <div class='mx-3 col-sm-4 blog-imgs'>
             <label class="custom-file-label">More Pictures </label>
-            <input type="file" class='custom-file-input uploadImg' name='picture_URL'>
-            <img class='my-2 custom-area-sm min-area blogPic' alt='blogImg{{id}}' src='{{picture_URL}}'>
+            <input type="file" class='custom-file-input upload-img' name='picture_URL'>
+            <img class='my-2 custom-area-sm min-area blog-picture' alt='blogImg{{id}}' src='{{picture_URL}}'>
         </div>
         {{/each}}
-        <div class=' mx-3 col-sm-4'>
-            <label class="custom-file-label" for="newPic"> More Pictures</label>
-            <input type="file" class='custom-file-input uploadImgMore' name='picture_URL'>
-            <div class='newPic'></div>
+        <div class='mx-3 col-sm-4'>
+            <label class="custom-file-label" for="new-picture"> More Pictures</label>
+            <input type="file" class='custom-file-input upload-img-more' name='picture_URL'>
+            <div class='new-picture'></div>
         </div>
 
     </div>
-    <div class='form-group btnBlogGroup'>
+    <div class='form-group btn-blog-group'>
         <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="reset" class="btn btn-primary">Reset </button>
-        <button type="submit" class="ml-auto btn btn-danger">Delete this blog !!</button>
-
+        <button type="submit" class="ml-auto btn btn-danger">Delete</button>
     </div>
 </form>

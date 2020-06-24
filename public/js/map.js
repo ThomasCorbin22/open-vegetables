@@ -10,13 +10,13 @@ let districts = {
     'kwun-tong': { lat: 22.3104, lng: 114.2227 },
     'tsuen-wan': { lat: 22.3699, lng: 114.1144 },
     // new territories coords
-    'sha-tin': { lat: 22.3771, lng: 114.1974 },
+    'sha-tin': { lat: 22.381543, lng: 114.187728 },
     'tai-po': { lat: 22.4423, lng: 114.1655 },
     'tuen-mun': { lat: 22.3908, lng: 113.9725 },
     'yuen-long': { lat: 22.4445, lng: 114.0222 },
     // outlying island coords
-    'lantau-island': { lat: 22.2665, lng: 113.9418 },
-    'lamma-island': { lat: 22.2000, lng: 114.1350 },
+    'lantau-island': { lat: 22.293608, lng: 114.015598 },
+    'lamma-island': { lat: 22.225928, lng: 114.112478 },
     'cheung-chau': { lat: 22.2016, lng: 114.0265 },
 }
 
@@ -32,8 +32,11 @@ $(document).ready(function () {
     $('.map-link').click((e) => {
         e.preventDefault()
 
-        let location = $(e.target).html().toLowerCase().replace(' ', '-')
+        let location = $(e.target).html()
+        location = location.toLowerCase().replace(/\s+/g, '-')
         let latlng = districts[location]
+
+        console.log(location)
 
         // Moves center of map to new location
         map.setCenter(latlng)
@@ -100,17 +103,12 @@ function putRestaurantMarkers(map, latlng, range) {
     })
         .then((res) => {
             // res.data will have all of the corresponding restaurants that have correct area and district
-            console.log(res.data)
 
             for (let restaurant of res.data) {
-                console.log(restaurant)
                 let lat = restaurant.latitude
                 let lng = restaurant.longitude
 
-                console.log(lat, lng)
                 // Add a marker to the google map
-                console.log(restaurant)
-
                 let name = restaurant.name
                 let street_address = restaurant.street_address
                 let district = restaurant.district
@@ -119,8 +117,6 @@ function putRestaurantMarkers(map, latlng, range) {
                 let price = restaurant.price
                 let telephone_number = restaurant.telephone_number
                 let website_URL = restaurant.website_URL
-
-                console.log(name, street_address, district, area, description, price, telephone_number, website_URL)
 
                 const contentString =
                     '<h5>' + name + '</h5>' +

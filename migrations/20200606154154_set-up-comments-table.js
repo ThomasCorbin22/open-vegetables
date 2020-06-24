@@ -2,7 +2,6 @@ exports.up = function (knex, Promise) {
     return knex.schema.createTable('comments', (table) => {
         table.increments();
         table.string("title").notNullable();
-        table.unique("title");
         table.text("body").notNullable();
         table.boolean("modified");
         table.datetime("date_created", { precision: 6 }).defaultTo(knex.fn.now(6));

@@ -109,17 +109,17 @@ function putRestaurantMarkers(map, latlng, range) {
                 let lng = restaurant.longitude
 
                 // Add a marker to the google map
+                let id = restaurant.id
                 let name = restaurant.name
                 let street_address = restaurant.street_address
                 let district = restaurant.district
                 let area = restaurant.area
                 let description = restaurant.description
-                let price = restaurant.price
                 let telephone_number = restaurant.telephone_number
                 let website_URL = restaurant.website_URL
 
                 const contentString =
-                    '<h5>' + name + '</h5>' +
+                    '<h5><a href="/restaurant/details/' + id + '">' + name + '</a></h5>' +
                     '<div id="bodyContent">' +
                     '<p>' + description + '</p>' +
                     '<h6>Address</h6>' +

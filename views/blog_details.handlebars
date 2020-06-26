@@ -19,7 +19,7 @@
                 <div class='card-body'>
                     <h7 class='card-subtitle text-muted'>{{blog.date_created}}</h7>
                     <br>
-                    {{#if modified}}
+                    {{#if blog.modified}}
                     <h7 class='card-subtitle text-muted'>Edited: {{blog.date_modified}}</h7>
                     {{/if}}
                     {{#each blog.body}}
@@ -29,20 +29,20 @@
                         <p class='card-text'>{{this}}</p>
                         {{/if}}
                     {{/each}}
-                    {{#if main_picture_url}}
+                    {{#if blog.main_picture_url}}
                     <img class='card-img custom-area-sm p-1 rounded' src={{blog.main_picture_url}}>
                     {{/if}}
-                    {{#if pictures.[0]}}
-                    <img class='card-img custom-area-sm p-1 rounded' src={{pictures.[0]}}>
+                    {{#if blog.pictures.[0]}}
+                    <img class='card-img custom-area-sm p-1 rounded' src={{blog.pictures.[0]}}>
                     {{/if}}
-                    {{#if pictures.[1]}}
-                    <img class='card-img custom-area-sm p-1 rounded' src={{pictures.[1]}}>
+                    {{#if blog.pictures.[1]}}
+                    <img class='card-img custom-area-sm p-1 rounded' src={{blog.pictures.[1]}}>
                     {{/if}}
-                    {{#if pictures.[2]}}
-                    <img class='card-img custom-area-sm p-1 rounded' src={{pictures.[2]}}>
+                    {{#if blog.pictures.[2]}}
+                    <img class='card-img custom-area-sm p-1 rounded' src={{blog.pictures.[2]}}>
                     {{/if}}
-                    {{#if pictures.[3]}}
-                    <img class='card-img custom-area-sm p-1 rounded' src={{pictures.[3]}}>
+                    {{#if blog.pictures.[3]}}
+                    <img class='card-img custom-area-sm p-1 rounded' src={{blog.pictures.[3]}}>
                     {{/if}}
                     <br>
                     <h7 class='card-subtitle'>{{blog.categories}}</h7>

@@ -399,6 +399,8 @@ class BlogRouter {
             }
         }
 
+        console.log(blog)
+
         res.render('blog_details', { 
             title: `blog-details-${blog.title}`, 
             blog, 

@@ -23,6 +23,7 @@ let districts = {
 let hongkong = { lat: 22.3193, lng: 114.1694 }
 let map
 let markers = []
+let currentWindow
 
 $(document).ready(function () {
     if ($('title').text().match(/^Map/)) {
@@ -143,6 +144,10 @@ function putRestaurantMarkers(map, latlng, range) {
 
                 marker.addListener('click', function () {
                     infowindow.open(map, marker);
+                    if (currentWindow){
+                        currentWindow.close()
+                    }
+                    currentWindow = infowindow
                 })
             }
         })

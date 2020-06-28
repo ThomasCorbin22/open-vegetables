@@ -345,7 +345,7 @@ class BlogRouter {
         }
     
         res.render('blog', {
-            title: 'blogs-' + req.params.filter,
+            title: 'Blogs-' + req.params.filter,
             blogs: results,
             pages
         })
@@ -402,7 +402,7 @@ class BlogRouter {
         console.log(blog)
 
         res.render('blog_details', { 
-            title: `blog-details-${blog.title}`, 
+            title: `Blog-Details-${blog.title}`, 
             blog, 
             comments, 
             user_id

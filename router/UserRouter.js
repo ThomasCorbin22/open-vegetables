@@ -420,7 +420,7 @@ class UserRouter {
                 let restaurant = await this.restaurantService.getRestaurant(review.restaurant_id)
                 review.restaurant = restaurant[0]
             }
-            res.render('user_reviews', { title: 'user-reviews', reviews: reviews, user: user[0] })
+            res.render('user_reviews', { title: 'User-Reviews', reviews: reviews, user: user[0] })
         }
         else res.send('You are not authorised')
     }
@@ -442,7 +442,7 @@ class UserRouter {
                 blog.date_modified = getDate(blog.date_modified)
             }
     
-            res.render('user_blogs', { title: 'user-blogs', blogs: blogs, user: user[0] })
+            res.render('user_blogs', { title: 'User-Blogs', blogs: blogs, user: user[0] })
         }
         else res.send('You are not authorised')
     }
@@ -473,7 +473,7 @@ class UserRouter {
                 }
             }
 
-            res.render('user_restaurants', { title: 'user-restaurants', restaurants: restaurants, user: user[0] })
+            res.render('user_restaurants', { title: 'User-Restaurants', restaurants: restaurants, user: user[0] })
         }
         else res.send('You are not authorised')
     }

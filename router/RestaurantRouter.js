@@ -395,7 +395,7 @@ class RestaurantRouter {
         }
 
         res.render('restaurant', {
-            title: 'restaurants-' + req.params.area + '-' + req.params.filter,
+            title: 'Restaurants-' + req.params.area + '-' + req.params.filter,
             restaurants: results,
             pages,
             user_id
@@ -454,7 +454,7 @@ class RestaurantRouter {
         }
 
         res.render(`restaurant_details_reviews`, {
-            title: `restaurant-details-${restaurant.name}`,
+            title: `Restaurant-Details-${restaurant.name}`,
             restaurant,
             reviews,
             user_id,

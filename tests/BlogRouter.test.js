@@ -30,13 +30,13 @@ describe('BlogRouter testing with blogservice', () => {
     
     let new_note = {
         "title": 'Time to shine',
-        "body": 'These are some low effort examples right here',
+        "body": 'This is a placeholder blog post. Please select another.',
         "user_id": 2
     }
     
     let altered_note = {
         "title": 'The world is stuffed',
-        "body": 'We should be okay through',
+        "body": 'This is a placeholder blog post. Please select another.',
         "user_id": 1
     }
     

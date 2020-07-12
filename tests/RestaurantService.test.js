@@ -22,15 +22,15 @@ describe('RestaurantService testing with restaurantservice', () => {
         "name": 'Restaurant 101',
         "street_address": 'My place',
         "district_id": 2,
-        "description": 'Home cooked food',
+        "description": 'This is a placeholder restaurant. Please select another.',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.bYCGq485SZLPBgm-0oj_qAAAAA%26pid%3DApi&f=1',
         "price": 3,
         "telephone_number": '444',
         "social_media_URL": 'www.terrarie.com',
         "main_picture_URL": 'https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
         "website_URL": 'www.place.com',
-        "latitude": 19.3,
-        "longitude": 105.2,
+        "latitude": 22.318295,
+        "longitude": 114.169218,
         "monday": '09:30-22:00'
     }
     
@@ -38,15 +38,15 @@ describe('RestaurantService testing with restaurantservice', () => {
         "name": 'Our cool restaurant: V2',
         "street_address": 'GreenLand',
         "district_id": 3,
-        "description": 'Nicer food',
+        "description": 'This is a placeholder restaurant. Please select another.',
         "logo": 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.6iu2HE0CMnwIpGvu66bMaAHaFj%26pid%3DApi&f=1',
         "price": 2,
         "telephone_number": '999',
         "social_media_URL": 'www.google.com',
         "main_picture_URL": 'https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
         "website_URL": 'www.cool.com',
-        "latitude": 23.0,
-        "longitude": 113.6,
+        "latitude": 22.219243,
+        "longitude": 114.112058,
         "monday": '09:30-21:50',
     }
     
@@ -96,7 +96,7 @@ describe('RestaurantService testing with restaurantservice', () => {
                 expect(results.length).toBe(1)
                 expect(results[0].name).toBe('Our awesome restaurant')
                 expect(results[0].street_address).toBe('Xccelerate')
-                expect(results[0].description).toBe('All the best food')
+                expect(results[0].description).toBe('This is a placeholder restaurant. Please select another.')
             })
     })
 
@@ -134,7 +134,7 @@ describe('RestaurantService testing with restaurantservice', () => {
                 expect(results.length).toBe(1)
                 expect(results[0].name).toBe('Our cool restaurant')
                 expect(results[0].street_address).toBe('GreenLand')
-                expect(results[0].description).toBe('Nicer food')
+                expect(results[0].description).toBe('This is a placeholder restaurant. Please select another.')
                 expect(results[0].pictures).toEqual([
                     'https://images.pexels.com/photos/34650/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=1&w=500'
                   ])

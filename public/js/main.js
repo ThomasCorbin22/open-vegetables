@@ -157,8 +157,6 @@ $(document).ready(function () {
   $('.add-favourite').on('click', function (e) {
     let restaurant_id = e.currentTarget.parentNode.previousElementSibling.firstChild.getAttribute("href").split('/').splice(-1)[0]
     if (e.currentTarget.innerHTML.match('☆')) {
-      console.log(user_id)
-      console.log(restaurant_id)
       axios({
         url: '/user/favourite/restaurant',
         method: 'post',
@@ -168,7 +166,6 @@ $(document).ready(function () {
         }
       })
         .then((res) => {
-          console.log(res)
           e.currentTarget.innerHTML = '★ Favourite Restaurant'
           $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
         })
@@ -183,7 +180,6 @@ $(document).ready(function () {
         method: 'delete',
       })
         .then((res) => {
-          console.log(res)
           e.currentTarget.innerHTML = '☆ Add to favourite'
         })
         .catch((error) => {
@@ -224,8 +220,6 @@ function renderImg(e, targetDOM) {
   reader.readAsDataURL(file)
 
   reader.onload = function () {
-    console.log(targetDOM)
-
     if (targetDOM.attr('src')) {
       targetDOM.attr('src', reader.result)
     }

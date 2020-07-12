@@ -31,7 +31,7 @@ $(document).ready(function () {
             })
     }
 
-    // Adds districts to dropdown menu
+    // Adds categories to dropdown menu
     if ($('#restaurant-category')) {
         axios({
             url: '/restaurant/category/list/all',
@@ -80,8 +80,6 @@ $(document).ready(function () {
         let restaurant_id = window.location.href.split('/').splice(-1)[0]
 
         if (e.currentTarget.innerHTML.match('☆')) {
-            console.log(user_id)
-            console.log(restaurant_id)
             axios({
                 url: '/user/favourite/restaurant',
                 method: 'post',
@@ -91,7 +89,6 @@ $(document).ready(function () {
                 }
             })
                 .then((res) => {
-                    console.log(res)
                     e.currentTarget.innerHTML = '★ Favourite Restaurant'
                     $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
                 })
@@ -106,7 +103,6 @@ $(document).ready(function () {
                 method: 'delete',
             })
                 .then((res) => {
-                    console.log(res)
                     e.currentTarget.innerHTML = '☆ Add to favourite'
                 })
                 .catch((error) => {
@@ -176,7 +172,6 @@ $(document).ready(function () {
             }
         })
             .then((res) => {
-                console.log(res.data)
                 //delete every category when update
                 return axios({
                     url: '/restaurant/category/list/' + restaurant_id,
@@ -184,18 +179,14 @@ $(document).ready(function () {
                 })
             })
             .then((res) => {
-                console.log(res.data)
                 for (let category of res.data) {
                     axios({
                         url: '/restaurant/category/' + category.id,
                         method: 'delete'
                     })
-                        .then((res) => {
-                            console.log(res.data)
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 }
             })
             .then(() => {
@@ -217,7 +208,6 @@ $(document).ready(function () {
                 })
             })
             .then((res) => {
-                console.log(res.data)
                 for (let original of res.data) {
                     for (let update of existing_pictures) {
                         if (update.id == original.id) {
@@ -229,12 +219,9 @@ $(document).ready(function () {
                                     restaurant_id
                                 }
                             })
-                                .then((res) => {
-                                    console.log(res.data)
-                                })
-                                .catch((error) => {
-                                    console.log(error);
-                                })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                         }
                     }
                 }
@@ -250,12 +237,9 @@ $(document).ready(function () {
                             restaurant_id
                         }
                     })
-                        .then((res) => {
-                            console.log(res.data)
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 }
             })
             .then(() => {
@@ -324,8 +308,6 @@ $(document).ready(function () {
             }
         })
             .then((res) => {
-                console.log(res.data[0])
-
                 restaurant_id = res.data[0].id
 
                 // allowing user access the new restaurant
@@ -339,8 +321,6 @@ $(document).ready(function () {
                 })
             })
             .then((res) => {
-                console.log(res.data)
-
                 // post new pictures
                 for (let picture_URL of pictures) {
                     axios({
@@ -351,12 +331,9 @@ $(document).ready(function () {
                             restaurant_id
                         }
                     })
-                        .then((res) => {
-                            console.log(res.data)
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 }
             })
             .then(() => {
@@ -383,15 +360,12 @@ $(document).ready(function () {
     $('.btn-restaurant-group button:last-child').click(function (e) {
         e.preventDefault()
         let restaurant_id = parseInt($(this).closest('form').next().find('.restaurant-link').attr('href').match(/\d+/))
-        console.log(restaurant_id)
         axios({
             url: '/restaurant/individual/' + restaurant_id,
             method: 'delete'
         })
             .then((res) => {
-                console.log(res.data)
                 location.reload();
-
             })
             .catch((error) => {
                 console.log(error);

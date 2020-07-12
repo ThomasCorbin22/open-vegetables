@@ -24,7 +24,7 @@ function filterResults(type, filter, direction, results){
         else if (direction === 'descending') return results
     }
     else if (filter === 'publisher'){
-        results.sort((a, b) => a.user_id.localeCompare(b.user_id))
+        results.sort((a, b) => b.user_id - b.user_id)
 
         if (direction == 'ascending') return results.reverse()
         else if (direction === 'descending') return results

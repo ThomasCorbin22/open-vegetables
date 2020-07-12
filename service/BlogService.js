@@ -1,25 +1,14 @@
-// Update with your config settings.
-require('dotenv').config();
-
-const knex = require('knex')({
-    client: 'postgresql',
-    connection: {
-        database: process.env.DATABASE_NAME,
-        user: process.env.DATABASE_USERNAME,
-        password: process.env.DATABASE_PASSWORD
-    }
-});
-
 class BlogService {
-    constructor() {
+    constructor(knex) {
         this.blog = []
         this.pictures = []
         this.categories = []
+        this.knex = knex;
     }
 
     // Search all of the current blogs
     async searchBlogs(query) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blogs")
             .modify(function(queryBuilder) {
@@ -67,7 +56,7 @@ class BlogService {
 
     // Lists all of the current blogs
     async listBlogs() {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blogs")
             .catch((err) => console.log(err))
@@ -81,7 +70,7 @@ class BlogService {
 
     // Gets a specific blog
     async getBlog(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blogs")
             .where("id", id)
@@ -94,7 +83,7 @@ class BlogService {
 
     // Adds a specific blog post
     async addBlog(post) {
-        let results = await knex('blogs')
+        let results = await this.knex('blogs')
             .insert(post)
             .returning('*')
             .catch((err) => console.log(err))
@@ -106,7 +95,7 @@ class BlogService {
 
     // Updates a blog post
     async updateBlog(post, id) {
-        await knex('blogs')
+        await this.knex('blogs')
             .update(post)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -118,39 +107,39 @@ class BlogService {
 
     // Deletes a blog post
     async deleteBlog(id) {
-        let results = await knex('comments')
+        let results = await this.knex('comments')
             .select('*')
             .where('blog_id', id)
             .catch((err) => console.log(err))
 
         for (let result of results){
-            await knex('likes_dislikes')
+            await this.knex('likes_dislikes')
                 .del()
                 .where('comment_id', result.id)
                 .catch((err) => console.log(err))
         }
 
-        await knex('comments')
+        await this.knex('comments')
             .del()
             .where('blog_id', id)
             .catch((err) => console.log(err))
 
-        await knex('blog_pictures')
+        await this.knex('blog_pictures')
             .del()
             .where('blog_id', id)
             .catch((err) => console.log(err))
 
-        await knex('blog_favourites')
+        await this.knex('blog_favourites')
             .del()
             .where('blog_id', id)
             .catch((err) => console.log(err))
 
-        await knex('blog_categories')
+        await this.knex('blog_categories')
             .del()
             .where('blog_id', id)
             .catch((err) => console.log(err))
 
-        await knex('blogs')
+        await this.knex('blogs')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))
@@ -162,7 +151,7 @@ class BlogService {
 
     // Gets the pictures from a blog post
     async listPictures(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blog_pictures")
             .where("blog_id", id)
@@ -175,7 +164,7 @@ class BlogService {
 
     // Gets a picture
     async getPicture(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blog_pictures")
             .where("id", id)
@@ -188,7 +177,7 @@ class BlogService {
 
     // Adds a blog picture
     async addPicture(image) {
-        let results = await knex('blog_pictures')
+        let results = await this.knex('blog_pictures')
             .insert(image)
             .returning('*')
             .catch((err) => console.log(err))
@@ -200,7 +189,7 @@ class BlogService {
 
     // Updates a blog picture
     async updatePicture(image, id) {
-        await knex('blog_pictures')
+        await this.knex('blog_pictures')
             .update(image)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -212,7 +201,7 @@ class BlogService {
 
     // Deletes a blog picture
     async deletePicture(id) {
-        await knex('blog_pictures')
+        await this.knex('blog_pictures')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))
@@ -224,7 +213,7 @@ class BlogService {
 
     // Gets the categories for a particular blog post
     async listCategories(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blog_categories")
             .where("blog_id", id)
@@ -237,7 +226,7 @@ class BlogService {
 
     // Gets a blog category
     async getCategory(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("blog_categories")
             .where("id", id)
@@ -250,7 +239,7 @@ class BlogService {
 
     // Adds a blog category
     async addCategory(category) {
-        let results = await knex('blog_categories')
+        let results = await this.knex('blog_categories')
             .insert(category)
             .returning('*')
             .catch((err) => console.log(err))
@@ -262,7 +251,7 @@ class BlogService {
 
     // Updates a blog category
     async updateCategory(category, id) {
-        await knex('blog_categories')
+        await this.knex('blog_categories')
             .update(category)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -274,7 +263,7 @@ class BlogService {
 
     // Deletes a blog category
     async deleteCategory(id) {
-        await knex('blog_categories')
+        await this.knex('blog_categories')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))

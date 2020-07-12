@@ -1,20 +1,10 @@
-// Update with your config settings.
-require('dotenv').config();
 const updateDate = require('../modules/getDate.js');
 
-const knex = require('knex')({
-    client: 'postgresql',
-    connection: {
-        database: process.env.DATABASE_NAME,
-        user: process.env.DATABASE_USERNAME,
-        password: process.env.DATABASE_PASSWORD
-    }
-});
-
 class ReviewService {
-    constructor() {
+    constructor(knex) {
         this.review = []
         this.pictures = []
+        this.knex = knex;
     }
 
     // Add pictures to a review
@@ -40,7 +30,7 @@ class ReviewService {
 
     // Lists all the reviews for a user
     async listUserReviews(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("reviews")
             .where("user_id", id)
@@ -53,7 +43,7 @@ class ReviewService {
 
     // Lists all the reviews for a restaurant
     async listReviews(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("reviews")
             .where("restaurant_id", id)
@@ -68,7 +58,7 @@ class ReviewService {
 
     // Gets a specific review
     async getReview(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("reviews")
             .where("id", id)
@@ -81,7 +71,7 @@ class ReviewService {
 
     // Posts a review
     async addReview(review) {
-        let results = await knex('reviews')
+        let results = await this.knex('reviews')
             .insert(review)
             .returning('*')
             .catch((err) => console.log(err))
@@ -93,7 +83,7 @@ class ReviewService {
 
     // Updates a review
     async updateReview(review, id) {
-        await knex('reviews')
+        await this.knex('reviews')
             .update(review)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -105,12 +95,12 @@ class ReviewService {
 
     // Deletes a review
     async deleteReview(id) {
-        await knex('review_pictures')
+        await this.knex('review_pictures')
             .del()
             .where('review_id', id)
             .catch((err) => console.log(err))
 
-        await knex('reviews')
+        await this.knex('reviews')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))
@@ -122,7 +112,7 @@ class ReviewService {
 
     // Gets a reviews pictures
     async listPictures(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("review_pictures")
             .where("review_id", id)
@@ -135,7 +125,7 @@ class ReviewService {
 
     // Gets a specific picture
     async getPicture(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("review_pictures")
             .where("id", id)
@@ -148,7 +138,7 @@ class ReviewService {
 
     // Posts a picture
     async addPicture(picture) {
-        let results = await knex('review_pictures')
+        let results = await this.knex('review_pictures')
             .insert(picture)
             .returning('*')
             .catch((err) => console.log(err))
@@ -160,7 +150,7 @@ class ReviewService {
 
     // Updates a picture
     async updatePicture(picture, id) {
-        await knex('review_pictures')
+        await this.knex('review_pictures')
             .update(picture)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -172,7 +162,7 @@ class ReviewService {
 
     // Deletes a picture
     async deletePicture(id) {
-        await knex('review_pictures')
+        await this.knex('review_pictures')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))

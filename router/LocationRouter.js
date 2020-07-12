@@ -24,6 +24,7 @@ class LocationRouter {
 
         // Deals with map pages
         this.router.get('/map', this.displayMap.bind(this));
+        this.router.get('/map/latlng', this.listLatLng.bind(this));
 
         return this.router
     }
@@ -183,11 +184,22 @@ class LocationRouter {
                 console.log(err)
             })
     }
-    
 
-    // Displays the map
-    displayMap(req, res) {
-        res.render('map', { title: 'map', map: true })
+    // Displays the lat lng co-ordinates of each district
+    listLatLng(req, res) {
+        return this.locationService.getDistrictsLatLng()
+            .then((locations) => {
+                res.send(locations)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    // Displays the districts with lat / lng
+    async displayMap(req, res) {
+        let locations = await this.locationService.getDistrictsLatLng()
+        res.render('map', { title: 'map', map: true, locations })
     }
 }
 

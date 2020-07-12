@@ -7,14 +7,12 @@ $(document).ready(function () {
     //delete exist blog
     $('.btn-blog-group button:last-child').click(function (e) {
         e.preventDefault()
-        let blogId = $(this).closest('form').next().find('.blog-link').attr('href').match(/\d+/)
-        console.log(blogId)
+        let blog_id = $(this).closest('form').next().find('.blog-link').attr('href').match(/\d+/)
         axios({
-            url: '/blog/individual/' + parseInt(blogId),
+            url: '/blog/individual/' + parseInt(blog_id),
             method: 'delete'
         })
             .then((res) => {
-                console.log(res.data)
                 location.reload();
             })
             .catch((error) => {
@@ -36,8 +34,6 @@ $(document).ready(function () {
             method: 'get'
         })
             .then((res) => {
-                console.log(res.data)
-
                 //if checkbox is modified, delete the original cate in db
                 if ($('input[name="category"]:checked').val()) {
                     for (let category of res.data) {
@@ -45,12 +41,9 @@ $(document).ready(function () {
                             url: '/blog/category/' + category.id,
                             method: 'delete'
                         })
-                            .then((res) => {
-                                console.log(res.data)
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                        .catch((error) => {
+                            console.log(error);
+                        })
                     }
                 }
             })
@@ -65,13 +58,9 @@ $(document).ready(function () {
                             blog_id
                         }
                     })
-                        .then((res) => {
-                            console.log(res.data)
-
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 })
             })
             .then(() => {
@@ -101,12 +90,9 @@ $(document).ready(function () {
                                 blog_id
                             }
                         })
-                            .then((res) => {
-                                console.log(res.data)
-                            })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                        .catch((error) => {
+                            console.log(error);
+                        })
                     })
                 })
             })
@@ -141,7 +127,6 @@ $(document).ready(function () {
             }
         })
             .then((res) => {
-                console.log(res.data)
                 blog_id = res.data[0].id
                 // post new category
                 $.each($("input[name='category']:checked"), function () {
@@ -153,13 +138,9 @@ $(document).ready(function () {
                             blog_id
                         }
                     })
-                        .then((res) => {
-                            console.log(res.data)
-
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 })
             })
             .then(() => {
@@ -173,12 +154,9 @@ $(document).ready(function () {
                             blog_id
                         }
                     })
-                        .then((res) => {
-                            console.log(res.data)
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
+                    .catch((error) => {
+                        console.log(error);
+                    })
                 }
             })
             .then(() => {
@@ -203,7 +181,6 @@ $(document).ready(function () {
                 }
             })
                 .then((res) => {
-                    console.log(res)
                     e.currentTarget.innerHTML = '★ Favourite Blog'
                     $(e.currentTarget).attr('id', 'favourite-' + res.data[0].id)
                 })
@@ -218,7 +195,6 @@ $(document).ready(function () {
                 method: 'delete',
             })
                 .then((res) => {
-                    console.log(res)
                     e.currentTarget.innerHTML = '☆ Add to favourite'
                 })
                 .catch((error) => {

@@ -2,7 +2,6 @@ $(document).ready(function () {
     // control image upload, decode image buffer to render 
     function renderImg(e, targetDOM) {
         let file = e.target.files[0]
-        console.log(file)
 
         let reader = new FileReader()
 
@@ -35,7 +34,6 @@ $(document).ready(function () {
             }
         })
             .then((res) => {
-                console.log(res)
                 $("#form-change-password").append('<p>Password changed successfully.</p>')
             })
             .catch((error) => {
@@ -53,7 +51,6 @@ $(document).ready(function () {
         let displayName = $('#name-display').val()
         let description = $('#description').val()
         let profile_picture_URL = $('#user-img').attr('src')
-        console.log(user_id)
 
         axios({
             url: `/user/individual/${user_id}`,
@@ -97,7 +94,6 @@ $(document).ready(function () {
         })
             .then((res) => {
                 if (typeof res.data == 'object') {
-                    console.log(res.data)
                     user_answer = res.data
                     $('#security-page').hide()
                     $('#reset-password-page').show()
@@ -113,8 +109,6 @@ $(document).ready(function () {
         let password_01 = $('#reset-password').val()
         let password_02 = $('#reset-password-2').val()
 
-        console.log(user_answer)
-
         if (password_01 === password_02 && password_01 !== null) {
             axios({
                 url: `/user/lost`,
@@ -126,7 +120,6 @@ $(document).ready(function () {
                 }
             })
                 .then((res) => {
-                    console.log(res)
                     return axios({
                         url: `/auth/login`,
                         method: 'post',
@@ -137,7 +130,6 @@ $(document).ready(function () {
                     })
                 })
                 .then((res) => {
-                    console.log(res)
                     location.reload();
                 })
                 .catch((error) => {

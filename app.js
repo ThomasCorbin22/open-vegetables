@@ -10,6 +10,10 @@ const hbs = require('express-handlebars')
 // Custom module
 const getDate = require('./modules/getDate.js');
 
+// Set up connection to postgres database via knex
+const knexConfig = require('./knexfile').development;
+const knex = require('knex')(knexConfig);
+
 // Require router modules
 const UserRouter = require('./router/UserRouter');
 const RestaurantRouter = require('./router/RestaurantRouter');
@@ -28,12 +32,12 @@ const ReviewService = require('./service/ReviewService');
 const LocationService = require('./service/LocationService');
 
 // Require router service
-const userService = new UserService()
-const restaurantService = new RestaurantService()
-const blogService = new BlogService()
-const commentService = new CommentService()
-const reviewService = new ReviewService()
-const locationService = new LocationService()
+const userService = new UserService(knex)
+const restaurantService = new RestaurantService(knex)
+const blogService = new BlogService(knex)
+const commentService = new CommentService(knex)
+const reviewService = new ReviewService(knex)
+const locationService = new LocationService(knex)
 
 // Require passport initialisation
 const initPassport = require('./passport/init-passport');

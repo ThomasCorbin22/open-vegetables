@@ -1,57 +1,22 @@
-<div class='container-fluid'>
-    <div class='row '>
-        <div class='col-sm-12 '>
+<div class='container-fluid flex-grow-1 d-flex flex-column'>
+    <div class='row flex-grow-1'>
+        <div class='col-sm-12 d-flex flex-column'>
             <ul class='nav justify-content-around navbar-light bg-light my-2'>
+                {{#each locations}}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="locations" data-toggle="dropdown">
-                        Hong Kong Island
+                    <a class="nav-link dropdown-toggle text-capitalize" href="#" id="locations" data-toggle="dropdown">
+                        {{this.[0]}}
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="hong-kong-island-districts">
-                        <a id="central" href='/location/map/hong-kong-island/central' data-latLng="22.2800, 114.1588"
-                            class='map-link nav-link'>Central</a>
-                        <a id="wan-chai" href='/location/map/hong-kong-island/wan-chai' class='map-link nav-link'>Wan Chai</a>
-                        <a id="causeway-bay" href='/location/map/hong-kong-island/causeway-bay'
-                            class='map-link nav-link'>Causeway Bay</a>
-                        <a id="north-point" href='/location/map/hong-kong-island/north-point' class='map-link nav-link'>North Point</a>
+                    <div class="dropdown-menu" aria-labelledby="{{this.[0]}}-districts">
+                        {{#each this.[1]}}
+                            <a id="{{this.[0]}}" href='/location/map/hong-kong-island/central' data-lat={{this.[1]}} data-lng={{this.[2]}}
+                                class='map-link py-0 nav-link text-capitalize'>{{this.[0]}}</a>
+                        {{/each}}
                     </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="locations" data-toggle="dropdown">
-                        Kowloon
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="kowloon-districts">
-                        <a id="tsim-sha-tsui" href='/location/map/kowloon/tsim-sha-tsui' class='map-link nav-link'>Tsim Sha Tsui</a>
-                        <a id="mong-kok" href='/location/map/kowloon/mong-kok' class='map-link nav-link'>Mong Kok</a>
-                        <a id="kwun-tong" href='/location/map/kowloon/kwun-tong' class='map-link nav-link'>Kwun Tong</a>
-                        <a id="tsuen-wan" href='/location/map/kowloon/tsuen-wan' class='map-link nav-link'>Tsuen Wan</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="locations" data-toggle="dropdown">
-                        New Territories
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="new-territories-districts">
-                        <a id="sha-tin" href='/location/map/new-territories/sha-tin' class='map-link nav-link'>Sha Tin</a>
-                        <a id="tai-po" href='/location/map/new-territories/tai-po' class='map-link nav-link'>Tai Po</a>
-                        <a id="tuen-mun" href='/location/map/kowloon/tuen-mun' class='map-link nav-link'>Tuen Mun</a>
-                        <a id="yuen-long" href='/location/map/kowloon/yuen-long' class='map-link nav-link'>Yuen Long</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="locations" data-toggle="dropdown">
-                        Outlying Islands
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="outlying-islands">
-                        <a id="lantau-island" href='/location/map/outlying-islands/lantau-island'
-                            class='map-link nav-link'>Lantau Island</a>
-                        <a id="lamma-island" href='/location/map/outlying-islands/lamma-island' class='map-link nav-link'>Lamma
-                            Island</a>
-                        <a id="cheung-chau" href='/location/map/outlying-islands/cheung-chau' class='map-link nav-link'>Cheung
-                            Chau</a>
-                    </div>
-                </li>
+                {{/each}}
             </ul>
-            <div id="map" style='height:500px' class='mb-3 rounded'></div>
+            <div id="map" class='mb-3 rounded flex-grow-1'></div>
         </div>
     </div>
 </div>

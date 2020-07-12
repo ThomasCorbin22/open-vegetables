@@ -3,7 +3,9 @@
         <div class='col-sm-12 '>
             {{> user_nav}}
             <div class='d-flex justify-content-center mb-3 '>
+                {{#if user.profile_picture_URL}}
                 <img class='img-fluid w-25' id='user-img' src={{user.profile_picture_URL}} alt="">
+                {{/if}}
             </div>
             <div class='d-flex justify-content-center'>
                 <form>

@@ -4,25 +4,25 @@ exports.seed = function (knex) {
   return knex('blogs').insert([
     {
       "title": 'Some cool post',
-      "body": 'Imagine theres a great article written here',
+      "body": 'This is a placeholder blog post. Please select another.',
       "main_picture_URL": 'https://images.pexels.com/photos/347134/pexels-photo-347134.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "user_id": 1
     },
     {
       "title": 'Another post',
-      "body": 'We could win a pulitzer for this',
+      "body": 'This is a placeholder blog post. Please select another.',
       "main_picture_URL": 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "user_id": 2
     },
     {
       "title": 'Yet one more',
-      "body": 'We need to think of better articles',
+      "body": 'This is a placeholder blog post. Please select another.',
       "main_picture_URL": 'https://images.pexels.com/photos/1153370/pexels-photo-1153370.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "user_id": 3
     },
     {
       "title": 'A last one!',
-      "body": 'Lets get some real journalists on here',
+      "body": 'This is a placeholder blog post. Please select another.',
       "main_picture_URL": 'https://images.pexels.com/photos/1128678/pexels-photo-1128678.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
       "user_id": 3
     }

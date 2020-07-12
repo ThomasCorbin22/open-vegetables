@@ -17,8 +17,6 @@ $(document).ready(function () {
       })
       .then((res) => {
         if (user_id) {
-          console.log(res.data)
-          console.log(user_id)
           $('#create-new-btn').show()
           for (let review of res.data) {
             if (review.user_id == user_id) {
@@ -65,7 +63,6 @@ $(document).ready(function () {
       }
     })
       .then((res) => {
-        console.log(res.data)
         // Add new review picture
         if (picture_URL) {
           axios({
@@ -125,7 +122,6 @@ $(document).ready(function () {
       }
     })
       .then((res) => {
-        console.log(res.data)
         let review_id = res.data[0].id
 
         if (image) {
@@ -173,7 +169,6 @@ $(document).ready(function () {
       method: 'delete',
     })
       .then((res) => {
-        console.log(res.data)
         location.reload();
       })
       .catch((error) => {

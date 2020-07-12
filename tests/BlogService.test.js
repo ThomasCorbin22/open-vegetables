@@ -20,13 +20,13 @@ describe('BlogService testing with blogservice', () => {
     
     let new_post = {
         "title": 'Time to shine',
-        "body": 'These are some low effort examples right here',
+        "body": 'This is a placeholder blog post. Please select another.',
         "user_id": 2
     }
     
     let altered_post = {
         "title": 'The world is stuffed',
-        "body": 'We should be okay through',
+        "body": 'This is a placeholder blog post. Please select another.',
         "user_id": 1
     }
     
@@ -75,7 +75,7 @@ describe('BlogService testing with blogservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].title).toBe('Some cool post')
-                expect(results[0].body).toBe('Imagine theres a great article written here')
+                expect(results[0].body).toBe('This is a placeholder blog post. Please select another.')
                 expect(results[0].user_id).toBe(1)
             })
     })
@@ -103,7 +103,7 @@ describe('BlogService testing with blogservice', () => {
             .then((results) => {
                 expect(results.length).toBe(1)
                 expect(results[0].title).toBe('Another post')
-                expect(results[0].body).toBe('We could win a pulitzer for this')
+                expect(results[0].body).toBe('This is a placeholder blog post. Please select another.')
                 expect(results[0].user_id).toBe(2)
                 expect(typeof results[0].pictures).toEqual('object')
                 expect(typeof results[0].categories).toEqual('object')

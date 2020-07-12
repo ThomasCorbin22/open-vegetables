@@ -50,7 +50,6 @@ $(document).ready(function () {
       }
     })
       .then((res) => {
-        console.log(res.data)
         location.reload();
       })
       .catch((error) => {
@@ -80,7 +79,6 @@ $(document).ready(function () {
       }
     })
       .then((res) => {
-        console.log(res.data)
         location.reload();
       })
       .catch((error) => {
@@ -99,7 +97,6 @@ $(document).ready(function () {
       method: 'delete',
     })
       .then((res) => {
-        console.log(res.data)
         location.reload();
       })
       .catch((error) => {
@@ -128,7 +125,6 @@ $(document).ready(function () {
         }
       })
       .then((res) => {
-        console.log(res.data)
         // Check the likes for every comment, if the user has liked something than change the color of the like
         for (let comment of res.data) {
           axios({
@@ -136,7 +132,6 @@ $(document).ready(function () {
             method: 'get',
           })
             .then((res) => {
-              console.log(res.data)
               // Update the color of the like buttons depending on if the user has liked them
               if (res.data[0]) {
                 if (res.data[0].like === true) {
@@ -174,10 +169,6 @@ $(document).ready(function () {
       if ($(`#dislike-${comment_id}`).attr('fill') === 'currentColor') disliked = false
       else disliked = true
 
-      console.log(comment_id)
-      console.log(liked)
-      console.log(disliked)
-
       // If the comment is not liked or disliked we post a new like to the likes-dislikes table
       if (liked === false && disliked === false) {
         axios({
@@ -190,12 +181,9 @@ $(document).ready(function () {
           }
         })
           .then((res) => {
-            console.log(res.data)
             $(e.target).attr('fill', 'blue')
 
             let number = Number($(`#number-likes-${comment_id}`).html()) + 1
-            console.log($(`#number-likes-${comment_id}`))
-            console.log(number)
             $(`#number-likes-${comment_id}`).html(number)
           })
           .catch((error) => {
@@ -209,7 +197,6 @@ $(document).ready(function () {
           method: 'get',
         })
           .then((res) => {
-            console.log(res.data)
             return axios({
               url: '/comment/like/' + res.data[0].id,
               method: 'put',
@@ -221,7 +208,6 @@ $(document).ready(function () {
             })
           })
           .then((res) => {
-            console.log(res.data)
             $(e.target).attr('fill', 'blue')
             $(`#dislike-${comment_id}`).attr('fill', 'currentColor')
 
@@ -241,14 +227,12 @@ $(document).ready(function () {
           method: 'get',
         })
           .then((res) => {
-            console.log(res.data)
             return axios({
               url: '/comment/like/' + res.data[0].id,
               method: 'delete',
             })
           })
           .then((res) => {
-            console.log(res.data)
             $(e.target).attr('fill', 'currentColor')
 
             let number = Number($(`#number-likes-${comment_id}`).html()) - 1
@@ -276,10 +260,6 @@ $(document).ready(function () {
       if ($(`#like-${comment_id}`).attr('fill') === 'currentColor') liked = false
       else liked = true
 
-      console.log(comment_id)
-      console.log(liked)
-      console.log(disliked)
-
       // If the comment is not liked or disliked we post a new dislike to the likes-dislikes table
       if (liked === false && disliked === false) {
         axios({
@@ -292,7 +272,6 @@ $(document).ready(function () {
           }
         })
           .then((res) => {
-            console.log(res.data)
             $(e.target).attr('fill', 'red')
             let number = Number($(`#number-dislikes-${comment_id}`).html()) + 1
             $(`#number-dislikes-${comment_id}`).html(number)
@@ -308,7 +287,6 @@ $(document).ready(function () {
           method: 'get',
         })
           .then((res) => {
-            console.log(res.data)
             return axios({
               url: '/comment/like/' + res.data[0].id,
               method: 'put',
@@ -320,7 +298,6 @@ $(document).ready(function () {
             })
           })
           .then((res) => {
-            console.log(res.data)
             $(e.target).attr('fill', 'red')
             $(`#like-${comment_id}`).attr('fill', 'currentColor')
             $(`#dislike-${comment_id}`).attr('fill', 'red')
@@ -341,14 +318,12 @@ $(document).ready(function () {
           method: 'get',
         })
           .then((res) => {
-            console.log(res.data)
             return axios({
               url: '/comment/like/' + res.data[0].id,
               method: 'delete',
             })
           })
           .then((res) => {
-            console.log(res.data)
             $(e.target).attr('fill', 'currentColor')
             let number = Number($(`#number-dislikes-${comment_id}`).html()) - 1
             $(`#number-dislikes-${comment_id}`).html(number)

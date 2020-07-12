@@ -1,19 +1,9 @@
-// Update with your config settings.
-require('dotenv').config();
 const updateDate = require('../modules/getDate.js');
 
-const knex = require('knex')({
-    client: 'postgresql',
-    connection: {
-        database: process.env.DATABASE_NAME,
-        user: process.env.DATABASE_USERNAME,
-        password: process.env.DATABASE_PASSWORD
-    }
-});
-
 class CommentService {
-    constructor() {
+    constructor(knex) {
         this.comment = []
+        this.knex = knex;
     }
 
     // Add likes, dislikes to a restaurant
@@ -34,7 +24,7 @@ class CommentService {
 
     // Gets all the comments from a blog post
     async listComments(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("comments")
             .where("blog_id", id)
@@ -47,7 +37,7 @@ class CommentService {
 
     // Get a specific comment
     async getComment(id) {
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("comments")
             .where("id", id)
@@ -60,7 +50,7 @@ class CommentService {
 
     // Adds a new comment
     async addComment(comment) {
-        let results = await knex('comments')
+        let results = await this.knex('comments')
             .insert(comment)
             .returning('*')
             .catch((err) => console.log(err))
@@ -72,7 +62,7 @@ class CommentService {
 
     // Updates a comment
     async updateComment(comment, id) {
-        await knex('comments')
+        await this.knex('comments')
             .update(comment)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -84,12 +74,12 @@ class CommentService {
 
     // Deletes a comment
     async deleteComment(id) {
-        await knex('likes_dislikes')
+        await this.knex('likes_dislikes')
             .del()
             .where('comment_id', id)
             .catch((err) => console.log(err))
 
-        await knex('comments')
+        await this.knex('comments')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))
@@ -101,14 +91,14 @@ class CommentService {
 
     // Gets a comments number of likes
     async listLikes(id){
-        let likes = await knex
+        let likes = await this.knex
             .select('*')
             .from("likes_dislikes")
             .where("like", true)
             .andWhere('comment_id', id)
             .catch((err) => console.log(err))
 
-        let dislikes = await knex
+        let dislikes = await this.knex
             .select('*')
             .from("likes_dislikes")
             .where("like", false)
@@ -123,7 +113,7 @@ class CommentService {
     // Checks if a user has liked the comments on a blog
     async getUserLike(user_id, comment_id){
 
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("likes_dislikes")
             .where("user_id", user_id)
@@ -137,7 +127,7 @@ class CommentService {
 
     // Gets a specific like
     async getLike(id){
-        let results = await knex
+        let results = await this.knex
             .select('*')
             .from("likes_dislikes")
             .where("id", id)
@@ -150,7 +140,7 @@ class CommentService {
 
     // Adds new like
     async addLike(like){
-        let results = await knex('likes_dislikes')
+        let results = await this.knex('likes_dislikes')
             .insert(like)
             .returning('*')
             .catch((err) => console.log(err))
@@ -162,7 +152,7 @@ class CommentService {
 
     // Updates a like
     async updateLike(like, id){      
-        await knex('likes_dislikes')
+        await this.knex('likes_dislikes')
             .update(like)
             .where('id', id)
             .catch((err) => console.log(err))
@@ -174,7 +164,7 @@ class CommentService {
     
     // Deletes a like
     async deleteLike(id){
-        await knex('likes_dislikes')
+        await this.knex('likes_dislikes')
             .del()
             .where('id', id)
             .catch((err) => console.log(err))

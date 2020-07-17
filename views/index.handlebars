@@ -17,7 +17,7 @@
                                 </div>
                             </div>
                         </a>
-                        <img class='rounded w-100 h-100 img-fluid' src={{main_picture_URL}} alt={{name}}>
+                        <img class='main-restaurant rounded w-100 img-fluid' src={{main_picture_URL}} alt={{name}}>
                     </div>
                     {{/each}}
                 </div>
@@ -30,14 +30,14 @@
                     <div class="position-relative">
                         <a href='/restaurant/details/{{id}}'>
                             <div
-                                class="overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+                                class="overlay position-absolute w-100 d-flex align-items-center justify-content-center">
                                 <div class="caption color-white">
                                     <h5>{{name}}</h5>
                                     <p class='m-0'>{{street_address}}</p>
                                 </div>
                             </div>
                         </a>
-                        <img src={{main_picture_URL}} class="rounded img-fluid w-100 thumbnail" alt={{name}}>
+                        <img src={{main_picture_URL}} class="side-restaurant rounded img-fluid w-100" alt={{name}}>
                     </div>
                 </div>
                 {{/each}}

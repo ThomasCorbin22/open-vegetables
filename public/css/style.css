@@ -124,12 +124,13 @@ hr {
 }
 
 .main-restaurant {
-  height: 300px;
+  height: 400px;
   object-fit: cover;
 }
 
 .side-restaurant {
-  height: calc(150px - 0.25rem);
+  height: calc(200px - 0.25rem);
+  object-fit: cover;
 }
 
 .btn-search {

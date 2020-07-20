@@ -93,7 +93,9 @@ app.get("/", async (req, res) => {
   }
 
   blogs = blogs.filter((blog) => blog.main_picture_URL);
-  restaurants = restaurants.filter((restaurant) => restaurant.main_picture_URL);
+  restaurants = restaurants.filter(
+    (restaurant) => restaurant.main_picture_URL !== "Not available"
+  );
 
   res.render("index", {
     title: "Home",

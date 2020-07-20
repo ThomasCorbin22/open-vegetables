@@ -133,6 +133,16 @@ hr {
   object-fit: cover;
 }
 
+@media screen and (max-width: 992px) {
+  .main-restaurant {
+    height: 300px;
+  }
+
+  .side-restaurant {
+    height: calc(150px - 0.25rem);
+  }
+}
+
 .btn-search {
   background-color: rgba(255, 255, 255, 1);
   color: rgba(95, 218, 133, 1);

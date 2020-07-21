@@ -124,13 +124,23 @@ hr {
 }
 
 .main-restaurant {
-  height: 400px;
+  height: 450px;
   object-fit: cover;
 }
 
 .side-restaurant {
-  height: calc(200px - 0.25rem);
+  height: calc(225px - 0.25rem);
   object-fit: cover;
+}
+
+@media screen and (max-width: 1200px) {
+  .main-restaurant {
+    height: 400px;
+  }
+
+  .side-restaurant {
+    height: calc(200px - 0.25rem);
+  }
 }
 
 @media screen and (max-width: 992px) {
